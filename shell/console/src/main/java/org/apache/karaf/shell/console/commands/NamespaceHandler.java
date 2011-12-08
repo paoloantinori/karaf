@@ -24,8 +24,6 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.felix.service.command.Function;
-import org.osgi.service.blueprint.reflect.*;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -37,8 +35,18 @@ import org.apache.aries.blueprint.mutable.MutableServiceMetadata;
 import org.apache.aries.blueprint.mutable.MutableValueMetadata;
 import org.apache.aries.blueprint.mutable.MutableRefMetadata;
 import org.apache.aries.blueprint.mutable.MutableCollectionMetadata;
-import org.apache.karaf.shell.console.CompletableFunction;
 import org.osgi.service.blueprint.container.ComponentDefinitionException;
+import org.osgi.service.blueprint.reflect.BeanArgument;
+import org.osgi.service.blueprint.reflect.BeanMetadata;
+import org.osgi.service.blueprint.reflect.BeanProperty;
+import org.osgi.service.blueprint.reflect.ComponentMetadata;
+import org.osgi.service.blueprint.reflect.IdRefMetadata;
+import org.osgi.service.blueprint.reflect.MapMetadata;
+import org.osgi.service.blueprint.reflect.Metadata;
+import org.osgi.service.blueprint.reflect.NullMetadata;
+import org.osgi.service.blueprint.reflect.RefMetadata;
+import org.osgi.service.blueprint.reflect.ServiceMetadata;
+import org.osgi.service.blueprint.reflect.ValueMetadata;
 
 
 public class NamespaceHandler implements org.apache.aries.blueprint.NamespaceHandler {
@@ -147,9 +155,9 @@ public class NamespaceHandler implements org.apache.aries.blueprint.NamespaceHan
         MutableServiceMetadata commandService = context.createMetadata(MutableServiceMetadata.class);
         commandService.setActivation(MutableServiceMetadata.ACTIVATION_LAZY);
         commandService.setId(getName());
-        //commandService.setAutoExport(ServiceMetadata.AUTO_EXPORT_ALL_CLASSES);
-        commandService.addInterface(CompletableFunction.class.getName());
-        commandService.addInterface(Function.class.getName());
+        commandService.setAutoExport(ServiceMetadata.AUTO_EXPORT_ALL_CLASSES);
+//        commandService.addInterface(CompletableFunction.class.getName());
+//        commandService.addInterface(Function.class.getName());
         commandService.setServiceComponent(command);
         commandService.addServiceProperty(createStringValue(context, "osgi.command.scope"),
                                           createStringValue(context, scope));
