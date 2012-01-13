@@ -44,6 +44,7 @@
         <module>ssh</module>
         <module>wrapper</module>
         <module>dev</module>
+        <module>dev2</module>
         <module>web</module>
     </modules>
 
