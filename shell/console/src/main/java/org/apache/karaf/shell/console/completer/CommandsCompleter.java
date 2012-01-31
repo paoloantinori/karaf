@@ -29,11 +29,15 @@ import org.apache.felix.gogo.commands.basic.AbstractCommand;
 import org.apache.felix.gogo.runtime.Closure;
 import org.apache.felix.gogo.runtime.CommandProxy;
 import org.apache.felix.gogo.runtime.CommandSessionImpl;
+import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.apache.felix.service.command.Function;
 import org.apache.karaf.shell.console.Completer;
 import org.apache.karaf.shell.console.jline.CommandSessionHolder;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +60,12 @@ public class CommandsCompleter implements Completer {
 
     public CommandsCompleter(CommandSession session) {
         this.session = session;
+        
+        try {
+            new CommandTracker();
+        } catch (Throwable t) {
+            // Ignore in case we're not in OSGi
+        }
     }
 
 
@@ -135,6 +145,21 @@ public class CommandsCompleter implements Completer {
         } catch (Throwable t) {
         }
         return function;
+    }
+    
+    private class CommandTracker {
+        public CommandTracker() throws Exception {
+            BundleContext context = FrameworkUtil.getBundle(getClass()).getBundleContext();
+            ServiceListener listener = new ServiceListener() {
+                public void serviceChanged(ServiceEvent event) {
+                    commands.clear();
+                }
+            };
+            context.addServiceListener(listener,
+                    String.format("(&(%s=*)(%s=*))",
+                                  CommandProcessor.COMMAND_SCOPE,
+                            CommandProcessor.COMMAND_FUNCTION));
+        }
     }
 
 }
