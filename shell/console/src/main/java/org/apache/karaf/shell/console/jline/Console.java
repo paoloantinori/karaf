@@ -247,7 +247,7 @@ public class Console implements Runnable
             } else {
                 reader.getHistory().replace(command);
             }
-            if (command.charAt(command.length() - 1) == '\\') {
+            if (command.length() > 0 && command.charAt(command.length() - 1) == '\\') {
                 loop = true;
                 first = false;
             } else {
