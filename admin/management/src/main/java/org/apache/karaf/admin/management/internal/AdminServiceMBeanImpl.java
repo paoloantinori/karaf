@@ -16,23 +16,27 @@
  */
 package org.apache.karaf.admin.management.internal;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 import javax.management.openmbean.TabularData;
 
-import org.apache.karaf.admin.management.AdminServiceMBean;
+import org.apache.felix.service.threadio.ThreadIO;
 import org.apache.karaf.admin.AdminService;
 import org.apache.karaf.admin.Instance;
 import org.apache.karaf.admin.InstanceSettings;
+import org.apache.karaf.admin.management.AdminServiceMBean;
 import org.apache.karaf.admin.management.codec.JmxInstance;
 
 public class AdminServiceMBeanImpl extends StandardMBean implements AdminServiceMBean {
 
     private AdminService adminService;
+    private ThreadIO threadIo;
 
     public AdminServiceMBeanImpl() throws NotCompliantMBeanException {
         super(AdminServiceMBean.class);
@@ -44,6 +48,14 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
 
     public void setAdminService(AdminService adminService) {
         this.adminService = adminService;
+    }
+
+    public ThreadIO getThreadIo() {
+        return threadIo;
+    }
+
+    public void setThreadIo(ThreadIO threadIo) {
+        this.threadIo = threadIo;
     }
 
     public int createInstance(String name, int sshPort, int rmiRegistryPort, int rmiServerPort, String location, String javaOpts, String features, String featureURLs)
@@ -58,11 +70,22 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
         InstanceSettings settings = new InstanceSettings(sshPort, rmiRegistryPort, rmiServerPort, location, javaOpts,
                 parseStringList(featureURLs), parseStringList(features));
 
-        Instance inst = adminService.createInstance(name, settings);
-        if (inst != null) {
-            return inst.getPid();
-        } else {
-            return -1;
+        try {
+            if (threadIo != null) {
+                threadIo.setStreams(new ByteArrayInputStream(new byte[0]),
+                                    new PrintStream(new ByteArrayOutputStream()),
+                                    new PrintStream(new ByteArrayOutputStream()));
+            }
+            Instance inst = adminService.createInstance(name, settings);
+            if (inst != null) {
+                return inst.getPid();
+            } else {
+                return -1;
+            }
+        } finally {
+            if (threadIo != null) {
+                threadIo.close();
+            }
         }
     }
 
@@ -167,4 +190,5 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
         }
         return list;
     }
+
 }

@@ -20,6 +20,7 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="eager">
 
     <reference id="adminService" interface="org.apache.karaf.admin.AdminService" />
+    <reference id="threadIo" interface="org.apache.felix.service.threadio.ThreadIO" />
 
     <reference id="mbeanServer" interface="javax.management.MBeanServer">
         <reference-listener ref="mbeanRegister" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer" />
@@ -27,6 +28,7 @@
 
     <bean id="mbeanImpl" class="org.apache.karaf.admin.management.internal.AdminServiceMBeanImpl">
         <property name="adminService" ref="adminService" />
+        <property name="threadIo" ref="threadIo" />
     </bean>
 
     <bean id="mbeanRegister" class="org.apache.karaf.management.MBeanRegistrer" init-method="init" destroy-method="destroy">
