@@ -176,6 +176,10 @@
         <xbean.version>3.11.1</xbean.version>
         <javax.mail.version>1.4.5</javax.mail.version>
         <http.feature.version>[2,3)</http.feature.version>
+        <xalan.version>2.7.1</xalan.version>
+        <xerces.version>2.11.0</xerces.version>
+        <xml.api.version>2.11.0-20110622</xml.api.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appendedResourcesDirectory>${basedir}/etc/appended-resources</appendedResourcesDirectory>
         <bnd.version.policy>[$(version;==;$(@)),$(version;+;$(@)))</bnd.version.policy>

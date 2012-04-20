@@ -111,6 +111,9 @@
             <fileMode>0664</fileMode>
             <includes>
                 <include>org.apache.karaf:org.apache.karaf.exception</include>
+                <include>org.apache.xerces:xercesImpl</include>
+                <include>xalan:xalan</include>
+                <include>xalan:serializer</include>
             </includes>
         </dependencySet>
 
