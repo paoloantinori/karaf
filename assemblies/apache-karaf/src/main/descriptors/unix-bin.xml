@@ -143,6 +143,7 @@
                 <include>org.apache.felix:org.apache.felix.configadmin</include>
                 <include>org.apache.felix:org.apache.felix.framework</include>
                 <include>org.apache.felix:org.apache.felix.fileinstall</include>
+                <include>org.apache.felix:org.apache.felix.framework.security</include>
             </includes>
         </dependencySet>
         <dependencySet>
