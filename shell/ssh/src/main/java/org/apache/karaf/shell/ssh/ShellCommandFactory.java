@@ -34,6 +34,7 @@ import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.apache.felix.service.command.Converter;
 import org.apache.karaf.shell.console.jline.Console;
+import org.apache.karaf.jaas.modules.JaasHelper;
 import org.apache.sshd.server.Command;
 import org.apache.sshd.server.CommandFactory;
 import org.apache.sshd.server.Environment;
@@ -47,6 +48,12 @@ import org.slf4j.LoggerFactory;
 public class ShellCommandFactory implements CommandFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShellCommandFactory.class);
+
+    private static final Class[] SECURITY_BUGFIX = {
+            JaasHelper.class,
+            JaasHelper.OsgiSubjectDomainCombiner.class,
+            JaasHelper.DelegatingProtectionDomain.class,
+    };
 
     private CommandProcessor commandProcessor;
 
@@ -104,7 +111,7 @@ public class ShellCommandFactory implements CommandFactory {
                     Object result;
                     if (subject != null) {
                         try {
-                            result = Subject.doAs(subject, new PrivilegedExceptionAction<Object>() {
+                            result = JaasHelper.doAs(subject, new PrivilegedExceptionAction<Object>() {
                                 public Object run() throws Exception {
                                     return session.execute(command);
                                 }
