@@ -135,17 +135,17 @@
         <aries.application.version>1.0.0</aries.application.version>
         <aries.application.api.version>1.0.0</aries.application.api.version>
         <aries.application.management.version>1.0.0</aries.application.management.version>
-        <aries.blueprint.version>1.0.0</aries.blueprint.version>
-        <aries.blueprint.api.version>1.0.0</aries.blueprint.api.version>
-        <aries.jmx.api.version>1.0.0</aries.jmx.api.version>
-        <aries.jmx.version>1.0.0</aries.jmx.version>
+        <aries.blueprint.version>1.0.1.fuse-71-SNAPSHOT</aries.blueprint.version>
+        <aries.blueprint.api.version>1.0.1.fuse-71-SNAPSHOT</aries.blueprint.api.version>
+        <aries.jmx.api.version>1.0.1.fuse-71-SNAPSHOT</aries.jmx.api.version>
+        <aries.jmx.version>1.0.1.fuse-71-SNAPSHOT</aries.jmx.version>
         <aries.jpa.version>1.0.0</aries.jpa.version>
         <aries.jpa.api.version>1.0.0</aries.jpa.api.version>
         <aries.jndi.version>1.0.0</aries.jndi.version>
         <aries.jndi.api.version>1.0.0</aries.jndi.api.version>
         <aries.proxy.version>1.0.0</aries.proxy.version>
         <aries.proxy.api.version>1.0.0</aries.proxy.api.version>
-        <aries.transaction.version>1.0.0</aries.transaction.version>
+        <aries.transaction.version>1.0.1.fuse-71-SNAPSHOT</aries.transaction.version>
         <aries.util.version>1.0.0</aries.util.version>
         <jansi.version>1.9</jansi.version>
         <jline.version>2.8</jline.version>
