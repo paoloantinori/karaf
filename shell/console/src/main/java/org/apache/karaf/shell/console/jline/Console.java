@@ -143,7 +143,6 @@ public class Console implements Runnable
                 // ignore
             }
         }
-        reader.shutdown();
         running = false;
         CommandSessionHolder.unset();
         pipe.interrupt();
