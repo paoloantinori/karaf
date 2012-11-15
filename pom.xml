@@ -125,7 +125,7 @@
 		<felix.configadmin.version>1.4.0.fuse-71-SNAPSHOT</felix.configadmin.version>
 		<felix.fileinstall.version>3.3.11.fuse-71-SNAPSHOT</felix.fileinstall.version>
 		<felix.framework.version>4.0.3.fuse-71-SNAPSHOT</felix.framework.version>
-		<felix.framework.security.version>2.1.0.fuse-71-SNAPSHOT</felix.framework.security.version>
+		<felix.framework.security.version>2.0.1.fuse-71-SNAPSHOT</felix.framework.security.version>
 		<felix.gogo.version>0.11.0.fuse-71-SNAPSHOT</felix.gogo.version>
         <felix.plugin.version>2.3.7</felix.plugin.version>
         <felix.utils.version>1.2.1.fuse-71-SNAPSHOT</felix.utils.version>
