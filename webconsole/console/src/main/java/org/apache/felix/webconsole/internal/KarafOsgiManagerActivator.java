@@ -45,7 +45,7 @@ public class KarafOsgiManagerActivator implements BundleActivator
     /**
      * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
      */
-    public void stop( BundleContext arg0 )
+    public void stop( BundleContext bundleContext ) throws Exception
     {
         if ( osgiManager != null )
         {
