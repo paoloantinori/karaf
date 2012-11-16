@@ -1049,8 +1049,6 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
         }
         // Install boot features
         if (boot != null && !bootFeaturesInstalled) {
-            new Thread() {
-                public void run() {
                     // splitting the features
                     String[] list = boot.split(",");
                     Set<Feature> features = new LinkedHashSet<Feature>();
@@ -1095,8 +1093,6 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
                     }
                     bootFeaturesInstalled = true;
                     saveState();
-                }
-            }.start();
         }
     }
 
