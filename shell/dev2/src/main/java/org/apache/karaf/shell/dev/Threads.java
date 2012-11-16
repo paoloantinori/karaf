@@ -42,6 +42,9 @@ public class Threads extends OsgiCommandSupport {
     @Option(name = "-e", aliases = { "--empty-groups" }, description = "Show empty groups")
     private boolean empty;
 
+    @Option(name = "-p", aliases = { "--prune" }, description = "Prune uninteresting threads")
+    private boolean prune;
+
     @Override
     protected Object doExecute() throws Exception {
         Map<Long, ThreadInfo> threadInfos = new HashMap<Long, ThreadInfo>();
@@ -146,12 +149,25 @@ public class Threads extends OsgiCommandSupport {
 
         public void print(String indent) {
             if (dump && info != null) {
-                printThreadInfo("    ");
-                //printLockInfo("    ");
-                //printMonitorInfo("    ");
+                if (!prune || isInteresting()) {
+                    printThreadInfo("    ");
+                    //printLockInfo("    ");
+                    //printMonitorInfo("    ");
+                }
             } else {
                 System.out.println(indent + (flat ? "" : "    ") + "\"" + thread.getName() + "\": " + thread.getState());
             }
+        }
+
+        private boolean isInteresting() {
+            StackTraceElement[] stacktrace = info.getStackTrace();
+            for (int i = 0; i < stacktrace.length; i++) {
+                StackTraceElement ste = stacktrace[i];
+                if (!ste.getClassName().startsWith("java.") && !ste.getClassName().startsWith("sun.")) {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void printThreadInfo(String indent) {
