@@ -108,9 +108,9 @@
             <useProjectArtifact>false</useProjectArtifact>
             <includes>
                 <include>org.apache.karaf:org.apache.karaf.exception</include>
-                <include>org.apache.xerces:xercesImpl</include>
-                <include>xalan:xalan</include>
-                <include>xalan:serializer</include>
+                <include>org.apache.karaf.bundles:org.apache.karaf.bundles.xerces-2.11.0</include>
+                <include>org.apache.karaf.bundles:org.apache.karaf.bundles.xalan-2.7.1</include>
+                <include>org.apache.karaf.bundles:org.apache.karaf.bundles.xalan-serializer-2.7.1</include>
             </includes>
         </dependencySet>
 

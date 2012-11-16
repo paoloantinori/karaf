@@ -447,6 +447,11 @@
             <artifactId>xercesImpl</artifactId>
             <version>${xerces.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.bundles</groupId>
+            <artifactId>org.apache.karaf.bundles.xerces-2.11.0</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <!--xalan jar to be included in lib/endorsed-->
         <dependency>
@@ -458,6 +463,16 @@
             <groupId>xalan</groupId>
             <artifactId>serializer</artifactId>
             <version>${xalan.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.bundles</groupId>
+            <artifactId>org.apache.karaf.bundles.xalan-2.7.1</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.karaf.bundles</groupId>
+            <artifactId>org.apache.karaf.bundles.xalan-serializer-2.7.1</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
