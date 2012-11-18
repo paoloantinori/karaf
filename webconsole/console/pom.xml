@@ -86,6 +86,19 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.bundlerepository</artifactId>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.osgi.service.obr</artifactId>
+            <version>1.0.2</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -137,6 +150,8 @@
                             org.osgi.service.http,
                             org.apache.felix.shell;
                             org.osgi.service.*;resolution:=optional,
+                            org.apache.felix.bundlerepository;resolution:=optional,
+                            org.osgi.service.obr;resolution:=optional,
                             javax.portlet;resolution:=optional,
                             javax.servlet.*;version=2.4,
                             *
