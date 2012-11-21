@@ -17,6 +17,7 @@
 package org.apache.karaf.client;
 
 import java.io.ByteArrayInputStream;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -122,7 +123,15 @@ public class Main {
             } while (session == null);
             if (!session.authAgent(user).await().isSuccess()) {
                 if (password == null) {
-                    password = readLine("Password: ");
+                    Console console = System.console();
+                    if (console != null) {
+                        char[] readPassword = console.readPassword("Password: ");
+                        if (readPassword != null) {
+                            password = new String(readPassword);
+                        } 
+                    } else {
+                        throw new Exception("Could not get system console");
+                    }
                 }
                 if (!session.authPassword(user, password).await().isSuccess()) {
                     throw new Exception("Authentication failure");
