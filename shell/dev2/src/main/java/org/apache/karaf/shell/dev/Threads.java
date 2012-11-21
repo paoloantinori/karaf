@@ -45,10 +45,13 @@ public class Threads extends OsgiCommandSupport {
     @Option(name = "-p", aliases = { "--prune" }, description = "Prune uninteresting threads")
     private boolean prune;
 
+    @Option(name = "-t", aliases = { "--threshold" }, description = "Minimal number of interesting stack trace line to display a thread")
+    private int threshold = 1;
+
     @Override
     protected Object doExecute() throws Exception {
         Map<Long, ThreadInfo> threadInfos = new HashMap<Long, ThreadInfo>();
-        if (dump) {
+        if (dump || prune) {
             ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
             ThreadInfo[] infos;
             if (threadMXBean.isObjectMonitorUsageSupported() && threadMXBean.isSynchronizerUsageSupported()) {
@@ -59,8 +62,8 @@ public class Threads extends OsgiCommandSupport {
             for (ThreadInfo info : infos) {
                 threadInfos.put(info.getThreadId(), info);
             }
-            flat = true;
         }
+        flat |= dump;
 
         ThreadGroup group = Thread.currentThread().getThreadGroup();
         while (group.getParent() != null) {
@@ -112,7 +115,7 @@ public class Threads extends OsgiCommandSupport {
         }
 
         public void print(String indent) {
-            if (empty || hasThreads()) {
+            if (empty || hasInterestingThreads()) {
                 if (!flat && !dump) {
                     System.out.println(indent + "Thread Group \"" + group.getName() + "\"");
                 }
@@ -120,17 +123,21 @@ public class Threads extends OsgiCommandSupport {
                     tgd.print(indent + (flat || dump ? "" : "    "));
                 }
                 for (ThreadData td : threads) {
-                    td.print(indent + (flat ? "" : "    "));
+                    if (td.isInteresting()) {
+                        td.print(indent + (flat ? "" : "    "));
+                    }
                 }
             }
         }
 
-        public boolean hasThreads() {
-            if (!threads.isEmpty()) {
-                return true;
+        public boolean hasInterestingThreads() {
+            for (ThreadData td : threads) {
+                if (td.isInteresting()) {
+                    return true;
+                }
             }
             for (ThreadGroupData tgd : groups) {
-                if (tgd.hasThreads()) {
+                if (tgd.hasInterestingThreads()) {
                     return true;
                 }
             }
@@ -149,7 +156,7 @@ public class Threads extends OsgiCommandSupport {
 
         public void print(String indent) {
             if (dump && info != null) {
-                if (!prune || isInteresting()) {
+                if (isInteresting()) {
                     printThreadInfo("    ");
                     //printLockInfo("    ");
                     //printMonitorInfo("    ");
@@ -159,15 +166,19 @@ public class Threads extends OsgiCommandSupport {
             }
         }
 
-        private boolean isInteresting() {
+        public boolean isInteresting() {
+            if (!prune) {
+                return true;
+            }
+            int nb = 0;
             StackTraceElement[] stacktrace = info.getStackTrace();
             for (int i = 0; i < stacktrace.length; i++) {
                 StackTraceElement ste = stacktrace[i];
                 if (!ste.getClassName().startsWith("java.") && !ste.getClassName().startsWith("sun.")) {
-                    return true;
+                    nb++;
                 }
             }
-            return false;
+            return nb >= threshold;
         }
 
         private void printThreadInfo(String indent) {
