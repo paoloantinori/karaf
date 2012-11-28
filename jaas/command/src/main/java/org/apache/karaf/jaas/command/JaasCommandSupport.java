@@ -22,7 +22,10 @@ import org.apache.karaf.jaas.modules.BackingEngineService;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 
 import javax.security.auth.login.AppConfigurationEntry;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 public abstract class JaasCommandSupport extends OsgiCommandSupport {
@@ -60,48 +63,66 @@ public abstract class JaasCommandSupport extends OsgiCommandSupport {
 
 
     /**
-     * Returns the Jaas Realm named as realmName.
-     *
+     * Lists Realms by name.
      * @param realmName
      * @return
      */
-    public JaasRealm findRealmByNameOrIndex(String realmName, int index) {
-        JaasRealm realm = null;
-        if (realms != null) {
-            for (int i=1; i <= realms.size();i++) {
-                if (realms.get(i-1).getName().equals(realmName) || index == i)
-                    return realms.get(i-1);
+    public List<JaasRealm> findRealmsByName(String realmName) {
+        List<JaasRealm> realmList = new LinkedList<JaasRealm>();
+        for (JaasRealm realm : realms) {
+            if (realm.getName().equals(realmName)) {
+                realmList.add(realm);
             }
         }
-        return realm;
+        return realmList;
     }
 
     /**
-     * Returns the Jaas Module entry of the specified realm, named as moduleName.
-     *
+     * Returns matching {@link AppConfigurationEntry} mapped to the matching {@link JaasRealm}.
+     * @param realmName
      * @param moduleName
+     * @param index
      * @return
      */
-    public AppConfigurationEntry findEntryByRealmAndName(JaasRealm realm, String moduleName) {
-        AppConfigurationEntry appConfigurationEntry = null;
-        if (realm != null) {
-
-            AppConfigurationEntry[] entries = realm.getEntries();
-
-            //If no moduleName provided and a there is a single module in the realm.
-            if (entries != null && entries.length == 1 && moduleName == null) {
-                return entries[0];
+    public Map<AppConfigurationEntry, JaasRealm> findEntries(String realmName, String moduleName, int index) {
+        Map<AppConfigurationEntry, JaasRealm> entries = new LinkedHashMap<AppConfigurationEntry, JaasRealm>();
+        Map<AppConfigurationEntry, JaasRealm> appConfigurationEntries = findEntries();
+        int i = 1;
+        for (AppConfigurationEntry entry : appConfigurationEntries.keySet()) {
+            JaasRealm realm = appConfigurationEntries.get(entry);
+            String moduleClass = (String) entry.getOptions().get(ProxyLoginModule.PROPERTY_MODULE);
+            if (realmName != null && !realmName.equals(realm.getName())) {
+                i++;
+                continue;
+            } else if (moduleName != null && !moduleName.equals(entry.getLoginModuleName()) && !moduleName.equals(moduleClass)) {
+                i++;
+                continue;
+            } else if (index != 0 && index != i) {
+                i++;
+                continue;
+            } else {
+                i++;
+                entries.put(entry, realm);
             }
+        }
+        return entries;
+    }
 
-            for (AppConfigurationEntry entry : entries) {
-                String moduleClass = (String) entry.getOptions().get(ProxyLoginModule.PROPERTY_MODULE);
-                if (moduleName.equals(entry.getLoginModuleName()) || moduleName.equals(moduleClass)) {
-                    return entry;
+    /**
+     * Returns all {@link AppConfigurationEntry} mapped to the matching {@link JaasRealm}.
+     * @return
+     */
+    public Map<AppConfigurationEntry, JaasRealm> findEntries() {
+        Map<AppConfigurationEntry, JaasRealm> appConfigurationEntries = new LinkedHashMap<AppConfigurationEntry, JaasRealm>();
+        for (JaasRealm realm : realms) {
+            AppConfigurationEntry[] configurationEntries = realm.getEntries();
+            if (configurationEntries != null) {
+                for (AppConfigurationEntry configurationEntry : configurationEntries) {
+                    appConfigurationEntries.put(configurationEntry, realm);
                 }
             }
-
         }
-        return appConfigurationEntry;
+        return appConfigurationEntries;
     }
 
 

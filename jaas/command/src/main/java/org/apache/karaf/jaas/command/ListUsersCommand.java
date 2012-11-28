@@ -19,6 +19,7 @@ import java.util.List;
 import javax.security.auth.login.AppConfigurationEntry;
 
 import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.jaas.boot.ProxyLoginModule;
 import org.apache.karaf.jaas.config.JaasRealm;
 import org.apache.karaf.jaas.modules.BackingEngine;
 import org.apache.karaf.jaas.boot.principal.RolePrincipal;
@@ -42,7 +43,8 @@ public class ListUsersCommand extends JaasCommandSupport {
         BackingEngine engine = backingEngineService.get(entry);
 
         if (engine == null) {
-            System.err.println("Can't get the list of users (no backing engine service registered)");
+            System.err.println("Can't get the list of users:");
+            System.err.println("No backing engine serivce found for:"+entry.getOptions().get(ProxyLoginModule.PROPERTY_MODULE));
             return null;
         }
 
