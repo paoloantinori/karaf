@@ -215,10 +215,13 @@ public class Util
                 if (c < 0) {
                     return false;
                 }
-                System.err.print((char) c);
                 if (c == '\r' || c == '\n') {
+                    System.err.println();
+                    System.err.flush();
                     break;
                 }
+                System.err.print((char) c);
+                System.err.flush();
                 sb.append((char) c);
             }
             String str = sb.toString();
