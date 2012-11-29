@@ -20,6 +20,9 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="lazy">
 
     <command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+        <command name="dev/load-test">
+            <action class="org.apache.karaf.shell.dev.LoadTest" />
+        </command>
         <command name="dev/threads">
             <action class="org.apache.karaf.shell.dev.Threads" />
         </command>
