@@ -59,6 +59,7 @@ public class ConnectorServerFactory {
     private String keyStore;
     private String trustStore;
     private String keyAlias;
+    private Thread connectorThread;
 
     public MBeanServer getServer() {
         return server;
@@ -225,7 +226,7 @@ public class ConnectorServerFactory {
 
         try {
             if (this.threaded) {
-                Thread connectorThread = new Thread() {
+                connectorThread = new Thread() {
                     public void run() {
                         try {
                             Thread.currentThread().setContextClassLoader(ConnectorServerFactory.class.getClassLoader());
@@ -261,6 +262,9 @@ public class ConnectorServerFactory {
 
     public void destroy() throws Exception {
         try {
+            if (connectorThread != null) {
+                connectorThread.join();
+            }
             this.connectorServer.stop();
         } finally {
             doUnregister(this.objectName);
