@@ -14,11 +14,6 @@
 -->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-    <!-- Reference to the MBean Server -->
-    <reference id="mbeanServer" interface="javax.management.MBeanServer">
-        <reference-listener ref="mbeanRegistrer" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer"/>
-    </reference>
-
     <!-- Services MBean -->
     <bean id="servicesMBean" class="org.apache.karaf.management.mbeans.services.internal.ServicesMBeanImpl">
         <property name="bundleContext" ref="blueprintBundleContext"/>
@@ -26,6 +21,7 @@
 
     <!-- MBean Registrer -->
     <bean id="mbeanRegistrer" class="org.apache.karaf.management.MBeanRegistrer" init-method="init" destroy-method="destroy">
+        <property name="bundleContext" ref="blueprintBundleContext" />
         <property name="mbeans">
             <map>
                 <entry value="org.apache.karaf:type=services,name=${karaf.name}" key-ref="servicesMBean"/>

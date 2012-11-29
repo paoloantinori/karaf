@@ -22,15 +22,12 @@
     <reference-list id="providers" availability="optional"
         interface="org.apache.karaf.diagnostic.core.DumpProvider" />
 
-    <reference id="mbeanServer" interface="javax.management.MBeanServer">
-        <reference-listener ref="mbeanRegister" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer" />
-    </reference>
-
     <bean id="mbeanImpl" class="org.apache.karaf.diagnostic.management.internal.DiagnosticDumpMBeanImpl">
         <property name="providers" ref="providers" />
     </bean>
 
     <bean id="mbeanRegister" class="org.apache.karaf.management.MBeanRegistrer" init-method="init" destroy-method="destroy">
+        <property name="bundleContext" ref="blueprintBundleContext" />
         <property name="mbeans">
             <map>
                 <entry value="org.apache.karaf:type=diagnostic,name=${karaf.name}"

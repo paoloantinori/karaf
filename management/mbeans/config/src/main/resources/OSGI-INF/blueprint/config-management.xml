@@ -16,11 +16,6 @@
            xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
            xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0">
 
-    <!-- Reference to the MBean server -->
-    <reference id="mbeanServer" interface="javax.management.MBeanServer">
-        <reference-listener ref="mbeanRegistrer" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer"/>
-    </reference>
-
     <!-- Reference to the configuration admin -->
     <reference id="configurationAdmin" interface="org.osgi.service.cm.ConfigurationAdmin"  />
 
@@ -35,6 +30,7 @@
 
     <!-- Register MBean in the MBeanServer -->
     <bean id="mbeanRegistrer" class="org.apache.karaf.management.MBeanRegistrer" init-method="init" destroy-method="destroy">
+        <property name="bundleContext" ref="blueprintBundleContext" />
         <property name="mbeans">
             <map>
                 <entry value="org.apache.karaf:type=config,name=${karaf.name}" key-ref="configMBean"/>

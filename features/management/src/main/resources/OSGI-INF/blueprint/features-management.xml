@@ -21,16 +21,13 @@
 
     <reference id="featuresService" interface="org.apache.karaf.features.FeaturesService" />
 
-    <reference id="mbeanServer" interface="javax.management.MBeanServer">
-        <reference-listener ref="mbeanRegister" bind-method="registerMBeanServer" unbind-method="unregisterMBeanServer" />
-    </reference>
-
     <bean id="mbeanImpl" class="org.apache.karaf.features.management.internal.FeaturesServiceMBeanImpl" destroy-method="unregisterService">
         <property name="bundleContext" ref="blueprintBundleContext" />
         <property name="featuresService" ref="featuresService" />
     </bean>
 
     <bean id="mbeanRegister" class="org.apache.karaf.management.MBeanRegistrer" init-method="init"  destroy-method="destroy">
+        <property name="bundleContext" ref="blueprintBundleContext" />
         <property name="mbeans">
             <map>
                 <entry value="org.apache.karaf:type=features,name=${karaf.name}"

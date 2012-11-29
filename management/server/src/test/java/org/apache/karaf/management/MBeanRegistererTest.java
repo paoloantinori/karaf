@@ -45,8 +45,8 @@ public class MBeanRegistererTest extends TestCase {
         Map<Object, String> mbeans = new HashMap<Object, String>();
         mbeans.put(mbean, rawName);
         registerer.setMbeans(mbeans);
-        registerer.registerMBeanServer(mbeanServer);
-        registerer.unregisterMBeanServer(mbeanServer);
+        registerer.registerMBeans(mbeanServer);
+        registerer.unregisterMBeans(mbeanServer);
 
         restoreProperties(old);
         control.verify();

@@ -16,61 +16,101 @@
  */
 package org.apache.karaf.management;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import javax.management.InstanceAlreadyExistsException;
 import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 public class MBeanRegistrer {
 
-    private MBeanServer mbeanServer;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MBeanRegistrer.class);
 
+    private final ConcurrentMap<MBeanServer, Set<String>> mbeanServers = new ConcurrentHashMap<MBeanServer, Set<String>>();
     private Map<Object, String> mbeans;
-    private Set<String> registered = new HashSet<String>();
+    private BundleContext context;
+    private ServiceTracker tracker;
+
 
     public void setMbeans(Map<Object, String> mbeans) {
         this.mbeans = mbeans;
     }
 
-    public void registerMBeanServer(MBeanServer mbeanServer) throws JMException {
-        if (this.mbeanServer != mbeanServer) {
-            unregisterMBeans();
-        }
-        this.mbeanServer = mbeanServer;
-        registerMBeans();
-    }
-
-    public void unregisterMBeanServer(MBeanServer mbeanServer) throws JMException {
-        unregisterMBeans();
-        this.mbeanServer = null;
+    public void setBundleContext(BundleContext context) {
+        this.context = context;
     }
 
     public void init() throws Exception {
-        registerMBeans();
+        tracker = new ServiceTracker(context, MBeanServer.class.getName(), new ServiceTrackerCustomizer() {
+            public Object addingService(ServiceReference reference) {
+                Object service = context.getService(reference);
+                registerMBeans((MBeanServer) service);
+                return service;
+            }
+            public void modifiedService(ServiceReference reference, Object service) {
+            }
+            public void removedService(ServiceReference reference, Object service) {
+                unregisterMBeans((MBeanServer) service);
+                context.ungetService(reference);
+            }
+        });
+        tracker.open();
     }
 
     public void destroy() throws Exception {
-        unregisterMBeans();
+        tracker.close();
     }
 
-    protected void registerMBeans() throws JMException {
+    protected void registerMBeans(MBeanServer mbeanServer) {
         if (mbeanServer != null && mbeans != null) {
-            for (Map.Entry<Object, String> entry : mbeans.entrySet()) {
-                String value = parseProperty(entry.getValue());
-                mbeanServer.registerMBean(entry.getKey(), new ObjectName(value));
-                registered.add(value);
+            Set<String> registered = new HashSet<String>();
+            if (mbeanServers.putIfAbsent(mbeanServer, registered) == null) {
+                for (Map.Entry<Object, String> entry : mbeans.entrySet()) {
+                    String name = parseProperty(entry.getValue());
+                    try {
+                        ObjectName oname = new ObjectName(name);
+                        try {
+                            mbeanServer.registerMBean(entry.getKey(), oname);
+                        } catch (InstanceAlreadyExistsException e) {
+                            // If the mbean is already registered, unregister and try again
+                            mbeanServer.unregisterMBean(oname);
+                            mbeanServer.registerMBean(entry.getKey(), oname);
+                        }
+                        registered.add(name);
+                    } catch (JMException e) {
+                        LOGGER.warn("Unable to register mbean {}", name, e);
+                    }
+                }
             }
         }
     }
 
-    protected void unregisterMBeans() throws JMException {
+    protected void unregisterMBeans(MBeanServer mbeanServer) {
         if (mbeanServer != null && mbeans != null) {
-            while (!registered.isEmpty()) {
-                String name = registered.iterator().next();
-                mbeanServer.unregisterMBean(new ObjectName(name));
-                registered.remove(name);
+            Set<String> registered = mbeanServers.remove(mbeanServer);
+            if (registered != null) {
+                while (!registered.isEmpty()) {
+                    String name = registered.iterator().next();
+                    try {
+                        mbeanServer.unregisterMBean(new ObjectName(name));
+                    } catch (JMException e) {
+                        LOGGER.warn("Unable to unregister mbean {}", name, e);
+                    }
+                    registered.remove(name);
+                }
             }
         }
     }
