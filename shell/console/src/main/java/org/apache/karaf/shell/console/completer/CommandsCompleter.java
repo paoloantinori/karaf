@@ -133,7 +133,7 @@ public class CommandsCompleter implements Completer {
                 referenceField.setAccessible(true);
                 BundleContext context = (BundleContext) contextField.get(function);
                 ServiceReference reference = (ServiceReference) referenceField.get(function);
-                Object target = context.getService(reference);
+                Object target = context != null ? context.getService(reference) : null;
                 try {
                     if (target instanceof Function) {
                         function = (Function) target;
