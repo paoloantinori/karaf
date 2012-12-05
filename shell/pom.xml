@@ -45,6 +45,7 @@
         <module>wrapper</module>
         <module>dev</module>
         <module>dev2</module>
+        <module>scr</module>
         <module>web</module>
     </modules>
 
