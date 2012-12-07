@@ -139,7 +139,9 @@ public class CommandsCompleter implements Completer {
                         function = (Function) target;
                     }
                 } finally {
-                    context.ungetService(reference);
+                    if (context != null) {
+                        context.ungetService(reference);
+                    }
                 }
             }
         } catch (Throwable t) {
