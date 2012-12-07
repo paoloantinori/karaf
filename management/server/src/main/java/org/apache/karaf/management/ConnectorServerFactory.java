@@ -26,6 +26,7 @@ import java.rmi.server.RMIServerSocketFactory;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
+import javax.management.InstanceAlreadyExistsException;
 import javax.management.JMException;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
@@ -221,7 +222,12 @@ public class ConnectorServerFactory {
 
         this.connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, this.environment, this.server);
         if (this.objectName != null) {
-            this.server.registerMBean(this.connectorServer, this.objectName);
+            try {
+                this.server.registerMBean(this.connectorServer, this.objectName);
+            } catch (InstanceAlreadyExistsException e) {
+                this.server.unregisterMBean(this.objectName);
+                this.server.registerMBean(this.connectorServer, this.objectName);
+            }
         }
 
         try {
