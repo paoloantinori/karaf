@@ -89,36 +89,35 @@ public class LoadTest extends OsgiCommandSupport {
                                             continue;
                                         }
                                         if (rand.nextInt(100) < refresh) {
-                                            bundles[b].update();
-                                            final CountDownLatch latch = new CountDownLatch(1);
-                                            wiring.refreshBundles(Collections.singletonList(bundles[b]), new FrameworkListener() {
-                                                public void frameworkEvent(FrameworkEvent event) {
-                                                    latch.countDown();
-                                                }
-                                            });
-                                            latch.await();
-                                        } else {
-                                            for (int i = 5; i >= 0; i--) {
-                                                try {
-                                                    bundles[b].stop(Bundle.STOP_TRANSIENT);
-                                                    break;
-                                                } catch (Exception e) {
-                                                    if (i > 0) {
+                                            try {
+                                                bundles[b].update();
+                                                final CountDownLatch latch = new CountDownLatch(1);
+                                                wiring.refreshBundles(Collections.singletonList(bundles[b]), new FrameworkListener() {
+                                                    public void frameworkEvent(FrameworkEvent event) {
+                                                        latch.countDown();
+                                                    }
+                                                });
+                                                latch.await();
+                                            } finally {
+                                                while (true) {
+                                                    try {
+                                                        bundles[b].start(Bundle.START_TRANSIENT);
+                                                        break;
+                                                    } catch (Exception e) {
                                                         Thread.sleep(1);
-                                                    } else {
-                                                        throw e;
                                                     }
                                                 }
                                             }
-                                            for (int i = 100; i >= 0; i--) {
-                                                try {
-                                                    bundles[b].start(Bundle.START_TRANSIENT);
-                                                    break;
-                                                } catch (Exception e) {
-                                                    if (i > 0) {
+                                        } else {
+                                            try {
+                                                bundles[b].stop(Bundle.STOP_TRANSIENT);
+                                            } finally {
+                                                while (true) {
+                                                    try {
+                                                        bundles[b].start(Bundle.START_TRANSIENT);
+                                                        break;
+                                                    } catch (Exception e) {
                                                         Thread.sleep(1);
-                                                    } else {
-                                                        throw e;
                                                     }
                                                 }
                                             }
