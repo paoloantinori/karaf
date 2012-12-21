@@ -269,6 +269,7 @@ public class ConnectorServerFactory {
     public void destroy() throws Exception {
         try {
             if (connectorThread != null) {
+                connectorThread.interrupt();
                 connectorThread.join();
             }
             this.connectorServer.stop();
