@@ -85,18 +85,10 @@ public class EditAction extends AbstractAction {
             path = u.getFile();
         }
 
-
-        File file = new File(path);
-        if (!file.exists()) {
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
-            }
-        }
-
         //Call the editor
         ConsoleEditor editor = editorFactory.create(getTerminal());
         editor.setTitle("Karaf");
-        editor.open(file, url);
+        editor.open(path, url);
         editor.setOpenEnabled(false);
         editor.start();
 
