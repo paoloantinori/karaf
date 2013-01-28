@@ -150,8 +150,8 @@
         <aries.jpa.api.version>1.0.0</aries.jpa.api.version>
         <aries.jndi.version>1.0.0</aries.jndi.version>
         <aries.jndi.api.version>1.0.0</aries.jndi.api.version>
-        <aries.proxy.version>1.0.1.fuse-71-SNAPSHOT</aries.proxy.version>
-        <aries.proxy.api.version>1.0.1.fuse-71-SNAPSHOT</aries.proxy.api.version>
+        <aries.proxy.version>1.0.0</aries.proxy.version>
+        <aries.proxy.api.version>1.0.0</aries.proxy.api.version>
         <aries.transaction.version>1.0.1.fuse-72-SNAPSHOT</aries.transaction.version>
         <aries.util.version>1.0.0</aries.util.version>
         <jansi.version>1.9</jansi.version>
