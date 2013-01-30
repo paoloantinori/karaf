@@ -1548,9 +1548,11 @@
         </profile>
         <profile>
             <id>release</id>
+            <!-- Skipping manual builds for Red Hat JBoss Fuse releases
             <modules>
                 <module>manual</module>
             </modules>
+            -->
             <build>
                 <plugins>
                     <!-- We check the Maven and JDK during the release -->
