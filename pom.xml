@@ -1728,7 +1728,6 @@
                         <artifactId>maven-deploy-plugin</artifactId>
                         <inherited>true</inherited>
                         <configuration>
-                            <altDeploymentRepository>${deploy.altRepository}</altDeploymentRepository>
                             <updateReleaseInfo>true</updateReleaseInfo>
                         </configuration>
                     </plugin>
