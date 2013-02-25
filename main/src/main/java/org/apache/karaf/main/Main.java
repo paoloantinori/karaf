@@ -195,6 +195,8 @@ public class Main {
 
     public static final String DEFAULT_LOCK_DELAY = "1000";
 
+	public static final String OVERRIDE_PREFIX = "karaf.override.";
+
     Logger LOG = Logger.getLogger(this.getClass().getName());
 
     private File karafHome;
@@ -879,8 +881,14 @@ public class Main {
         // Perform variable substitution on specified properties.
         for (Enumeration e = props.propertyNames(); e.hasMoreElements();) {
             String name = (String) e.nextElement();
-            String value = System.getProperty(name, props.getProperty(name));
-            System.setProperty(name, substVars(value, name, null, props));
+			if (name.startsWith(OVERRIDE_PREFIX)) {
+				String overrideName = name.substring(OVERRIDE_PREFIX.length());
+				String value = props.getProperty(name);
+				System.setProperty(overrideName, substVars(value, name, null, props));
+			} else {
+				String value = System.getProperty(name, props.getProperty(name));
+				System.setProperty(name, substVars(value, name, null, props));
+			}
         }
     }
 
