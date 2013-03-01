@@ -63,14 +63,14 @@ public class EncryptableConfigAdminPropertyPlaceholderTest extends TestCase {
 
         List<BundleDescriptor> bundles = new ClasspathScanner().scanForBundles("(Bundle-SymbolicName=*)");
         bundles.add(getBundleDescriptor(
-                "target/jasypt.jar",
+                "target/jasypt2.jar",
                 newBundle().add("OSGI-INF/blueprint/karaf-jaas-jasypt.xml", getClass().getResource("/OSGI-INF/blueprint/karaf-jaas-jasypt.xml"))
                         .set("Manifest-Version", "2")
                         .set("Bundle-ManifestVersion", "2")
                         .set("Bundle-SymbolicName", "jasypt")
                         .set("Bundle-Version", "0.0.0")));
         bundles.add(getBundleDescriptor(
-                "target/test.jar",
+                "target/test2.jar",
                 newBundle().add("OSGI-INF/blueprint/config-adminTest.xml", getClass().getResource("config-adminTest.xml"))
                         .set("Manifest-Version", "2")
                         .set("Bundle-ManifestVersion", "2")
