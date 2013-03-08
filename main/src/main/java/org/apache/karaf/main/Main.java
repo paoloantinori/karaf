@@ -27,7 +27,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.channels.FileLock;
 import java.security.AccessControlException;
 import java.security.Provider;
 import java.security.Security;
@@ -46,7 +45,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.karaf.util.properties.FileLockUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -557,10 +555,13 @@ public class Main {
 
     private void updateInstancePid() {
         try {
-            final String instanceName = System.getProperty("karaf.name");
-            final String pid = getPid();
+            String instanceName = System.getProperty("karaf.name");
+            String pid = ManagementFactory.getRuntimeMXBean().getName();
+            if (pid.indexOf('@') > 0) {
+                pid = pid.substring(0, pid.indexOf('@'));
+            }
             
-            final boolean isRoot = karafHome.equals(karafBase);
+            boolean isRoot = karafHome.equals(karafBase);
             
             if (instanceName != null) {
                 String storage = System.getProperty("karaf.instances");
@@ -569,67 +570,61 @@ public class Main {
                         "This property needs to be set to the full path of the instance.properties file.");
                 }
                 File storageFile = new File(storage);
-                final File propertiesFile = new File(storageFile, "instance.properties");
-                if (!propertiesFile.getParentFile().exists()) {
-                    try {
-                        if (!propertiesFile.getParentFile().mkdirs()) {
-                            throw new Exception("Unable to create directory " + propertiesFile.getParentFile());
+                File propertiesFile = new File(storageFile, "instance.properties");
+                Properties props = new Properties();
+                if (propertiesFile.exists()) {
+                    FileInputStream fis = new FileInputStream(propertiesFile);
+                    props.load(fis);
+                    int count = Integer.parseInt(props.getProperty("count"));
+
+                    // update root name if karaf.name got updated since the last container start
+                    if (isRoot) {
+                        for (int i = 0; i < count; i++) {
+                            //looking for root instance entry
+                            String name = props.getProperty("item." + i + ".name");
+                            boolean root = Boolean.parseBoolean(props.getProperty("item." + i + ".root", "false"));
+                            if (name != null && root && !name.equals(instanceName)) {
+                                props.setProperty("item." + i + ".name", instanceName);
+                            }
                         }
-                    } catch (SecurityException se) {
-                        throw new Exception(se.getMessage());
                     }
+
+                    for (int i = 0; i < count; i++) {
+                        String name = props.getProperty("item." + i + ".name");
+                        if (name.equals(instanceName)) {
+                            props.setProperty("item." + i + ".pid", pid);
+                            FileOutputStream fos = new FileOutputStream(propertiesFile);
+                            props.store(fos, null);
+                            fis.close();
+                            fos.close();
+                            return;
+                        }
+                    }
+                    fis.close();
+                    if (!isRoot) {
+                        throw new Exception("Instance " + instanceName + " not found");
+                    } 
+                } else if (isRoot) {
+                    if (!propertiesFile.getParentFile().exists()) {
+                        try {
+                            propertiesFile.getParentFile().mkdirs();
+                        } catch (SecurityException se) {
+                            throw new Exception(se.getMessage());
+                        }
+                    }
+                    props.setProperty("count", "1");
+                    props.setProperty("item.0.name", instanceName);
+                    props.setProperty("item.0.loc", karafHome.getAbsolutePath());
+                    props.setProperty("item.0.pid", pid);
+                    props.setProperty("item.0.root", "true");
+                    FileOutputStream fos = new FileOutputStream(propertiesFile);
+                    props.store(fos, null);
+                    fos.close();
                 }
-                FileLockUtils.execute(propertiesFile, new FileLockUtils.RunnableWithProperties() {
-                    public void run(org.apache.felix.utils.properties.Properties props) throws IOException {
-                        if (props.isEmpty()) {
-                            if (isRoot) {
-                                props.setProperty("count", "1");
-                                props.setProperty("item.0.name", instanceName);
-                                props.setProperty("item.0.loc", karafHome.getAbsolutePath());
-                                props.setProperty("item.0.pid", pid);
-                                props.setProperty("item.0.root", "true");
-                            } else {
-                                throw new IllegalStateException("Child instance started but no root registered in " + propertiesFile);
-                            }
-                        } else {
-                            int count = Integer.parseInt(props.getProperty("count"));
-                            // update root name if karaf.name got updated since the last container start
-                            if (isRoot) {
-                                for (int i = 0; i < count; i++) {
-                                    //looking for root instance entry
-                                    boolean root = Boolean.parseBoolean(props.getProperty("item." + i + ".root", "false"));
-                                    if (root) {
-                                        props.setProperty("item." + i + ".name", instanceName);
-                                        props.setProperty("item." + i + ".pid", pid);
-                                        return;
-                                    }
-                                }
-                                throw new IllegalStateException("Unable to find root instance in " + propertiesFile);
-                            } else {
-                                for (int i = 0; i < count; i++) {
-                                    String name = props.getProperty("item." + i + ".name");
-                                    if (name.equals(instanceName)) {
-                                        props.setProperty("item." + i + ".pid", pid);
-                                        return;
-                                    }
-                                }
-                                throw new IllegalStateException("Unable to find instance '" + instanceName + "'in " + propertiesFile);
-                            }
-                        }
-                    }
-                });
             }
         } catch (Exception e) {
             System.err.println("Unable to update instance pid: " + e.getMessage());
         }
-    }
-
-    private static String getPid() {
-        String pid = ManagementFactory.getRuntimeMXBean().getName();
-        if (pid.indexOf('@') > 0) {
-            pid = pid.substring(0, pid.indexOf('@'));
-        }
-        return pid;
     }
 
     /**
@@ -1076,7 +1071,7 @@ public class Main {
             Object key = e.nextElement();
             if (key instanceof String) {
                 String v = configProps.getProperty((String) key);
-                configProps.put(key.toString(), v.trim());
+                configProps.put(key, v.trim());
             }
         }
         return configProps;

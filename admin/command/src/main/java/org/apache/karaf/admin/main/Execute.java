@@ -130,6 +130,7 @@ public class Execute {
                 
         AdminServiceImpl admin = new AdminServiceImpl();
         admin.setStorageLocation(storageFile);
+        admin.init();
         command.setAdminService(admin);
         command.execute(null);
     }
