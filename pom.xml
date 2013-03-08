@@ -147,8 +147,8 @@
         <aries.blueprint.api.version>1.0.1.fuse-72-SNAPSHOT</aries.blueprint.api.version>
         <aries.jmx.api.version>1.0.1.fuse-72-SNAPSHOT</aries.jmx.api.version>
         <aries.jmx.version>1.0.1.fuse-72-SNAPSHOT</aries.jmx.version>
-        <aries.jpa.version>1.0.0</aries.jpa.version>
-        <aries.jpa.api.version>1.0.0</aries.jpa.api.version>
+        <aries.jpa.version>1.0.1.fuse-72-SNAPSHOT</aries.jpa.version>
+        <aries.jpa.api.version>${aries.jpa.version}</aries.jpa.api.version>
         <aries.jndi.version>1.0.0</aries.jndi.version>
         <aries.jndi.api.version>1.0.0</aries.jndi.api.version>
         <aries.proxy.version>1.0.1.fuse-72-SNAPSHOT</aries.proxy.version>
