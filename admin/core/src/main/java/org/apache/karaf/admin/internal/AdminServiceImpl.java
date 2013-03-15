@@ -75,6 +75,8 @@ public class AdminServiceImpl implements AdminService {
 
     private static final String DEFAULT_SHUTDOWN_COMMAND = "SHUTDOWN";
 
+    public static final String DEFAULT_JAVA_OPTS = "-server -Xmx512M -Dcom.sun.management.jmxremote -XX:+UnlockDiagnosticVMOptions -XX:+UnsyncloadClass";
+
     private LinkedHashMap<String, InstanceImpl> proxies = new LinkedHashMap<String, InstanceImpl>();
 
     private File storageLocation;
@@ -304,7 +306,7 @@ public class AdminServiceImpl implements AdminService {
 
                 String javaOpts = settings.getJavaOpts();
                 if (javaOpts == null || javaOpts.length() == 0) {
-                    javaOpts = "-server -Xmx512M -Dcom.sun.management.jmxremote";
+                    javaOpts = DEFAULT_JAVA_OPTS;
                 }
                 InstanceState is = new InstanceState();
                 is.name = name;
@@ -373,7 +375,7 @@ public class AdminServiceImpl implements AdminService {
                     opts = instance.opts;
                 }
                 if (opts == null || opts.length() == 0) {
-                    opts = "-server -Xmx512M -Dcom.sun.management.jmxremote";
+                    opts = DEFAULT_JAVA_OPTS;
                 }
                 String karafOpts = System.getProperty("karaf.opts", "");
 
@@ -563,7 +565,7 @@ public class AdminServiceImpl implements AdminService {
                 // create and add the clone instance in the registry
                 String javaOpts = settings.getJavaOpts();
                 if (javaOpts == null || javaOpts.length() == 0) {
-                    javaOpts = "-server -Xmx512M -Dcom.sun.management.jmxremote";
+                    javaOpts = DEFAULT_JAVA_OPTS;
                 }
                 InstanceState is = new InstanceState();
                 is.name = cloneName;
