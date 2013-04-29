@@ -46,7 +46,6 @@
         <module>management</module>
         <module>webconsole</module>
         <module>exception</module>
-        <module>bundles/xalan-2.7.1</module>
         <module>bundles/xalan-serializer-2.7.1</module>
         <module>bundles/xerces-2.11.0</module>
         <module>assemblies</module>
@@ -186,6 +185,7 @@
         <javax.mail.version>1.4.5</javax.mail.version>
         <http.feature.version>[2,3)</http.feature.version>
         <xalan.version>2.7.1</xalan.version>
+        <xalan.bundle.version>${xalan.version}_7</xalan.bundle.version>
         <xerces.version>2.11.0</xerces.version>
         <xml.api.version>2.11.0-20110622</xml.api.version>
 
