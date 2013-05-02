@@ -206,7 +206,6 @@ public class ConnectorServerFactory {
     }
 
     public void init() throws Exception {
-        System.out.println("the serviceUrl is " + serviceUrl);
         if (this.server == null) {
             throw new IllegalArgumentException("server must be set");
         }
@@ -328,11 +327,8 @@ public class ConnectorServerFactory {
         }
 
         public ServerSocket createServerSocket(int port) throws IOException {
-            System.out.println(rmiServerHost);
-            System.out.println(InetAddress.getByName(rmiServerHost));
             SSLServerSocket sslServerSocket = (SSLServerSocket) sslServerSocketFactory.createServerSocket(port, 50, InetAddress.getByName(rmiServerHost));
             sslServerSocket.setNeedClientAuth(clientAuth);
-            System.out.println(sslServerSocket);
             return sslServerSocket;
         }
     }
@@ -345,10 +341,7 @@ public class ConnectorServerFactory {
         }
 
         public ServerSocket createServerSocket(int port) throws IOException {
-            System.out.println(rmiServerHost);
-            System.out.println(InetAddress.getByName(rmiServerHost));
             ServerSocket serverSocket = (ServerSocket) ServerSocketFactory.getDefault().createServerSocket(port, 50, InetAddress.getByName(rmiServerHost));
-            System.out.println(serverSocket);
             return serverSocket;
         }
     }
