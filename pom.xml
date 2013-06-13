@@ -144,8 +144,8 @@
         <aries.application.management.version>1.0.0</aries.application.management.version>
         <aries.blueprint.version>1.0.1.redhat-610-SNAPSHOT</aries.blueprint.version>
         <aries.blueprint.api.version>1.0.1.redhat-610-SNAPSHOT</aries.blueprint.api.version>
-        <aries.jmx.api.version>1.0.1.redhat-610-SNAPSHOT</aries.jmx.api.version>
-        <aries.jmx.version>1.0.1.redhat-610-SNAPSHOT</aries.jmx.version>
+        <aries.jmx.api.version>1.1.0.redhat-610-SNAPSHOT</aries.jmx.api.version>
+        <aries.jmx.version>1.1.0.redhat-610-SNAPSHOT</aries.jmx.version>
         <aries.jpa.version>1.0.1.redhat-610-SNAPSHOT</aries.jpa.version>
         <aries.jpa.api.version>${aries.jpa.version}</aries.jpa.api.version>
         <aries.jndi.version>1.0.0</aries.jndi.version>
