@@ -155,8 +155,8 @@
         <aries.transaction.version>1.0.1.redhat-610-SNAPSHOT</aries.transaction.version>
         <aries.util.version>1.0.1.redhat-610-SNAPSHOT</aries.util.version>
         <jansi.version>1.11</jansi.version>
-        <jline.version>2.9</jline.version>
         <jledit.version>0.2.0</jledit.version>
+        <jline.version>2.11</jline.version>
         <jsw.version>3.2.3</jsw.version>
         <log4j.version>1.2.17</log4j.version>
         <maven.version>2.0.9</maven.version>
