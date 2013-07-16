@@ -19,6 +19,7 @@
 package org.apache.karaf.shell.console;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.felix.gogo.commands.Action;
@@ -50,20 +51,28 @@ public abstract class OsgiCommandSupport extends AbstractAction implements Actio
     }
 
     protected <T> List<T> getAllServices(Class<T> clazz, String filter) throws Exception {
-        ServiceReference[] references = getBundleContext().getAllServiceReferences(clazz.getName(), filter);
+        Collection<ServiceReference<T>> references = getBundleContext().getServiceReferences(clazz, filter);
         if (references == null) {
             return null;
         }
         List<T> services = new ArrayList<T>();
-        for (ServiceReference ref : references) {
-            T t = getService(clazz, ref);
+        for (ServiceReference<T> ref : references) {
+            T t = getService(ref);
             services.add(t);
         }
         return services;
     }
 
-    protected <T> T getService(Class<T> clazz, ServiceReference reference) {
-        T t = (T) getBundleContext().getService(reference);
+    protected <T> T getService(Class<T> clazz) {
+        ServiceReference<T> ref = getBundleContext().getServiceReference(clazz);
+        if (ref != null) {
+            return getService(ref);
+        }
+        return null;
+    }
+
+    protected <T> T getService(ServiceReference<T> reference) {
+        T t = getBundleContext().getService(reference);
         if (t != null) {
             if (usedReferences == null) {
                 usedReferences = new ArrayList<ServiceReference>();

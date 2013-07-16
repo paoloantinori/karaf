@@ -29,13 +29,8 @@ public class BundleLevel extends BundleCommand {
     Integer level;
 
     protected void doExecute(Bundle bundle) throws Exception {
-        // Get package admin service.
-        ServiceReference ref = getBundleContext().getServiceReference(StartLevel.class.getName());
-        if (ref == null) {
-            System.out.println("StartLevel service is unavailable.");
-            return;
-        }
-        StartLevel sl = getService(StartLevel.class, ref);
+        // Get start level service.
+        StartLevel sl = getService(StartLevel.class);
         if (sl == null) {
             System.out.println("StartLevel service is unavailable.");
             return;

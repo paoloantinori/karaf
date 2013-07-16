@@ -43,14 +43,11 @@ public abstract class AbstractBundleCommand extends OsgiCommandSupport {
     @Override
     protected Object doExecute() throws Exception {
         // Get package admin service.
-        ServiceReference ref = getBundleContext().getServiceReference(PackageAdmin.class.getName());
-        if (ref == null) {
+        admin = getService(PackageAdmin.class);
+        if (admin == null) {
             System.out.println("PackageAdmin service is unavailable.");
             return null;
         }
-
-        // using the getService call ensures that the reference will be released at the end
-        admin = getService(PackageAdmin.class, ref);
 
         Bundle bundle = getBundleContext().getBundle(id);
         if (bundle == null) {

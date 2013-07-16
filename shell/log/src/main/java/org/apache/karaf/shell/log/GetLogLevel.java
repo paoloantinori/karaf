@@ -112,8 +112,7 @@ public class GetLogLevel extends OsgiCommandSupport {
     }
 
     protected ConfigurationAdmin getConfigAdmin() {
-        ServiceReference ref = getBundleContext().getServiceReference(ConfigurationAdmin.class.getName());
-        return getService(ConfigurationAdmin.class, ref);
+        return getService(ConfigurationAdmin.class);
     }
 
 }

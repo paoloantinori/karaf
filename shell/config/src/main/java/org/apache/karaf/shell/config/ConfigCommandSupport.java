@@ -55,14 +55,9 @@ public abstract class ConfigCommandSupport extends OsgiCommandSupport {
 
     protected Object doExecute() throws Exception {
         // Get config admin service.
-        ServiceReference ref = getBundleContext().getServiceReference(ConfigurationAdmin.class.getName());
-        if (ref == null) {
-            System.out.println("ConfigurationAdmin service is unavailable.");
-            return null;
-        }
         ConfigurationAdmin admin = getConfigurationAdmin();
         if (admin == null) {
-            System.out.println("ConfigAdmin service is unavailable.");
+            System.out.println("ConfigurationAdmin service is unavailable.");
             return null;
         }
 
@@ -75,20 +70,7 @@ public abstract class ConfigCommandSupport extends OsgiCommandSupport {
     }
 
     protected ConfigurationAdmin getConfigurationAdmin() {
-        ServiceReference ref = getBundleContext().getServiceReference(ConfigurationAdmin.class.getName());
-        if (ref == null) {
-            return null;
-        }
-        try {
-            ConfigurationAdmin admin = (ConfigurationAdmin) getBundleContext().getService(ref);
-            if (admin == null) {
-                return null;
-            } else {
-                return admin;
-            }
-        } finally {
-            getBundleContext().ungetService(ref);
-        }
+        return getService(ConfigurationAdmin.class);
     }
 
     protected abstract void doExecute(ConfigurationAdmin admin) throws Exception;
