@@ -16,6 +16,7 @@
  */
 package org.apache.karaf.shell.log;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -33,18 +34,35 @@ public class LogTail extends DisplayLog {
 
     protected Object doExecute() throws Exception {
         new Thread(new PrintEventThread()).start();
-        
-        for (;;) {
-            int c = session.getKeyboard().read();
-            if (c < 0) {
-                needEndLog = true;
-                break;
-            }
-
-        }
+        new Thread(new ReadKeyBoardThread(this, Thread.currentThread())).start();
+        while (!Thread.currentThread().isInterrupted());
+        needEndLog = true;
         return null;
     }
     
+    class ReadKeyBoardThread implements Runnable {
+        private LogTail logTail;
+        private Thread sessionThread;
+        public ReadKeyBoardThread(LogTail logtail, Thread thread) {
+            this.logTail = logtail;
+            this.sessionThread = thread;
+        }
+        public void run() {
+            for (;;) {
+                try {
+                    int c = this.logTail.session.getKeyboard().read();
+                    if (c < 0) {
+                        this.sessionThread.interrupt();
+                        break;
+                    }
+                } catch (IOException e) {
+                    needEndLog = true;
+                    break;
+                }
+                
+            }
+        }
+    }
     class PrintEventThread implements Runnable {
         public void run() {
             final PatternConverter cnv = new PatternParser(overridenPattern != null ? overridenPattern : pattern).parse();
