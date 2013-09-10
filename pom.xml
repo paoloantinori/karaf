@@ -115,7 +115,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <icu4j.version>4.8.1.1</icu4j.version>
         <injection.bundle.version>1.0</injection.bundle.version>
-        <jasypt.bundle.version>1.9.0_1</jasypt.bundle.version>
+        <jasypt.bundle.version>1.9.1_1</jasypt.bundle.version>
         <jetty.version>8.1.9.v20130131</jetty.version>
         <junit.version>4.10</junit.version>
         <junit.bundle.version>4.10_1</junit.bundle.version>
