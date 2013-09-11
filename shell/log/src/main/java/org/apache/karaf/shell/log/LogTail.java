@@ -19,6 +19,8 @@ package org.apache.karaf.shell.log;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.felix.gogo.commands.Command;
@@ -29,14 +31,16 @@ import org.ops4j.pax.logging.spi.PaxLoggingEvent;
 
 @Command(scope = "log", name = "tail", description = "Continuously display log entries. Use ctrl-c to quit this command")
 public class LogTail extends DisplayLog {
-    
-    private boolean needEndLog;
+
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     protected Object doExecute() throws Exception {
-        new Thread(new PrintEventThread()).start();
+        PrintEventThread printThread = new PrintEventThread();
+        executorService.execute(printThread);
         new Thread(new ReadKeyBoardThread(this, Thread.currentThread())).start();
         while (!Thread.currentThread().isInterrupted());
-        needEndLog = true;
+        printThread.abort();
+        executorService.shutdownNow();  
         return null;
     }
     
@@ -56,14 +60,17 @@ public class LogTail extends DisplayLog {
                         break;
                     }
                 } catch (IOException e) {
-                    needEndLog = true;
                     break;
                 }
                 
             }
         }
     }
+    
     class PrintEventThread implements Runnable {
+
+        boolean doDisplay = true;
+
         public void run() {
             final PatternConverter cnv = new PatternParser(overridenPattern != null ? overridenPattern : pattern).parse();
             final PrintStream out = System.out;
@@ -81,8 +88,11 @@ public class LogTail extends DisplayLog {
             };
             try {
                 events.addAppender(appender);
-                while (!needEndLog)  {
-                    display(cnv, queue.take(), out);
+                while (doDisplay) {
+                    PaxLoggingEvent logEvent = queue.take();
+                    if (logEvent != null) {
+                        display(cnv, logEvent, out);
+                    }
                 }
             } catch (InterruptedException e) {
                 // Ignore
@@ -90,6 +100,10 @@ public class LogTail extends DisplayLog {
                 events.removeAppender(appender);
             }
             out.println();
+        }
+
+        public void abort() {
+            doDisplay = false;
         }
     }
 
