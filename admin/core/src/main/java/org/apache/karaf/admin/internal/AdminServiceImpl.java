@@ -271,8 +271,11 @@ public class AdminServiceImpl implements AdminService {
                 copyResourceToDir(karafBase, "etc/org.ops4j.pax.logging.cfg", true);
                 copyResourceToDir(karafBase, "etc/org.ops4j.pax.url.mvn.cfg", true);
                 copyResourceToDir(karafBase, "etc/startup.properties", true);
-                copyResourceToDir(karafBase, "etc/users.properties", true);
+//                copyResourceToDir(karafBase, "etc/users.properties", true);
                 copyResourceToDir(karafBase, "etc/keys.properties", true);
+                // Copy the users from the home directory
+                File home = new File(System.getProperty("karaf.home"));
+                copy(new File(home, "etc/users.properties"), new File(karafBase, "etc/users.properties"));
 
                 HashMap<String, String> props = new HashMap<String, String>();
                 props.put("${SUBST-KARAF-NAME}", name);
