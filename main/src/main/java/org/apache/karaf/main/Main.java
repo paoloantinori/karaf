@@ -532,6 +532,8 @@ public class Main {
             } finally {
                 if (!restart) {
                     System.exit(main.getExitCode());
+                } else {
+                    System.gc();
                 }
             }
         }
