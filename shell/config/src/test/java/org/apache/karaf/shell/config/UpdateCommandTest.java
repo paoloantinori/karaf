@@ -62,6 +62,7 @@ public class UpdateCommandTest extends TestCase {
         session = new MockCommandSession();
     }
 
+    /* Ignore, see see http://fusesource.com/issues/browse/ENTESB-899
     public void testupdateOnNewFactoryPid() throws Exception {
         Properties props = new Properties();
 
@@ -84,5 +85,6 @@ public class UpdateCommandTest extends TestCase {
         command.execute(session);
 
     }
+    */
 
 }
