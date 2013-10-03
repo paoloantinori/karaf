@@ -1388,6 +1388,7 @@ public class Main {
     }
 
     private void doLock(Properties props) throws Exception {
+        File dataDir = new File(System.getProperty(PROP_KARAF_DATA));
         String clz = props.getProperty(PROPERTY_LOCK_CLASS, PROPERTY_LOCK_CLASS_DEFAULT);
         lock = (Lock) Class.forName(clz).getConstructor(Properties.class).newInstance(props);
         boolean lockLogged = false;
@@ -1400,6 +1401,12 @@ public class Main {
                 setupShutdown(props);
                 setStartLevel(defaultStartLevel);
                 for (;;) {
+                    if (!dataDir.isDirectory()) {
+                        LOG.info("Data directory does not exist anymore, halting");
+                        framework.stop();
+                        System.exit(-1);
+                        return;
+                    }
                     if (!lock.isAlive()) {
                         break;
                     }
