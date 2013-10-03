@@ -19,7 +19,11 @@ package org.apache.karaf.shell.config;
 import java.util.Dictionary;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+
 import org.apache.felix.service.command.CommandSession;
 import org.easymock.EasyMock;
 import org.osgi.framework.BundleContext;
@@ -31,10 +35,12 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 
+import static org.junit.Assert.*;
+
 /**
  * Test cases for {@link EditCommand}
  */
-public class UpdateCommandTest extends TestCase {
+public class UpdateCommandTest {
 
     private static final String PID = "my.test.persistent.id-other";
 
@@ -43,8 +49,8 @@ public class UpdateCommandTest extends TestCase {
     private ConfigurationAdmin admin;
     private CommandSession session;
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         command = new UpdateCommand();
 
         context = EasyMock.createMock(BundleContext.class);
@@ -62,7 +68,8 @@ public class UpdateCommandTest extends TestCase {
         session = new MockCommandSession();
     }
 
-    /* Ignore, see see http://fusesource.com/issues/browse/ENTESB-899
+    @Ignore("see http://fusesource.com/issues/browse/ENTESB-899")
+    @Test
     public void testupdateOnNewFactoryPid() throws Exception {
         Properties props = new Properties();
 
@@ -85,6 +92,6 @@ public class UpdateCommandTest extends TestCase {
         command.execute(session);
 
     }
-    */
+
 
 }

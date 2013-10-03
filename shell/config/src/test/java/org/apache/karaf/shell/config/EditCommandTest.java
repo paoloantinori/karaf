@@ -19,7 +19,12 @@ package org.apache.karaf.shell.config;
 import java.util.Dictionary;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+//import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import org.apache.felix.service.command.CommandSession;
 import org.easymock.EasyMock;
 import org.osgi.framework.BundleContext;
@@ -31,10 +36,12 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 
+import static org.junit.Assert.*;
+
 /**
  * Test cases for {@link EditCommand}
  */
-public class EditCommandTest extends TestCase {
+public class EditCommandTest {
 
     private static final String PID = "my.test.persistent.id";
 
@@ -43,8 +50,8 @@ public class EditCommandTest extends TestCase {
     private ConfigurationAdmin admin;
     private CommandSession session;
     
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         command = new EditCommand();
         
         context = EasyMock.createMock(BundleContext.class);
@@ -62,7 +69,8 @@ public class EditCommandTest extends TestCase {
         session = new MockCommandSession();
     }
 
-    /* Ignore, see see http://fusesource.com/issues/browse/ENTESB-899
+    @Ignore("http://fusesource.com/issues/browse/ENTESB-899")
+    @Test
     public void testExecuteOnExistingPid() throws Exception {        
         Configuration config = createMock(Configuration.class);
         expect(admin.getConfiguration(PID, null)).andReturn(config);
@@ -82,10 +90,11 @@ public class EditCommandTest extends TestCase {
         assertSame("The Dictionary returned by the ConfigAdmin service should be set on the session",
                    props, session.get(ConfigCommandSupport.PROPERTY_CONFIG_PROPS));
     }
-    */
 
-    /* Ignore, see see http://fusesource.com/issues/browse/ENTESB-899
+
     @SuppressWarnings("unchecked")
+    @Ignore("http://fusesource.com/issues/browse/ENTESB-899")
+    @Test
     public void testExecuteOnNewPid() throws Exception {
         Configuration config = createMock(Configuration.class);
         expect(admin.getConfiguration(PID, null)).andReturn(config);
@@ -105,6 +114,5 @@ public class EditCommandTest extends TestCase {
         assertNotNull("Should have a Dictionary on the session", props);
         assertTrue("Should have an empty Dictionary on the session", props.isEmpty());
     }
-    */
 
 }
