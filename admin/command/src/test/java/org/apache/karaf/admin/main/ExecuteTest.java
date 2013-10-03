@@ -26,31 +26,42 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.Ignore;
 
+
+import junit.framework.TestCase;
 import org.apache.karaf.admin.AdminService;
 import org.apache.karaf.admin.command.AdminCommandSupport;
 import org.apache.karaf.admin.internal.AdminServiceImpl;
 import org.easymock.IAnswer;
 import org.easymock.classextension.EasyMock;
+import org.junit.rules.TestName;
 
-public class ExecuteTest extends TestCase {
+import static org.junit.Assert.*;
+
+public class ExecuteTest {
     private String userDir;
+
+    @Rule
+    public TestName testName = new TestName();
     
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         Execute.exitAllowed = false;
         userDir = System.getProperty("user.dir");
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         Execute.exitAllowed = true;
         System.setProperty("user.dir", userDir);
     }
 
+    @Test
     public void testListCommands() throws Exception {
         PrintStream oldOut = System.out;
         
@@ -71,7 +82,8 @@ public class ExecuteTest extends TestCase {
             System.setOut(oldOut);
         }
     }
-    
+
+    @Test
     public void testNonexistingCommand() throws Exception {
         try {
             Execute.main(new String [] {"bheuaark"});
@@ -79,7 +91,8 @@ public class ExecuteTest extends TestCase {
             assertEquals("-1", re.getMessage());
         }
     }
-    
+
+    @Test
     public void testNoStorageFile() throws Exception {
         PrintStream oldErr = System.err;
         
@@ -99,10 +112,11 @@ public class ExecuteTest extends TestCase {
             System.setErr(oldErr);
         } 
     }
-    
+
+    @Test
     public void testSetDir() throws Exception {
         Properties oldProps = (Properties) System.getProperties().clone();
-        final File tempFile = createTempDir(getName());
+        final File tempFile = createTempDir(testName.getMethodName());
         assertFalse("Precondition failed", 
             tempFile.getParentFile().getParentFile().getCanonicalPath().equals(System.getProperty("user.dir")));
 
@@ -116,9 +130,11 @@ public class ExecuteTest extends TestCase {
             delete(tempFile);
         }        
     }
-    
+
+    @Ignore("http://fusesource.com/issues/browse/ENTESB-901")
+    @Test
     public void testExecute() throws Exception {
-        final File tempFile = createTempDir(getName());
+        final File tempFile = createTempDir(testName.getMethodName());
         Properties p = new Properties();
         p.setProperty("ssh.port", "1302");
         p.setProperty("rmi.registry.port", "1122");
