@@ -32,6 +32,7 @@ import java.io.PrintStream;
 import java.io.RandomAccessFile;
 import java.net.Socket;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -137,11 +138,13 @@ public class AdminServiceImpl implements AdminService {
                 proxies.put(instance.name, new InstanceImpl(this, instance.name));
             }
         }
-        for (String name : this.proxies.keySet()) {
+        List<String> names = new ArrayList<String>(this.proxies.keySet());
+        for (String name : names) {
             if (!state.instances.containsKey(name)) {
                 this.proxies.remove(name);
             }
         }
+
         return state;
     }
 
@@ -273,9 +276,11 @@ public class AdminServiceImpl implements AdminService {
                 copyResourceToDir(karafBase, "etc/startup.properties", true);
 //                copyResourceToDir(karafBase, "etc/users.properties", true);
                 copyResourceToDir(karafBase, "etc/keys.properties", true);
-                // Copy the users from the home directory
-                File home = new File(System.getProperty("karaf.home"));
-                copy(new File(home, "etc/users.properties"), new File(karafBase, "etc/users.properties"));
+                if (System.getProperty("karaf.home") != null && System.getProperty("karaf.home").length() > 0) {
+                    // Copy the users from the home directory
+                    File home = new File(System.getProperty("karaf.home"));
+                    copy(new File(home, "etc/users.properties"), new File(karafBase, "etc/users.properties"));
+                }
 
                 HashMap<String, String> props = new HashMap<String, String>();
                 props.put("${SUBST-KARAF-NAME}", name);

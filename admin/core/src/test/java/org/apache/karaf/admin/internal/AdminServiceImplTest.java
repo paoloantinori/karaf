@@ -68,8 +68,8 @@ public class AdminServiceImplTest extends TestCase {
      * Ensure the admin:create generates all the required configuration files
      * //TODO: fix this test so it can run in an IDE
      */
-    /* Ignore, see http://fusesource.com/issues/browse/ENTESB-898
     public void testConfigurationFiles() throws Exception {
+        System.setProperty("karaf.home", "target/classes/org/apache/karaf/admin");
         AdminServiceImpl service = new AdminServiceImpl();
         service.setStorageLocation(new File("target/instances/" + System.currentTimeMillis()));
 
@@ -88,15 +88,14 @@ public class AdminServiceImplTest extends TestCase {
         assertFileExists(instance.getLocation(), "etc/org.ops4j.pax.logging.cfg");
         assertFileExists(instance.getLocation(), "etc/org.ops4j.pax.url.mvn.cfg");
     }
-    */
 
     /**
      * <p>
      * Test the renaming of an existing instance.
      * </p>
      */
-    /* Ignore, see http://fusesource.com/issues/browse/ENTESB-898
     public void testRenameInstance() throws Exception {
+        System.setProperty("karaf.home", "target/classes/org/apache/karaf/admin");
         AdminServiceImpl service = new AdminServiceImpl();
         service.setStorageLocation(new File("target/instances/" + System.currentTimeMillis()));
 
@@ -106,15 +105,14 @@ public class AdminServiceImplTest extends TestCase {
         service.renameInstance(getName(), getName() + "b");
         assertNotNull(service.getInstance(getName() + "b"));
     }
-    */
     
     /**
      * <p>
      * Test the renaming of an existing instance.
      * </p>
      */
-    /* Ignore, see http://fusesource.com/issues/browse/ENTESB-898
     public void testToSimulateRenameInstanceByExternalProcess() throws Exception {
+        System.setProperty("karaf.home", "target/classes/org/apache/karaf/admin");
         AdminServiceImpl service = new AdminServiceImpl();
         File storageLocation = new File("target/instances/" + System.currentTimeMillis());
         service.setStorageLocation(storageLocation);
@@ -136,7 +134,6 @@ public class AdminServiceImplTest extends TestCase {
         
         assertNotNull(service.getInstance(getName() + "b"));
     }
-    */
 
     private void saveStorage(Properties props, File location, String comment) throws IOException {
         OutputStream os = null;
