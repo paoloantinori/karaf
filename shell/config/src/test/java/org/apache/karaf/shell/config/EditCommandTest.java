@@ -58,7 +58,7 @@ public class EditCommandTest {
         command.setBundleContext(context);
         
         ServiceReference reference = createMock(ServiceReference.class);
-        expect(context.getServiceReference(ConfigurationAdmin.class.getName())).andReturn(reference).anyTimes();
+        expect(context.getServiceReference(ConfigurationAdmin.class)).andReturn(reference).anyTimes();
         
         admin = createMock(ConfigurationAdmin.class);
         expect(context.getService(reference)).andReturn(admin);
@@ -69,7 +69,6 @@ public class EditCommandTest {
         session = new MockCommandSession();
     }
 
-    @Ignore("http://fusesource.com/issues/browse/ENTESB-899")
     @Test
     public void testExecuteOnExistingPid() throws Exception {        
         Configuration config = createMock(Configuration.class);
@@ -93,7 +92,6 @@ public class EditCommandTest {
 
 
     @SuppressWarnings("unchecked")
-    @Ignore("http://fusesource.com/issues/browse/ENTESB-899")
     @Test
     public void testExecuteOnNewPid() throws Exception {
         Configuration config = createMock(Configuration.class);

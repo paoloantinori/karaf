@@ -57,7 +57,7 @@ public class UpdateCommandTest {
         command.setBundleContext(context);
 
         ServiceReference reference = createMock(ServiceReference.class);
-        expect(context.getServiceReference(ConfigurationAdmin.class.getName())).andReturn(reference).anyTimes();
+        expect(context.getServiceReference(ConfigurationAdmin.class)).andReturn(reference).anyTimes();
 
         admin = createMock(ConfigurationAdmin.class);
         expect(context.getService(reference)).andReturn(admin);
@@ -68,7 +68,6 @@ public class UpdateCommandTest {
         session = new MockCommandSession();
     }
 
-    @Ignore("see http://fusesource.com/issues/browse/ENTESB-899")
     @Test
     public void testupdateOnNewFactoryPid() throws Exception {
         Properties props = new Properties();
