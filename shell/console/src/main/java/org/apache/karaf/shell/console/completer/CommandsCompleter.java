@@ -116,7 +116,7 @@ public class CommandsCompleter implements Completer {
         Set<String> aliases = new HashSet<String>();
         for (String var : vars) {
             Object content = session.get(var);
-            if ("org.apache.felix.gogo.runtime.Closure".equals(content.getClass().getName()))  {
+            if (content != null && "org.apache.felix.gogo.runtime.Closure".equals(content.getClass().getName()))  {
                 aliases.add(var);
             }
         }
