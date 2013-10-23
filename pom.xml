@@ -136,7 +136,7 @@
 	    <felix.webconsole.version>4.0.0.redhat-610-SNAPSHOT</felix.webconsole.version>
         <felix.metatype.version>1.0.4</felix.metatype.version>
 		<felix.eventadmin.version>1.3.0.redhat-610-SNAPSHOT</felix.eventadmin.version>
-        <felix.eventadmin-plugin.version>1.0.2</felix.eventadmin-plugin.version>
+        <felix.eventadmin-plugin.version>1.0.3.redhat-001</felix.eventadmin-plugin.version>
         <felix.obr.version>1.0.2</felix.obr.version>
         <felix.scr.version>1.8.0.redhat-610-SNAPSHOT</felix.scr.version>
         <aries.application.version>1.0.0</aries.application.version>
