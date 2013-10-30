@@ -86,7 +86,7 @@ public class EditAction extends AbstractAction {
         }
 
         //Call the editor
-        ConsoleEditor editor = editorFactory.create(getTerminal());
+        ConsoleEditor editor = editorFactory.create("simple", getTerminal(), System.in, System.out);
         editor.setTitle("Karaf");
         editor.open(path, url);
         editor.setOpenEnabled(false);

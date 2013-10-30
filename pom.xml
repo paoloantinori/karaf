@@ -156,7 +156,7 @@
         <aries.util.version>1.0.1.redhat-610-SNAPSHOT</aries.util.version>
         <gemini.blueprint.version>1.0.0.RELEASE</gemini.blueprint.version>
         <jansi.version>1.11</jansi.version>
-        <jledit.version>0.2.0</jledit.version>
+        <jledit.version>0.2.1</jledit.version>
         <jline.version>2.11</jline.version>
         <jsw.version>3.2.3</jsw.version>
         <log4j.version>1.2.17</log4j.version>
