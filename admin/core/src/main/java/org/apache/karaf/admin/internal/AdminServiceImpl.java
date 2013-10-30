@@ -264,7 +264,7 @@ public class AdminServiceImpl implements AdminService {
                 mkdir(karafBase, "deploy");
                 mkdir(karafBase, "data");
 
-                copyResourceToDir(karafBase, "etc/config.properties", true);
+                //copyResourceToDir(karafBase, "etc/config.properties", true);
                 copyResourceToDir(karafBase, "etc/jre.properties", true);
                 copyResourceToDir(karafBase, "etc/custom.properties", true);
                 copyResourceToDir(karafBase, "etc/java.util.logging.properties", true);
@@ -273,13 +273,15 @@ public class AdminServiceImpl implements AdminService {
                 copyResourceToDir(karafBase, FEATURES_CFG, true);
                 copyResourceToDir(karafBase, "etc/org.ops4j.pax.logging.cfg", true);
                 copyResourceToDir(karafBase, "etc/org.ops4j.pax.url.mvn.cfg", true);
-                copyResourceToDir(karafBase, "etc/startup.properties", true);
-//                copyResourceToDir(karafBase, "etc/users.properties", true);
+                //copyResourceToDir(karafBase, "etc/startup.properties", true);
+                //copyResourceToDir(karafBase, "etc/users.properties", true);
                 copyResourceToDir(karafBase, "etc/keys.properties", true);
                 if (System.getProperty("karaf.home") != null && System.getProperty("karaf.home").length() > 0) {
                     // Copy the users from the home directory
                     File home = new File(System.getProperty("karaf.home"));
                     copy(new File(home, "etc/users.properties"), new File(karafBase, "etc/users.properties"));
+                    copy(new File(home, "etc/startup.properties"), new File(karafBase, "etc/startup.properties"));
+                    copy(new File(home, "etc/config.properties"), new File(karafBase, "etc/config.properties"));
                 }
 
                 HashMap<String, String> props = new HashMap<String, String>();
