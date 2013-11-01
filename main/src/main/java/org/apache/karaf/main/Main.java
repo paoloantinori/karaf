@@ -242,7 +242,9 @@ public class Main {
         System.setProperty(PROP_KARAF_BASE, karafBase.getPath());
         System.setProperty(PROP_KARAF_DATA, karafData.getPath());
         System.setProperty(PROP_KARAF_INSTANCES, karafInstances.getPath());
-
+ 
+        configureSAAJForIBMJVM();
+        
         // Load system properties.
         loadSystemProperties(karafBase);
 
@@ -316,6 +318,20 @@ public class Main {
                 lock(configProps);
             }
         }.start();
+    }
+   
+    private void configureSAAJForIBMJVM() {
+        if (System.getProperty("java.vendor").equals("IBM Corporation"))  {
+            System.setProperty("javax.xml.soap.MessageFactory", 
+                               "com.sun.xml.internal.messaging.saaj.soap.ver1_1.SOAPMessageFactory1_1Impl"); 
+            System.setProperty("javax.xml.soap.SOAPFactory", 
+                               "com.sun.xml.internal.messaging.saaj.soap.ver1_1.SOAPFactory1_1Impl"); 
+            System.setProperty("javax.xml.soap.SOAPConnectionFactory", 
+                               "com.sun.xml.internal.messaging.saaj.client.p2p.HttpSOAPConnectionFactory"); 
+            System.setProperty("javax.xml.soap.MetaFactory", 
+                               "com.sun.xml.internal.messaging.saaj.soap.SAAJMetaFactoryImpl"); 
+        }
+        
     }
 
     private void startKarafActivators(ClassLoader classLoader) throws IOException {
