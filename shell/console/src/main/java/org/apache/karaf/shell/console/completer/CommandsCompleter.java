@@ -78,16 +78,20 @@ public class CommandsCompleter implements Completer {
         return res;
     }
 
-    protected synchronized void checkData() {
+    protected void checkData() {
         // Copy the set to avoid concurrent modification exceptions
         // TODO: fix that in gogo instead
-        Set<String> names = new HashSet<String>((Set<String>) session.get(COMMANDS));
-        if (!names.equals(commands)) {
-            commands.clear();
-            completers.clear();
-
+        Set<String> names;
+        boolean update;
+        synchronized (this) {
+            names = new HashSet<String>((Set<String>) session.get(COMMANDS));
+            update = !names.equals(commands);
+        }
+        if (update) {
             // get command aliases
             Set<String> aliases = this.getAliases();
+            Set<String> commands = new HashSet<String>();
+            List<Completer> completers = new ArrayList<Completer>();
             completers.add(new StringsCompleter(aliases));
 
             // add argument completers for each command
@@ -102,6 +106,13 @@ public class CommandsCompleter implements Completer {
                     }
                 }
                 commands.add(command);
+            }
+
+            synchronized (this) {
+                this.commands.clear();
+                this.completers.clear();
+                this.commands.addAll(commands);
+                this.completers.addAll(completers);
             }
         }
     }
