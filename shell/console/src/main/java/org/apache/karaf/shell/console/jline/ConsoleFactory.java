@@ -55,7 +55,6 @@ public class ConsoleFactory {
     };
 
     private BundleContext bundleContext;
-    private CommandProcessor commandProcessor;
     private TerminalFactory terminalFactory;
     Console console;
     private boolean start;
@@ -65,13 +64,12 @@ public class ConsoleFactory {
         this.bundleContext = bundleContext;
     }
 
-    public synchronized void registerCommandProcessor(CommandProcessor commandProcessor) throws Exception {
-        this.commandProcessor = commandProcessor;
-        start();
+    public void registerCommandProcessor(CommandProcessor commandProcessor) throws Exception {
+        stop();
+        start(commandProcessor);
     }
 
-    public synchronized void unregisterCommandProcessor(CommandProcessor commandProcessor) throws Exception {
-        this.commandProcessor = null;
+    public void unregisterCommandProcessor(CommandProcessor commandProcessor) throws Exception {
         stop();
     }
 
@@ -83,14 +81,14 @@ public class ConsoleFactory {
         this.start = start;
     }
 
-    protected void start() throws Exception {
+    protected void start(final CommandProcessor commandProcessor) throws Exception {
         if (start) {
             Subject subject = new Subject();
             final String user = "karaf";
             subject.getPrincipals().add(new UserPrincipal(user));
             JaasHelper.doAs(subject, new PrivilegedExceptionAction<Object>() {
                 public Object run() throws Exception {
-                    doStart(user);
+                    doStart(user, commandProcessor);
                     return null;
                 }
             });
@@ -116,7 +114,7 @@ public class ConsoleFactory {
         }
     }
 
-    protected void doStart(String user) throws Exception {
+    protected void doStart(String user, CommandProcessor commandProcessor) throws Exception {
         final Terminal terminal = terminalFactory.getTerminal();
         // unwrap stream so it can be recognized by the terminal and wrapped to get 
         // special keys in windows
@@ -140,7 +138,7 @@ public class ConsoleFactory {
         } else {
             encoding = System.getProperty("input.encoding", Charset.defaultCharset().name());
         }
-        this.console = new Console(commandProcessor,
+        Console console = new Console(commandProcessor,
                                    in,
                                    wrap(out),
                                    wrap(err),
@@ -169,25 +167,46 @@ public class ConsoleFactory {
         }
         session.put(".jline.terminal", terminal);
 
-        registration = bundleContext.registerService(CommandSession.class, session, null);
+        ServiceRegistration registration = bundleContext.registerService(CommandSession.class, session, null);
 
-        boolean delayconsole = Boolean.parseBoolean(System.getProperty("karaf.delay.console"));
-        if (delayconsole) {
-            new DelayedStarted(this.console, bundleContext, unwrappedIn).start();
+        boolean used = false;
+        synchronized (this) {
+            if (this.console == null) {
+                this.console = console;
+                this.registration = registration;
+                used = true;
+            }
+        }
+        if (used) {
+            boolean delayconsole = Boolean.parseBoolean(System.getProperty("karaf.delay.console"));
+            if (delayconsole) {
+                new DelayedStarted(console, bundleContext, unwrappedIn).start();
+            } else {
+                new Thread(console, "Karaf Shell Console Thread").start();
+            }
         } else {
-            new Thread(this.console, "Karaf Shell Console Thread").start();
+            registration.unregister();
+            console.close(false);
         }
     }
 
     protected void stop() throws Exception {
-        if (registration != null) {
-            registration.unregister();
+        ServiceRegistration reg;
+        Console cns;
+        synchronized (this) {
+            reg = registration;
+            registration = null;
+            cns = console;
+            console = null;
+        }
+        if (reg != null) {
+            reg.unregister();
         }
         // The bundle is stopped
         // so close the console and remove the callback so that the
         // osgi framework isn't stopped
-        if (console != null) {
-            console.close(false);
+        if (cns != null) {
+            cns.close(false);
         }
     }
 
