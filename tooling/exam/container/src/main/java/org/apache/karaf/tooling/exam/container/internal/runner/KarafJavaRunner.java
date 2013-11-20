@@ -50,6 +50,7 @@ public class KarafJavaRunner implements Runner {
                         .append("-Dkaraf.home=" + karafHome)
                         .append("-Dkaraf.base=" + karafBase)
                         .append("-Dkaraf.data=" + karafData)
+                        .append("-Dkaraf.etc=" + karafBase + "/etc")
                         .append("-Djava.util.logging.config.file=" + karafBase + "/etc/java.util.logging.properties")
                         .append(karafOpts)
                         .append(opts)
