@@ -220,6 +220,19 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>jboss-fs-public-repository-group</id>
+            <name>JBoss FS Public Repository Group</name>
+            <url>https://repo.fusesource.com/nexus/content/groups/public</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
         <!-- OPS4J SNAPSHOT repository -->
         <repository>
             <id>ops4j.sonatype.snapshots.deploy</id>
@@ -591,6 +604,11 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>org.apache.felix.webconsole</artifactId>
                 <version>${felix.webconsole.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>org.apache.felix.webconsole.plugins.event</artifactId>
+                <version>${felix.eventadmin-plugin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.felix</groupId>
