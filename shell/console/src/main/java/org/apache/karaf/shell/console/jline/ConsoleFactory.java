@@ -36,6 +36,7 @@ import jline.Terminal;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.apache.felix.service.command.Function;
+import org.apache.felix.service.threadio.ThreadIO;
 import org.apache.karaf.jaas.boot.principal.UserPrincipal;
 import org.apache.sshd.agent.SshAgent;
 import org.apache.sshd.agent.local.AgentImpl;
@@ -55,6 +56,8 @@ public class ConsoleFactory {
     };
 
     private BundleContext bundleContext;
+    private CommandProcessor commandProcessor;
+    private ThreadIO threadIO;
     private TerminalFactory terminalFactory;
     Console console;
     private boolean start;
@@ -62,6 +65,10 @@ public class ConsoleFactory {
 
     public void setBundleContext(BundleContext bundleContext) {
         this.bundleContext = bundleContext;
+    }
+
+    public void setThreadIO(ThreadIO threadIO) {
+        this.threadIO = threadIO;
     }
 
     public void registerCommandProcessor(CommandProcessor commandProcessor) throws Exception {
@@ -139,6 +146,7 @@ public class ConsoleFactory {
             encoding = System.getProperty("input.encoding", Charset.defaultCharset().name());
         }
         Console console = new Console(commandProcessor,
+                                   threadIO,
                                    in,
                                    wrap(out),
                                    wrap(err),
