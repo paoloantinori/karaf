@@ -24,6 +24,7 @@ import java.util.List;
 
 import jline.Terminal;
 
+import jline.console.ConsoleReader;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -119,7 +120,6 @@ public class SshAction extends OsgiCommandSupport implements BlueprintContainerA
             sshSession = future.getSession();
 
             Object oldIgnoreInterrupts = this.session.get(Console.IGNORE_INTERRUPTS);
-            this.session.put( Console.IGNORE_INTERRUPTS, Boolean.TRUE );
 
             try {
                 System.out.println("Connected");
@@ -136,7 +136,7 @@ public class SshAction extends OsgiCommandSupport implements BlueprintContainerA
                 }
                 if (!authed) {
                     log.debug("Prompting user for password");
-                    String pwd  = password != null ? password : readLine("Password: ");
+                    String pwd  = password != null ? password : readLine("Password: ", '*');
                     sshSession.authPassword(username, pwd);
                     int ret = sshSession.waitFor(ClientSession.WAIT_AUTH | ClientSession.CLOSED | ClientSession.AUTHED, 0);
                     if ((ret & ClientSession.AUTHED) == 0) {
@@ -148,6 +148,8 @@ public class SshAction extends OsgiCommandSupport implements BlueprintContainerA
                 if (!authed) {
                     return null;
                 }
+
+                this.session.put( Console.IGNORE_INTERRUPTS, Boolean.TRUE );
 
                 StringBuilder sb = new StringBuilder();
                 if (command != null) {
@@ -195,21 +197,12 @@ public class SshAction extends OsgiCommandSupport implements BlueprintContainerA
     }
 
     public String readLine(String msg) throws IOException {
-        StringBuffer sb = new StringBuffer();
-        System.err.print(msg);
-        System.err.flush();
-        for (;;) {
-            int c = super.session.getKeyboard().read();
-            if (c < 0) {
-                return null;
-            }
-            System.err.print((char) c);
-            if (c == '\r' || c == '\n') {
-                break;
-            }
-            sb.append((char) c);
-        }
-        return sb.toString();
+        return readLine(msg, null);
+    }
+
+    public String readLine(String msg, Character mask) throws IOException {
+        ConsoleReader reader = (ConsoleReader) session.get(".jline.reader");
+        return reader.readLine(msg, mask);
     }
 
 }

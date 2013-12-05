@@ -16,6 +16,7 @@
  */
 package org.apache.karaf.shell.dev;
 
+import jline.console.ConsoleReader;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.apache.felix.service.command.CommandSession;
@@ -156,28 +157,13 @@ public class LoadTest extends OsgiCommandSupport {
 
     private boolean confirm(CommandSession session) throws IOException {
         for (;;) {
-            StringBuffer sb = new StringBuffer();
-            System.err.print("You are about to perform a start/stop/refresh load test on bundles.\nDo you wish to continue (yes/no): ");
-            System.err.flush();
-            for (;;) {
-                int c = session.getKeyboard().read();
-                if (c < 0) {
-                    return false;
-                }
-                if (c == '\r' || c == '\n') {
-                    System.err.println();
-                    System.err.flush();
-                    break;
-                }
-                System.err.print((char) c);
-                System.err.flush();
-                sb.append((char) c);
-            }
-            String str = sb.toString();
-            if ("yes".equals(str)) {
+            ConsoleReader reader = (ConsoleReader) session.get(".jline.reader");
+            String msg = "You are about to perform a start/stop/refresh load test on bundles.\nDo you wish to continue (yes/no): ";
+            String str = reader.readLine(msg);
+            if ("yes".equalsIgnoreCase(str)) {
                 return true;
             }
-            if ("no".equals(str)) {
+            if ("no".equalsIgnoreCase(str)) {
                 return false;
             }
         }
