@@ -131,8 +131,12 @@ public class PropertiesBackingEngine implements BackingEngine {
      * @return
      */
     public List<RolePrincipal> listRoles(UserPrincipal user) {
+        return listRoles(user.getName());
+    }
+
+    private List<RolePrincipal> listRoles(String name) {
         List<RolePrincipal> result = new ArrayList<RolePrincipal>();
-        String userInfo = users.get(user.getName());
+        String userInfo = (String) users.get(name);
         String[] infos = userInfo.split(",");
         for (int i = 1; i < infos.length; i++) {
             result.add(new RolePrincipal(infos[i]));
