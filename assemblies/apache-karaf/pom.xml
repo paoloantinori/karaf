@@ -491,6 +491,10 @@
             <artifactId>org.apache.karaf.bundles.xalan-serializer-2.7.1</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+        </dependency>
     </dependencies>
 
     <repositories>

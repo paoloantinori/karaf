@@ -317,6 +317,18 @@
                 <include>org.ow2.asm:asm-all</include>
             </includes>
         </dependencySet>
+        <dependencySet>
+            <outputDirectory>/system</outputDirectory>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <fileMode>0644</fileMode>
+            <outputFileNameMapping>
+                org/bouncycastle/${artifact.artifactId}/${artifact.baseVersion}/${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}
+            </outputFileNameMapping>
+            <includes>
+                <include>org.bouncycastle:bcprov-jdk15on</include>
+            </includes>
+        </dependencySet>
     </dependencySets>
 
 </assembly>
