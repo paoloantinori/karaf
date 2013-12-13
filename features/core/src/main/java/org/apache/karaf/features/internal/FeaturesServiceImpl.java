@@ -58,6 +58,9 @@ import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import org.apache.felix.utils.version.VersionRange;
 import org.apache.felix.utils.version.VersionTable;
@@ -98,6 +101,7 @@ import org.slf4j.LoggerFactory;
 
 import static java.lang.String.format;
 import static java.util.jar.JarFile.MANIFEST_NAME;
+import static org.apache.karaf.features.internal.Overrides.override;
 
 /**
  * The Features service implementation.
@@ -129,6 +133,7 @@ public class FeaturesServiceImpl implements FeaturesService {
     private ThreadLocal<Repository> repo = new ThreadLocal<Repository>();
     private EventAdminListener eventAdminListener;
     private String blackList;
+    private String overrides;
 
     public FeaturesServiceImpl() {
     }
@@ -171,6 +176,14 @@ public class FeaturesServiceImpl implements FeaturesService {
 
     public void setResolverTimeout(long resolverTimeout) {
         this.resolverTimeout = resolverTimeout;
+    }
+
+    public String getOverrides() {
+        return overrides;
+    }
+
+    public void setOverrides(String overrides) {
+        this.overrides = overrides;
     }
 
     public void registerListener(FeaturesListener listener) {
@@ -686,7 +699,7 @@ public class FeaturesServiceImpl implements FeaturesService {
         }
         Set<Long> bundles = new TreeSet<Long>();
         List<InstallResult> installResultList = new LinkedList<InstallResult>();
-        for (BundleInfo bInfo : resolve(feature)) {
+        for (BundleInfo bInfo : override(resolve(feature), this.overrides)) {
             InstallResult result = installBundleIfNeeded(state, bInfo, verbose);
             if (!result.isPreviouslyInstalled()) {
                 //only associate the bundles installed by this feature

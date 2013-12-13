@@ -61,6 +61,7 @@ public class Activator implements BundleActivator {
                 LOGGER.warn("Error reading configuration file " + configFile.toString(), e);
             }
         }
+
         featuresService = new FeaturesServiceImpl();
         featuresService.setUrls(getString(configuration, "featuresRepositories", ""));
         featuresService.setBoot(getString(configuration, "featuresBoot", ""));
@@ -69,6 +70,7 @@ public class Activator implements BundleActivator {
         featuresService.setResolverTimeout(getLong(configuration, "resolverTimeout", 5000));
         featuresService.setBundleContext(bundleContext);
         featuresService.setBlackList(getString(configuration, "featuresBlackList", null));
+        featuresService.setOverrides(new File(System.getProperty("karaf.etc"), "overrides.properties").toURI().toString());        
 
         featuresListenerTracker = new ServiceTracker<FeaturesListener, FeaturesListener>(
                 bundleContext,
