@@ -27,6 +27,7 @@
             <ext:property name="featuresRepositories" value=""/>
             <ext:property name="featuresBoot" value=""/>
             <ext:property name="resolverTimeout" value="5000"/>
+            <ext:property name="overrides" value="file:$(karaf.etc)/overrides.properties"/>
         </ext:default-properties>
         <ext:location>file:$(karaf.etc)/org.apache.karaf.features.cfg</ext:location>
     </ext:property-placeholder>
@@ -39,6 +40,7 @@
         <property name="packageAdmin" ref="packageAdmin" />
         <property name="startLevel" ref="startLevel" />
         <property name="bundleContext" ref="blueprintBundleContext" />
+        <property name="overrides" value="$[overrides]" />
     </bean>
 
     <reference-list id="featuresListeners" interface="org.apache.karaf.features.FeaturesListener" availability="optional">

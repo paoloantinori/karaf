@@ -49,6 +49,10 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import org.apache.felix.utils.manifest.Clause;
 import org.apache.felix.utils.manifest.Parser;
@@ -82,6 +86,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static java.lang.String.format;
+import static org.apache.karaf.features.internal.Overrides.override;
 
 /**
  * The Features service implementation.
@@ -111,6 +116,7 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
     private EventAdminListener eventAdminListener;
     private final Object refreshLock = new Object();
     private long refreshTimeout = 5000;
+    private String overrides;
 
     public FeaturesServiceImpl() {
     }
@@ -161,6 +167,14 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
 
     public void setRefreshTimeout(long refreshTimeout) {
         this.refreshTimeout = refreshTimeout;
+    }
+
+    public String getOverrides() {
+        return overrides;
+    }
+
+    public void setOverrides(String overrides) {
+        this.overrides = overrides;
     }
 
     public void registerListener(FeaturesListener listener) {
@@ -585,7 +599,7 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
                     configFile.getFinalname(), configFile.isOverride(), verbose);
         }
         Set<Long> bundles = new TreeSet<Long>();
-        for (BundleInfo bInfo : resolve(feature)) {
+        for (BundleInfo bInfo : override(resolve(feature), this.overrides)) {
             Bundle b = installBundleIfNeeded(state, bInfo, verbose);
             bundles.add(b.getBundleId());
             state.bundleInfos.put(b.getBundleId(), bInfo);
