@@ -1006,6 +1006,10 @@ public class AdminServiceImpl implements AdminService {
             // ignore lock file
             return;
         }
+        if (source.getName().matches("transaction_\\d+\\.log")) {
+            // ignore active txlog files
+            return;
+        }
         if (source.isDirectory()) {
             if (!destination.exists()) {
                 destination.mkdirs();
