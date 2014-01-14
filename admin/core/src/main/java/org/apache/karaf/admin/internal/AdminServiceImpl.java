@@ -294,22 +294,21 @@ public class AdminServiceImpl implements AdminService {
                 copyFilteredResourceToDir(karafBase, "etc/system.properties", props);
                 copyFilteredResourceToDir(karafBase, "etc/org.apache.karaf.shell.cfg", props);
                 copyFilteredResourceToDir(karafBase, "etc/org.apache.karaf.management.cfg", props);
-                // If we use batch files, use batch files, else use bash scripts (even on cygwin)
-                boolean windows = System.getProperty("os.name").startsWith("Win");
-                boolean cygwin = windows && new File(System.getProperty("karaf.home"), "bin/admin").exists();
-                if (windows && !cygwin) {
-                    copyFilteredResourceToDir(karafBase, "bin/karaf.bat", props);
-                    copyFilteredResourceToDir(karafBase, "bin/start.bat", props);
-                    copyFilteredResourceToDir(karafBase, "bin/stop.bat", props);
-                } else {
-                    copyFilteredResourceToDir(karafBase, "bin/karaf", props);
-                    copyFilteredResourceToDir(karafBase, "bin/start", props);
-                    copyFilteredResourceToDir(karafBase, "bin/stop", props);
-                    if (!cygwin) {
-                        chmod(new File(karafBase, "bin/karaf"), "a+x");
-                        chmod(new File(karafBase, "bin/start"), "a+x");
-                        chmod(new File(karafBase, "bin/stop"), "a+x");
-                    }
+
+                copyFilteredResourceToDir(karafBase, "bin/karaf", props);
+                copyFilteredResourceToDir(karafBase, "bin/start", props);
+                copyFilteredResourceToDir(karafBase, "bin/stop", props);
+
+                copyFilteredResourceToDir(karafBase, "bin/karaf.bat", props);
+                copyFilteredResourceToDir(karafBase, "bin/start.bat", props);
+                copyFilteredResourceToDir(karafBase, "bin/stop.bat", props);
+
+                try {
+                    chmod(new File(karafBase, "bin/karaf"), "a+x");
+                    chmod(new File(karafBase, "bin/start"), "a+x");
+                    chmod(new File(karafBase, "bin/stop"), "a+x");
+                } catch (IOException e) {
+                    LOGGER.debug("Could not set file mode on scripts.", e);
                 }
 
                 handleFeatures(new File(karafBase, FEATURES_CFG), settings);
