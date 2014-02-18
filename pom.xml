@@ -161,7 +161,7 @@
         <gemini.blueprint.version>1.0.0.RELEASE</gemini.blueprint.version>
         <jansi.version>1.11</jansi.version>
         <jledit.version>0.2.1</jledit.version>
-        <jline.version>2.11</jline.version>
+        <jline.version>2.11.redhat-002</jline.version>
         <jsw.version>3.2.3</jsw.version>
         <log4j.version>1.2.17</log4j.version>
         <maven.version>2.0.9</maven.version>
@@ -222,6 +222,19 @@
             </releases>
             <snapshots>
                 <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>jboss-fs-ea-repository-group</id>
+            <name>JBoss FS EA Repository Group</name>
+            <url>https://repo.fusesource.com/nexus/content/groups/ea</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
         <repository>
