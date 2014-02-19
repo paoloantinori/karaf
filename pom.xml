@@ -160,7 +160,7 @@
         <aries.transaction.version>1.0.1.redhat-610-SNAPSHOT</aries.transaction.version>
         <aries.util.version>1.0.1.redhat-610-SNAPSHOT</aries.util.version>
         <gemini.blueprint.version>1.0.0.RELEASE</gemini.blueprint.version>
-        <jansi.version>1.11</jansi.version>
+        <jansi.version>1.11.redhat-1</jansi.version>
         <jledit.version>0.2.1</jledit.version>
         <jline.version>2.11.redhat-002</jline.version>
         <jsw.version>3.2.3</jsw.version>
@@ -232,7 +232,6 @@
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
