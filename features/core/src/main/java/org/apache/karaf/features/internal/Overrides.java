@@ -46,7 +46,7 @@ public class Overrides {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Overrides.class);
 
-    private static final String OVERRIDE_RANGE = "range";
+    protected static final String OVERRIDE_RANGE = "range";
 
     /**
      * Compute a list of bundles to install, taking into account overrides.
@@ -145,7 +145,7 @@ public class Overrides {
                     while ((line = reader.readLine()) != null) {
                         line = line.trim();
                         if (!line.isEmpty() && !line.startsWith("#")) {
-                            Clause[] cs = Parser.parseHeader(line);
+                            Clause[] cs = Parser.parseClauses(new String[] { line });
                             for (Clause c : cs) {
                                 overrides.add(c);
                             }
