@@ -40,6 +40,7 @@ import org.apache.sshd.SshClient;
 import org.apache.sshd.agent.SshAgent;
 import org.apache.sshd.agent.local.AgentImpl;
 import org.apache.sshd.agent.local.LocalAgentFactory;
+import org.apache.sshd.client.UserInteraction;
 import org.apache.sshd.client.channel.ChannelShell;
 import org.apache.sshd.client.future.ConnectFuture;
 import org.apache.sshd.common.RuntimeSshException;
@@ -121,17 +122,43 @@ public class Main {
         SshAgent agent = null;
         int exitStatus = 0;
         try {
-            agent = startAgent(user);
+
+            final Console console = System.console();
             client = SshClient.setUpDefaultClient();
-            client.setAgentFactory(new LocalAgentFactory(agent));
-            client.getProperties().put(SshAgent.SSH_AUTHSOCKET_ENV_NAME, "local");
+            setupAgent(user, client);
+            client.setUserInteraction(new UserInteraction() {
+                public void welcome(String banner) {
+                    System.out.println(banner);
+                }
+
+                public String[] interactive(String destination, String name, String instruction, String[] prompt, boolean[] echo) {
+                    String[] answers = new String[prompt.length];
+                    try {
+                        for (int i = 0; i < prompt.length; i++) {
+                            if (console != null) {
+                                if (echo[i]) {
+                                    answers[i] = console.readLine(prompt[i] + " ");
+                                } else {
+                                    answers[i] = new String(console.readPassword(prompt[i] + " "));
+                                }
+                            }
+                        }
+                    } catch (IOError e) {
+                    }
+                    return answers;
+                }
+            });
             client.start();
-            int retries = 0;
+            if (console != null) {
+                console.printf("Logging in as %s\n", user);
+            }
+            
             ClientSession session = null;
+            int retries = 0;
             do {
-                ConnectFuture future = client.connect(host, port);
+                ConnectFuture future = client.connect(user, host, port);
                 future.await();
-                try { 
+                try {
                     session = future.getSession();
                 } catch (RuntimeSshException ex) {
                     if (retries++ < retryAttempts) {
@@ -142,22 +169,12 @@ public class Main {
                     }
                 }
             } while (session == null);
-            if (!session.authAgent(user).await().isSuccess()) {
-                if (password == null) {
-                    Console console = System.console();
-                    if (console != null) {
-                        char[] readPassword = console.readPassword("Password: ");
-                        if (readPassword != null) {
-                            password = new String(readPassword);
-                        } 
-                    } else {
-                        throw new Exception("Could not get system console");
-                    }
-                }
-                if (!session.authPassword(user, password).await().isSuccess()) {
-                    throw new Exception("Authentication failure");
-                }
+            
+            if (password != null) {
+                session.addPasswordIdentity(password);
             }
+            session.auth().verify();
+
             ClientChannel channel;
 			if (command.length() > 0) {
                 channel = session.createChannel("exec", command.append("\n").toString());
@@ -205,21 +222,63 @@ public class Main {
         System.exit(exitStatus);
     }
 
-    protected static SshAgent startAgent(String user) {
+    private static Properties loadProps(File file) {
+        Properties props = new Properties();
+        FileInputStream is = null;
         try {
-            SshAgent local = new AgentImpl();
-            URL url = Main.class.getClassLoader().getResource("karaf.key");
-            InputStream is = url.openStream();
+            is = new FileInputStream(file);
+            if (is != null) {
+                props.load(is);
+            }
+        } catch (Exception e) {
+            System.err.println("Could not load properties from: " + file + ", Reason: " + e.getMessage());
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    // Ignore
+                }
+            }
+        }
+        return props;
+    }
+
+    private static void setupAgent(String user, SshClient client) {
+        SshAgent agent;
+        URL builtInPrivateKey = Main.class.getClassLoader().getResource("karaf.key");
+        agent = startAgent(user, builtInPrivateKey);
+        client.setAgentFactory(new LocalAgentFactory(agent));
+        client.getProperties().put(SshAgent.SSH_AUTHSOCKET_ENV_NAME, "local");
+    }
+
+    private static SshAgent startAgent(String user, URL privateKeyUrl) {
+        InputStream is = null;
+        try {
+            SshAgent agent = new AgentImpl();
+            is = privateKeyUrl.openStream();
             ObjectInputStream r = new ObjectInputStream(is);
             KeyPair keyPair = (KeyPair) r.readObject();
-            local.addIdentity(keyPair, "karaf");
-            return local;
+            is.close();
+            agent.addIdentity(keyPair, user);
+            return agent;
         } catch (Throwable e) {
+            close(is);
             System.err.println("Error starting ssh agent for: " + e.getMessage());
             return null;
         }
     }
-
+    
+    private static void close(Closeable is) {
+        if (is != null) {
+            try {
+                is.close();
+            } catch (IOException e1) {
+                // Ignore
+            }
+        }
+    }
+    
     public static String readLine(String msg) throws IOException {
         StringBuffer sb = new StringBuffer();
         System.err.print(msg);
