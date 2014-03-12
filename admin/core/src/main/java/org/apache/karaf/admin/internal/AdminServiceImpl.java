@@ -282,6 +282,7 @@ public class AdminServiceImpl implements AdminService {
                     copy(new File(home, "etc/users.properties"), new File(karafBase, "etc/users.properties"));
                     copy(new File(home, "etc/startup.properties"), new File(karafBase, "etc/startup.properties"));
                     copy(new File(home, "etc/config.properties"), new File(karafBase, "etc/config.properties"));
+                    copy(new File(home, "etc/org.apache.karaf.jaas.cfg"), new File(karafBase, "etc/org.apache.karaf.jaas.cfg"));
                 }
 
                 HashMap<String, String> props = new HashMap<String, String>();
