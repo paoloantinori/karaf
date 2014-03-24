@@ -161,6 +161,8 @@ public class InstallCommand extends AbstractAction {
                     // TODO: figure out how to hook in the service that it starts up
                     // when the machine boots up.
                 }
+/* disable AIX support as per SRT request. Will enable in a patch at a later date when we have verfied native libs from productization.
+ 
             } else if (os.startsWith("AIX")) {
                 String arch = System.getProperty("os.arch");
                 if (arch.equalsIgnoreCase("ppc64")) {
@@ -196,6 +198,7 @@ public class InstallCommand extends AbstractAction {
                     mkdir(lib);
                     copyResourceTo(new File(lib, "libwrapper.a"), "aix/ppc64/libwrapper.a", false);
                 }
+*/
             } else if (os.startsWith("Solaris") || os.startsWith("SunOS")) {
                 String arch = System.getProperty("os.arch");
                 if (arch.equalsIgnoreCase("sparc")) {
@@ -230,7 +233,10 @@ public class InstallCommand extends AbstractAction {
 
                     mkdir(lib);
                     copyResourceTo(new File(lib, "libwrapper.so"), "solaris/x86/libwrapper.so", false);
-                } else {
+                } 
+                /* 
+ * disable spark32 support as per SRT request
+ * else {
                     mkdir(bin);
 
                     File file = new File(bin, name + "-wrapper");
@@ -247,6 +253,7 @@ public class InstallCommand extends AbstractAction {
                     mkdir(lib);
                     copyResourceTo(new File(lib, "libwrapper.so"), "solaris/sparc32/libwrapper.so", false);
                 }
+/* disable HP-UX support as per SRT request
             } else if (os.startsWith("HP-UX") || os.startsWith("HPUX")) {
                 mkdir(bin);
 
@@ -263,6 +270,7 @@ public class InstallCommand extends AbstractAction {
 
                 mkdir(lib);
                 copyResourceTo(new File(lib, "libwrapper.sl"), "hpux/parisc64/libwrapper.sl", false);
+*/
             } else {
                 System.out.println("Your operating system '" + os + "' is not currently supported.");
                 return 1;
