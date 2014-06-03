@@ -45,14 +45,11 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 import org.apache.felix.utils.manifest.Clause;
 import org.apache.felix.utils.manifest.Parser;
@@ -106,7 +103,7 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
     private StartLevel startLevel;
     private long resolverTimeout = 5000;
     private Set<URI> uris;
-    private Map<URI, RepositoryImpl> repositories = new HashMap<URI, RepositoryImpl>();
+    private Map<URI, RepositoryImpl> repositories = new ConcurrentHashMap<URI, RepositoryImpl>();
     private Map<String, Map<String, Feature>> features;
     private Map<Feature, Set<Long>> installed = new HashMap<Feature, Set<Long>>();
     private String boot;
@@ -355,7 +352,8 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
      * @return the list of features repositories.
      */
     public Repository[] listRepositories() {
-        Collection<RepositoryImpl> repos = repositories.values();
+        // ENTESB-1574: the constructor will iterate over ConcurrentHashMap without the risk of ConcurrentModificationException
+        Collection<RepositoryImpl> repos = new ArrayList<RepositoryImpl>(repositories.values());
         return repos.toArray(new Repository[repos.size()]);
     }
 
