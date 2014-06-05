@@ -168,8 +168,6 @@ public class InstallCommand extends AbstractAction {
                     // TODO: figure out how to hook in the service that it starts up
                     // when the machine boots up.
                 }
-/* disable AIX support as per SRT request. Will enable in a patch at a later date when we have verfied native libs from productization.
- 
             } else if (os.startsWith("AIX")) {
                 String arch = System.getProperty("os.arch");
                 if (arch.equalsIgnoreCase("ppc64")) {
@@ -205,7 +203,6 @@ public class InstallCommand extends AbstractAction {
                     mkdir(lib);
                     copyResourceTo(new File(lib, "libwrapper.a"), "aix/ppc64/libwrapper.a", false);
                 }
-*/
             } else if (os.startsWith("Solaris") || os.startsWith("SunOS")) {
                 String arch = System.getProperty("os.arch");
                 if (arch.equalsIgnoreCase("sparc")) {
