@@ -16,13 +16,7 @@
  */
 package org.apache.karaf.client;
 
-import java.io.ByteArrayInputStream;
-import java.io.Console;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.net.URL;
 import java.security.KeyPair;
 import java.io.InterruptedIOException;
