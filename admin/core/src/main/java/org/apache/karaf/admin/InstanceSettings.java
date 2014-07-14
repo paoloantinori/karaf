@@ -26,8 +26,13 @@ public class InstanceSettings {
     private final String javaOpts;
     private final List<String> featureURLs;
     private final List<String> features;
+    private final String address;
 
     public InstanceSettings(int sshPort, int rmiRegistryPort, int rmiServerPort, String location, String javaOpts, List<String> featureURLs, List<String> features) {
+        this(sshPort, rmiRegistryPort, rmiServerPort, location, javaOpts, featureURLs, features, "0.0.0.0");
+    }
+    
+    public InstanceSettings(int sshPort, int rmiRegistryPort, int rmiServerPort, String location, String javaOpts, List<String> featureURLs, List<String> features, String address) {
         this.sshPort = sshPort;
         this.rmiRegistryPort = rmiRegistryPort;
         this.rmiServerPort = rmiServerPort;
@@ -35,6 +40,7 @@ public class InstanceSettings {
         this.javaOpts = javaOpts;
         this.featureURLs = featureURLs;
         this.features = features;
+        this.address = address;
     }
 
     public int getSshPort() {
@@ -64,6 +70,10 @@ public class InstanceSettings {
     public List<String> getFeatures() {
         return features;
     }
+    
+    public String getAddress() {
+        return this.address;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -80,7 +90,8 @@ public class InstanceSettings {
                (location == null ? is.location == null : location.equals(is.location)) &&
                (javaOpts == null ? is.javaOpts == null : javaOpts.equals(is.javaOpts)) &&
                (featureURLs == null ? is.featureURLs == null : featureURLs.equals(is.featureURLs)) &&
-               (features == null ? is.features == null : features.equals(is.features));
+               (features == null ? is.features == null : features.equals(is.features)) &&
+               (address == null ? is.address == null : address.equals(is.address));
     }
 
     @Override
@@ -90,6 +101,7 @@ public class InstanceSettings {
         result = 31 * result + (javaOpts != null ? javaOpts.hashCode() : 0);
         result = 31 * result + (featureURLs != null ? featureURLs.hashCode() : 0);
         result = 31 * result + (features != null ? features.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
 }
