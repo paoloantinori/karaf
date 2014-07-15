@@ -19,8 +19,10 @@ package org.apache.karaf.admin.management.internal;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
@@ -60,6 +62,11 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
 
     public int createInstance(String name, int sshPort, int rmiRegistryPort, int rmiServerPort, String location, String javaOpts, String features, String featureURLs)
             throws Exception {
+        return this.createInstance(name, sshPort, rmiRegistryPort, rmiServerPort, location, javaOpts, features, featureURLs, "0.0.0.0");
+    }
+
+    public int createInstance(String name, int sshPort, int rmiRegistryPort, int rmiServerPort, String location, String javaOpts, String features, String featureURLs, String address)
+            throws Exception {
         if ("".equals(location)) {
             location = null;
         }
@@ -68,7 +75,7 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
         }
 
         InstanceSettings settings = new InstanceSettings(sshPort, rmiRegistryPort, rmiServerPort, location, javaOpts,
-                parseStringList(featureURLs), parseStringList(features));
+                parseStringList(featureURLs), parseStringList(features), address);
 
         try {
             if (threadIo != null) {
