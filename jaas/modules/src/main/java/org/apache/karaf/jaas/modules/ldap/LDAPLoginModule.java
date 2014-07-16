@@ -58,6 +58,7 @@ public class LDAPLoginModule extends AbstractKarafLoginModule {
     public final static String ROLE_NAME_ATTRIBUTE = "role.name.attribute";
     public final static String ROLE_SEARCH_SUBTREE = "role.search.subtree";
     public final static String AUTHENTICATION = "authentication";
+    public final static String ALLOW_EMPTY_PASSWORDS = "allowEmptyPasswords";
     public final static String INITIAL_CONTEXT_FACTORY = "initial.context.factory";
     public static final String CONTEXT_PREFIX = "context.";
     public final static String SSL = "ssl";
@@ -81,6 +82,7 @@ public class LDAPLoginModule extends AbstractKarafLoginModule {
     private String roleNameAttribute;
     private boolean roleSearchSubtree = true;
     private String authentication = DEFAULT_AUTHENTICATION;
+    private boolean allowEmptyPasswords = false;
     private String initialContextFactory = null;
     private boolean ssl;
     private String sslProvider;
@@ -110,6 +112,7 @@ public class LDAPLoginModule extends AbstractKarafLoginModule {
         if (authentication == null) {
             authentication = DEFAULT_AUTHENTICATION;
         }
+        allowEmptyPasswords = Boolean.parseBoolean((String) options.get(ALLOW_EMPTY_PASSWORDS));
         if (connectionURL == null || connectionURL.trim().length() == 0) {
             logger.error("No LDAP URL specified.");
         } else if (!connectionURL.startsWith("ldap:") && !connectionURL.startsWith("ldaps:")) {
@@ -164,7 +167,11 @@ public class LDAPLoginModule extends AbstractKarafLoginModule {
             // default to simple so that the provided user/password will get checked
             authentication = "simple";
         }
-        
+        if (!"none".equals(authentication) && !allowEmptyPasswords
+                && (tmpPassword == null || tmpPassword.length ==0)) {
+            throw new LoginException("Empty passwords not allowed");
+        }
+
         if (tmpPassword == null) {
             tmpPassword = new char[0];
         }
