@@ -29,6 +29,7 @@ import java.util.Map;
 
 import org.easymock.EasyMock;
 import org.easymock.IAnswer;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -44,6 +45,7 @@ import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
 
 public class GuardingEventHookTest {
+    @Ignore("ENTESB-2200")
     @SuppressWarnings("unchecked")
     @Test
     public void testEventHookEvents() throws Exception {
@@ -124,6 +126,7 @@ public class GuardingEventHookTest {
         assertNotNull(gpc.proxyMap.get(service3ID));
     }
 
+    @Ignore("ENTESB-2200")
     @SuppressWarnings("unchecked")
     @Test
     public void testEventHookProxyEvents() throws Exception {
