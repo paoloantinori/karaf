@@ -258,6 +258,11 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+          <id>fuse-public</id>
+          <name>Fuse Public Repository</name>
+          <url>https://repository.jboss.org/nexus/content/groups/fs-public</url>
+        </repository>
     </repositories>
 
     <dependencyManagement>
