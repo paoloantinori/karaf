@@ -23,26 +23,6 @@
     <repository>mvn:org.apache.karaf.assemblies.features/standard/${project.version}/xml/features</repository>
     <repository>mvn:org.ops4j.pax.cdi/pax-cdi-features/${pax.cdi.version}/xml/features</repository>
 
-    <feature name="transaction" description="OSGi Transaction Manager" version="1.0.0" resolver="(obr)">
-        <details>JTA implementation provided by Apache Aries Transaction 1.0.0</details>
-        <config name="org.apache.aries.transaction">
-            aries.transaction.recoverable = true
-            aries.transaction.timeout = 600
-            aries.transaction.howl.logFileDir = ${karaf.data}/txlog
-            aries.transaction.howl.maxLogFiles = 2
-            aries.transaction.howl.maxBlocksPerFile = 512
-            aries.transaction.howl.bufferSizeKBytes = 4
-        </config>
-        <bundle dependency="true" start-level="30">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo.jta-spec.version}</bundle>
-        <bundle dependency="true" start-level="20">mvn:org.apache.aries/org.apache.aries.util/${aries.util.version}</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.manager/1.0.0</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.jdbc/1.0.0</bundle>
-        <conditional>
-            <condition>aries-blueprint</condition>
-            <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.blueprint/${aries.transaction.blueprint.version}</bundle>
-        </conditional>
-    </feature>
-
     <feature name="transaction" description="OSGi Transaction Manager" version="1.1.1" resolver="(obr)">
         <details>JTA implementation provided by Apache Aries Transaction 1.1.1</details>
         <config name="org.apache.aries.transaction">
@@ -57,26 +37,6 @@
         <bundle dependency="true" start-level="20">mvn:org.apache.aries/org.apache.aries.util/${aries.util.version}</bundle>
         <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.manager/1.1.1</bundle>
         <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.jdbc/2.1.0</bundle>
-        <conditional>
-            <condition>aries-blueprint</condition>
-            <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.blueprint/${aries.transaction.blueprint.version}</bundle>
-        </conditional>
-    </feature>
-
-    <feature name="transaction" description="OSGi Transaction Manager" version="1.0.1" resolver="(obr)">
-        <details>JTA implementation provided by Apache Aries Transaction 1.0.1</details>
-        <config name="org.apache.aries.transaction">
-            aries.transaction.recoverable = true
-            aries.transaction.timeout = 600
-            aries.transaction.howl.logFileDir = ${karaf.data}/txlog
-            aries.transaction.howl.maxLogFiles = 2
-            aries.transaction.howl.maxBlocksPerFile = 512
-            aries.transaction.howl.bufferSizeKBytes = 4
-        </config>
-        <bundle dependency="true" start-level="30">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo.jta-spec.version}</bundle>
-        <bundle dependency="true" start-level="20">mvn:org.apache.aries/org.apache.aries.util/${aries.util.version}</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.manager/1.0.1</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.jdbc/1.0.0</bundle>
         <conditional>
             <condition>aries-blueprint</condition>
             <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.blueprint/${aries.transaction.blueprint.version}</bundle>
