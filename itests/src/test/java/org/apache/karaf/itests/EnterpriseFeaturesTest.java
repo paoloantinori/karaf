@@ -26,21 +26,12 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     @Test
     public void testTransactionFeatures() throws Exception {
         System.out.println("");
-        System.out.println("===== TESTING TRANSACTION 1.0.0 FEATURE =====");
-        installAndAssertFeature("transaction", "1.0.0");
-        System.out.println("");
-        System.out.println("===== TESTING TRANSACTION 1.0.1 FEATURE =====");
-        installAndAssertFeature("transaction", "1.0.1");
-        System.out.println("");
         System.out.println("===== TESTING TRANSACTION 1.1.0 FEATURE =====");
-        installAndAssertFeature("transaction", "1.1.0");
+        installAndAssertFeature("transaction", "1.1.1");
     }
 
     @Test
     public void testConnectorFeatures() throws Exception {
-        System.out.println("");
-        System.out.println("===== TESTING CONNECTOR 2.2.2 FEATURE =====");
-        installAndAssertFeature("connector", "2.2.2");
         System.out.println("");
         System.out.println("===== TESTING CONNECTOR 3.1.1 FEATURE =====");
         installAndAssertFeature("connector", "3.1.1");

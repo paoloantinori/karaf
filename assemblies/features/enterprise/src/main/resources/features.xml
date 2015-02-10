@@ -36,7 +36,6 @@
         <bundle dependency="true" start-level="30">mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo.jta-spec.version}</bundle>
         <bundle dependency="true" start-level="20">mvn:org.apache.aries/org.apache.aries.util/${aries.util.version}</bundle>
         <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.manager/1.1.1</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.jdbc/2.1.0</bundle>
         <conditional>
             <condition>aries-blueprint</condition>
             <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.blueprint/${aries.transaction.blueprint.version}</bundle>
@@ -49,6 +48,7 @@
         <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-j2ee-connector_1.6_spec/1.0</bundle>
         <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-validation_1.0_spec/1.1</bundle>
         <bundle>mvn:org.apache.geronimo.components/geronimo-connector/3.1.1</bundle>
+        <bundle start-level="30">mvn:org.apache.aries.transaction/org.apache.aries.transaction.jdbc/2.1.0</bundle>
     </feature>
 
     <feature name="jpa" description="OSGi Persistence Container 2.0" version="1.0.1" resolver="(obr)">
@@ -189,9 +189,9 @@
         <bundle start-level="30">mvn:org.apache.xbean/xbean-naming/${xbean.version}</bundle>
         <bundle start-level="30">mvn:org.apache.karaf.jndi/org.apache.karaf.jndi.core/${project.version}</bundle>
         <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.api/${aries.jndi.api.version}</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.core/${aries.jndi.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.core/${aries.jndi.core.version}</bundle>
         <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.rmi/${aries.jndi.version}</bundle>
-        <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.url/${aries.jndi.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.url/${aries.jndi.url.version}</bundle>
         <bundle start-level="30">mvn:org.apache.aries.jndi/org.apache.aries.jndi.legacy.support/${aries.jndi.version}</bundle>
         <conditional>
             <condition>shell</condition>
