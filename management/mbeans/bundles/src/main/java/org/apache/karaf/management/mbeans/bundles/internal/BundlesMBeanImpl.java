@@ -17,6 +17,7 @@
 package org.apache.karaf.management.mbeans.bundles.internal;
 
 import org.apache.karaf.management.mbeans.bundles.BundlesMBean;
+import org.apache.karaf.util.bundles.BundleUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -238,7 +239,7 @@ public class BundlesMBeanImpl extends StandardMBean implements BundlesMBean {
 
         if (location == null) {
             for (Bundle bundle : bundles) {
-                bundle.update();
+                BundleUtils.update(bundle);
             }
             return;
         }
@@ -247,8 +248,7 @@ public class BundlesMBeanImpl extends StandardMBean implements BundlesMBean {
             throw new IllegalArgumentException("Provided bundle Id doesn't return any bundle or more than one bundle selected");
         }
 
-        InputStream is = new URL(location).openStream();
-        bundles.get(0).update(is);
+        BundleUtils.update(bundles.get(0), new URL(location));
     }
 
     public void resolve() throws Exception {

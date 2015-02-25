@@ -48,6 +48,12 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.karaf</groupId>
+            <artifactId>org.apache.karaf.util</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- For Blueprint state -->
         <dependency>
             <groupId>org.apache.aries.blueprint</groupId>
@@ -105,7 +111,8 @@
                             *
                         </Import-Package>
                         <Private-Package>
-                            org.apache.karaf.management.mbeans.bundles.internal
+                            org.apache.karaf.management.mbeans.bundles.internal,
+                            org.apache.karaf.util.bundles
                         </Private-Package>
                     </instructions>
                 </configuration>

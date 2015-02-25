@@ -31,20 +31,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.karaf.util.bundles.BundleUtils;
 import org.ops4j.pax.url.maven.commons.MavenConfiguration;
 import org.ops4j.pax.url.maven.commons.MavenConfigurationImpl;
 import org.ops4j.pax.url.maven.commons.MavenRepositoryURL;
 import org.ops4j.pax.url.mvn.ServiceConstants;
 import org.ops4j.pax.url.mvn.internal.Parser;
 import org.ops4j.util.property.DictionaryPropertyResolver;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.BundleEvent;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.BundleListener;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.*;
 import org.osgi.framework.wiring.FrameworkWiring;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -111,7 +105,20 @@ public class BundleWatcher implements Runnable, BundleListener {
                             try {
                                 logger.info("[Watch] Updating watched bundle: " + bundle.getSymbolicName() + " (" + bundle.getVersion() + ")");
                                 System.out.println("[Watch] Updating watched bundle: " + bundle.getSymbolicName() + " (" + bundle.getVersion() + ")");
-                                bundle.update(is);
+                                // We don't really want to loose the update-location
+                                String updateLocation = getLocation(bundle);
+                                if (!updateLocation.equals(bundle.getLocation())) {
+                                    File file = BundleUtils.fixBundleWithUpdateLocation(is, updateLocation);
+                                    FileInputStream fis = new FileInputStream(file);
+                                    try {
+                                        bundle.update(fis);
+                                    } finally {
+                                        fis.close();
+                                    }
+                                    file.delete();
+                                } else {
+                                    bundle.update(is);
+                                }
                                 updated.add(bundle);
                             } finally {
                                 is.close();
@@ -179,12 +186,17 @@ public class BundleWatcher implements Runnable, BundleListener {
      */
     public File getBundleExternalLocation(File localRepository, Bundle bundle) {
         try {
-            Parser p = new Parser(bundle.getLocation().substring(4));
+            Parser p = new Parser(getLocation(bundle).substring(4));
             return new File(localRepository.getPath() + File.separator + p.getArtifactPath());
         } catch (MalformedURLException e) {
             logger.error("Could not parse artifact path for bundle" + bundle.getSymbolicName(), e);
         }
         return null;
+    }
+
+    private String getLocation(Bundle bundle) {
+        String location = bundle.getHeaders().get(Constants.BUNDLE_UPDATELOCATION);
+        return location != null ? location : bundle.getLocation();
     }
 
     public File getLocalRepository() {

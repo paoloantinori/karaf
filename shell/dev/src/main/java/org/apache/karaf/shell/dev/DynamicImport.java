@@ -26,9 +26,11 @@ import java.util.Set;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
+import org.apache.karaf.util.bundles.BundleUtils;
 import org.ops4j.pax.url.wrap.Handler;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.packageadmin.ExportedPackage;
 import org.osgi.service.packageadmin.PackageAdmin;
@@ -64,14 +66,15 @@ public class DynamicImport extends AbstractBundleCommand {
     private void enableDynamicImports(Bundle bundle) throws IOException, BundleException {
         System.out.printf("Enabling dynamic imports on bundle %s%n", bundle);
 
+        String orgLocation = getLocation(bundle);
         String location =
                 String.format("wrap:%s$" +
                         "Bundle-UpdateLocation=%s&" +
                         "DynamicImport-Package=*&" +
                         "%s=%s&" +
                         "overwrite=merge",
-                        bundle.getLocation(),
-                        bundle.getLocation(),
+                        orgLocation,
+                        orgLocation,
                         ORIGINAL_WIRES,
                         explode(getWiredBundles(bundle).keySet()));
         LOG.debug(format("Updating %s with URL %s", bundle, location));
@@ -81,13 +84,18 @@ public class DynamicImport extends AbstractBundleCommand {
         getPackageAdmin().refreshPackages(new Bundle[] {bundle});
     }
 
+    private String getLocation(Bundle bundle) {
+        String location = bundle.getHeaders().get(Constants.BUNDLE_UPDATELOCATION);
+        return location != null ? location : bundle.getLocation();
+    }
+
     /*
      * Disable DynamicImport=* on the bundle
      *
      * At this time, we will also calculate the difference in package wiring for the bundle compared to
      * when we enabled the DynamicImport
      */
-    private void disableDynamicImports(Bundle bundle) throws BundleException {
+    private void disableDynamicImports(Bundle bundle) throws IOException, BundleException {
         System.out.printf("Disabling dynamic imports on bundle %s%n", bundle);
 
         Set<String> current = getWiredBundles(bundle).keySet();
@@ -104,7 +112,7 @@ public class DynamicImport extends AbstractBundleCommand {
             }
         }
 
-        bundle.update();
+        BundleUtils.update(bundle);
     }
 
     /*

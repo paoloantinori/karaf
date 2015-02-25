@@ -107,6 +107,7 @@
                         </Import-Package>
                         <Private-Package>
                             org.apache.felix.utils*;-split-package:=merge-first,
+                            org.apache.karaf.util.bundles,
                             org.ops4j.pax.url.mvn
                         </Private-Package>
                     </instructions>

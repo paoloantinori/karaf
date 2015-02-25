@@ -120,7 +120,8 @@ public class ListBundles extends OsgiCommandSupport {
 	                // Overwrite the default value is the user specifically
 	                // requested to display one or the other.
 	                if (showLoc) {
-	                    name = bundles[i].getLocation();
+                        name = (String) bundles[i].getHeaders().get(Constants.BUNDLE_UPDATELOCATION);
+                        name = (name == null) ? bundles[i].getLocation() : name;
 	                }
 	                else if (showSymbolic) {
 	                    name = bundles[i].getSymbolicName();

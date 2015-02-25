@@ -21,6 +21,7 @@ import java.net.URL;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.karaf.util.bundles.BundleUtils;
 import org.osgi.framework.Bundle;
 
 @Command(scope = "osgi", name = "update", description = "Update bundle.")
@@ -31,10 +32,9 @@ public class UpdateBundle extends BundleCommand {
 
 	protected void doExecute(Bundle bundle) throws Exception {
 		if (location != null) {
-			InputStream is = new URL(location).openStream();
-			bundle.update(is);
+			BundleUtils.update(bundle, new URL(location));
 		} else {
-			bundle.update();
+			BundleUtils.update(bundle);
 		}
 	}
 

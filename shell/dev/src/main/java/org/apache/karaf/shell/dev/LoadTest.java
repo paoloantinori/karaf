@@ -29,6 +29,7 @@ import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.apache.felix.service.command.CommandSession;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
+import org.apache.karaf.util.bundles.BundleUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkEvent;
@@ -93,7 +94,7 @@ public class LoadTest extends OsgiCommandSupport {
                                         }
                                         if (rand.nextInt(100) < refresh) {
                                             try {
-                                                bundles[b].update();
+                                                BundleUtils.update(bundles[b]);
                                                 final CountDownLatch latch = new CountDownLatch(1);
                                                 wiring.refreshBundles(Collections.singletonList(bundles[b]), new FrameworkListener() {
                                                     public void frameworkEvent(FrameworkEvent event) {
