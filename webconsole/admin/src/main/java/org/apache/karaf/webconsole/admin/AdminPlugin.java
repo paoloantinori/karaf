@@ -310,7 +310,7 @@ public class AdminPlugin extends AbstractWebConsolePlugin {
 
     private boolean createInstance(String name, InstanceSettings settings) {
         try {
-            adminService.createInstance(name, settings);
+            adminService.createInstance(name, settings, false);
             return true;
         } catch (Exception ex) {
             Logger.getLogger(AdminPlugin.class.getName()).log(Level.SEVERE, null, ex);

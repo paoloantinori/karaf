@@ -231,7 +231,11 @@ public class AdminServiceImpl implements AdminService {
     public synchronized void refreshInstance() throws Exception {
     }
 
-    public synchronized Instance createInstance(final String name, final InstanceSettings settings) throws Exception {
+    public Instance createInstance(String name, InstanceSettings settings) throws Exception {
+        return createInstance(name, settings, true);
+    }
+
+    public synchronized Instance createInstance(final String name, final InstanceSettings settings, boolean printOutput) throws Exception {
         return execute(new Task<Instance>() {
             public Instance call(State state) throws IOException {
                 if (state.instances.get(name) != null) {
@@ -526,7 +530,11 @@ public class AdminServiceImpl implements AdminService {
         }, true);
     }
 
-    public void renameInstance(final String oldName, final String newName) throws Exception {
+    public void renameInstance(String name, String newName) throws Exception {
+        renameInstance(name, newName, true);
+    }
+
+    public void renameInstance(final String oldName, final String newName, boolean printOutput) throws Exception {
         execute(new Task<Object>() {
             public Object call(State state) throws IOException {
                 if (state.instances.get(newName) != null) {
@@ -586,7 +594,11 @@ public class AdminServiceImpl implements AdminService {
         }, true);
     }
 
-    public synchronized Instance cloneInstance(final String name, final String cloneName, final InstanceSettings settings) throws Exception {
+    public Instance cloneInstance(String name, String cloneName, InstanceSettings settings) throws Exception {
+        return cloneInstance(name, cloneName, settings, true);
+    }
+
+    public synchronized Instance cloneInstance(final String name, final String cloneName, final InstanceSettings settings, boolean printOutput) throws Exception {
         final int instanceSshPort = getInstanceSshPort(name);
         final int instanceRmiRegistryPort = getInstanceRmiRegistryPort(name);
         final int instanceRmiServerPort = getInstanceRmiServerPort(name);

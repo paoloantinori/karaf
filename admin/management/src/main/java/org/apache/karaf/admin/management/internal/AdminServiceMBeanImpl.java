@@ -49,7 +49,7 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
     }
 
     public int createInstance(String name, InstanceSettings settings) throws Exception {
-        Instance inst = adminService.createInstance(name, settings);
+        Instance inst = adminService.createInstance(name, settings, false);
         if (inst != null) {
             return inst.getPid();
         } else {
@@ -74,7 +74,7 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
         InstanceSettings settings = new InstanceSettings(sshPort, rmiRegistryPort, rmiServerPort, location, javaOpts,
                 parseStringList(featureURLs), parseStringList(features), new HashMap<String, URL>(), new HashMap<String, URL>(), address);
 
-        Instance inst = adminService.createInstance(name, settings);
+        Instance inst = adminService.createInstance(name, settings, false);
         if (inst != null) {
             return inst.getPid();
         } else {
@@ -137,11 +137,11 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
     }
 
     public void renameInstance(String originalName, String newName) throws Exception {
-        adminService.renameInstance(originalName, newName);
+        adminService.renameInstance(originalName, newName, false);
     }
 
     public void cloneInstance(String name, String cloneName, InstanceSettings settings) throws Exception {
-        adminService.cloneInstance(name, cloneName, settings);
+        adminService.cloneInstance(name, cloneName, settings, false);
     }
 
     public void cloneInstance(String name, String cloneName, int sshPort, int rmiRegistryPort, int rmiServerPort, String location, String javaOpts) throws Exception {
@@ -153,7 +153,7 @@ public class AdminServiceMBeanImpl extends StandardMBean implements AdminService
         }
 
         InstanceSettings settings = new InstanceSettings(sshPort, rmiRegistryPort, rmiServerPort, location, javaOpts, null, null);
-        adminService.cloneInstance(name, cloneName, settings);
+        adminService.cloneInstance(name, cloneName, settings, false);
     }
 
     public TabularData getInstances() throws Exception {
