@@ -56,7 +56,7 @@ public class AdminPluginTest extends TestCase {
         InstanceSettings is = 
             new InstanceSettings(123, 456, 789,  null, null, Collections.singletonList("http://someURL"), Arrays.asList("abc", "def"));
         AdminService adminService = EasyMock.createMock(AdminService.class);
-        EasyMock.expect(adminService.createInstance("instance1", is)).andReturn(null);
+        EasyMock.expect(adminService.createInstance("instance1", is, false)).andReturn(null);
         EasyMock.expect(adminService.getInstances()).andReturn(new Instance[] {}).anyTimes();
         EasyMock.replay(adminService);
         

@@ -41,7 +41,7 @@ public class AdminServiceMBeanImplTest extends TestCase {
         EasyMock.replay(inst);
 
         AdminService as = EasyMock.createMock(AdminService.class);
-        EasyMock.expect(as.createInstance("t1", is)).andReturn(inst);
+        EasyMock.expect(as.createInstance("t1", is, false)).andReturn(inst);
         EasyMock.replay(as);
         
         AdminServiceMBeanImpl ab = new AdminServiceMBeanImpl();
@@ -56,7 +56,7 @@ public class AdminServiceMBeanImplTest extends TestCase {
                 Collections.<String>emptyList(), Collections.<String>emptyList());
         
         AdminService as = EasyMock.createMock(AdminService.class);
-        EasyMock.expect(as.createInstance("t1", is)).andReturn(null);
+        EasyMock.expect(as.createInstance("t1", is, false)).andReturn(null);
         EasyMock.replay(as);
         
         AdminServiceMBeanImpl ab = new AdminServiceMBeanImpl();
