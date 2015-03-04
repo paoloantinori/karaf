@@ -207,7 +207,7 @@
         <!-- the features from pax.cdi 0.10.0 have conflicting bundles with features from pax.web 3.1.4 (swissbox) -->
         <pax.cdi.version>0.11.0</pax.cdi.version>
         <pax.exam.version>4.4.0</pax.exam.version>
-        <pax.logging.version>1.8.1</pax.logging.version>
+        <pax.logging.version>1.8.2</pax.logging.version>
         <pax.url.version>2.3.0</pax.url.version>
         <pax.swissbox.version>1.8.0</pax.swissbox.version>
         <pax.web.version>3.1.4</pax.web.version>
