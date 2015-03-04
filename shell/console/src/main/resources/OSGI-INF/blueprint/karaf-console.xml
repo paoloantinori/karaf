@@ -124,7 +124,11 @@
 
     <!-- Command execution logging -->
     <service auto-export="interfaces">
-        <bean class="org.apache.karaf.shell.console.jline.LoggingCommandSessionListener" />
+        <bean class="org.apache.karaf.shell.console.jline.LoggingCommandSessionListener">
+            <property name="filters">
+                <reference-list availability="optional" interface="org.apache.karaf.shell.console.CommandLoggingFilter" />
+            </property>
+        </bean>
     </service>
 
 </blueprint>
