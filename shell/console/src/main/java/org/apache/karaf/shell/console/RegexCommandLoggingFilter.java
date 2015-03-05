@@ -55,7 +55,7 @@ public class RegexCommandLoggingFilter implements CommandLoggingFilter {
     private int group=1;
     private String replacement=DEFAULT_REPLACEMENT;
 
-    ArrayList<ReplaceRegEx> regexs = new ArrayList<>();
+    ArrayList<ReplaceRegEx> regexs = new ArrayList<ReplaceRegEx>();
 
     public CharSequence filter(CharSequence command) {
         if( pattern!=null ) {
