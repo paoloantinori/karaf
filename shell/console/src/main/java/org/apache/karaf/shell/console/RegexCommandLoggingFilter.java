@@ -32,9 +32,12 @@ public class RegexCommandLoggingFilter implements CommandLoggingFilter {
     public CharSequence filter(CharSequence command) {
         if( pattern!=null ) {
             Matcher m = pattern.matcher(command);
-            if( m.matches() ) {
+            int offset = 0;
+            while( m.find() ) {
                 String replace = replace(m.group(group));
-                command = new StringBuilder(command).replace(m.start(group), m.end(group), replace).toString();
+                int origLen = command.length();
+                command = new StringBuilder(command).replace(m.start(group)+offset, m.end(group)+offset, replace).toString();
+                offset += command.length() - origLen;
             }
         }
         return command;
@@ -49,7 +52,7 @@ public class RegexCommandLoggingFilter implements CommandLoggingFilter {
     }
 
     public void setPattern(String pattern) {
-        this.pattern = Pattern.compile(pattern);
+        this.pattern = Pattern.compile(";* *"+pattern);
     }
 
     public String getReplacement() {
