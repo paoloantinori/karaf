@@ -142,14 +142,6 @@
         </conditional>
     </feature>
 
-    <feature name="openwebbeans" description="Apache OpenWebBeans CDI container support" version="${openwebbeans.version}" resolver="(obr)">
-        <details>Add support of Apache OpenWebBeans CDI container.</details>
-        <feature>http</feature>
-        <feature>pax-cdi-openwebbeans</feature>
-        <bundle>mvn:org.apache.openwebbeans/openwebbeans-impl/${openwebbeans.version}</bundle>
-        <bundle>mvn:org.apache.openwebbeans/openwebbeans-osgi/${openwebbeans.version}</bundle>
-    </feature>
-
     <feature name="weld" description="JBoss Weld CDI container support" version="${weld.version}" resolver="(obr)">
         <details>Add support of JBoss Weld CDI container.</details>
         <feature>pax-cdi-weld</feature>

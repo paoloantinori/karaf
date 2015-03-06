@@ -199,7 +199,6 @@
         <log4j.version>1.2.17</log4j.version>
         <maven.version>3.0-alpha-2</maven.version>
         <mina.version>2.0.9</mina.version>
-        <openwebbeans.version>1.2.6</openwebbeans.version>
         <osgi.version>5.0.0</osgi.version>
         <org.json.version>20140107</org.json.version>
         <!-- aligned to pax-web 3.1.4 (feature "pax-war") -->

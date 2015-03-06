@@ -87,13 +87,6 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     }
 
     @Test
-    public void testOpenwebbeansFeature() throws Exception {
-        System.out.println("");
-        System.out.println("===== TESTING OPENWEBBEANS FEATURE =====");
-        installAndAssertFeature("openwebbeans");
-    }
-
-    @Test
     public void testWeldFeature() throws Exception {
         System.out.println("");
         System.out.println("===== TESTING WELD FEATURE =====");
