@@ -745,7 +745,7 @@ public class AdminServiceImpl implements AdminService {
                 public String call(org.apache.felix.utils.properties.Properties properties) throws IOException {
                     return properties.get(key).toString();
                 }
-            }, false);
+            });
         } catch (IOException e) {
             return "0.0.0.0";
         }
@@ -1208,10 +1208,10 @@ public class AdminServiceImpl implements AdminService {
                     public void run(org.apache.felix.utils.properties.Properties properties) throws IOException {
                         properties.put(key, host);
                     }
-                }, true);
+                });
                 return null;
             }
-        }, true);
+        });
     }
 
 }
