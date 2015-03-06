@@ -45,16 +45,6 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     }
 
     @Test
-    public void testOpenJpaFeatures() throws Exception {
-        System.out.println("");
-        System.out.println("===== TESTING OPENJPA 2.2.2 FEATURE =====");
-        installAndAssertFeature("openjpa", "2.2.2");
-        System.out.println("");
-        System.out.println("===== TESTING OPENJPA 2.3.0 FEATURE =====");
-        installAndAssertFeature("openjpa", "2.3.0");
-    }
-
-    @Test
     public void testHibernateFeatures() throws Exception {
         System.out.println("");
         System.out.println("===== TESTING HIBERNATE " + System.getProperty("hibernate43.version") + " FEATURE =====");
