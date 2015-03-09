@@ -22,6 +22,8 @@ import java.io.*;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeoutException;
 import javax.security.auth.Subject;
 
 import org.apache.felix.gogo.commands.CommandException;
@@ -107,6 +109,7 @@ public class ShellCommandFactory implements CommandFactory {
                     commandSession.put(e.getKey(), e.getValue());
                 }
                 try {
+                    waitForIfCommands(commandSession);
                     Subject subject = this.session != null ? this.session.getAttribute(KarafJaasAuthenticator.SUBJECT_ATTRIBUTE_KEY) : null;
                     Object result;
                     if (subject != null) {
@@ -177,6 +180,21 @@ public class ShellCommandFactory implements CommandFactory {
                 commandSession.close();
                 callback.onExit(exitStatus);
             }
+        }
+
+        private void waitForIfCommands(CommandSession commandSession) throws TimeoutException, InterruptedException {
+            Set<String> names = (Set<String>) commandSession.get(".commands");
+            if( names.contains("shell:if") ) {
+                return;
+            }
+            // Lets wait up to 30 seconds for the shell:if command to get registered.
+            for (int i = 0; i < 300; i++) {
+                Thread.sleep(100);
+                if( names.contains("shell:if") ) {
+                    return;
+                }
+            }
+            throw new TimeoutException("Command 'shell:if' not available");
         }
 
         public void destroy() {
