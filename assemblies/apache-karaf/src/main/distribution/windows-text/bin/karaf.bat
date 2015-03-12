@@ -44,6 +44,9 @@ if "%JAVA_MIN_MEM%" == "" (
 if "%JAVA_MAX_MEM%" == "" (
     set JAVA_MAX_MEM=512M
 )
+if "%JAVA_MAX_PERM_MEM%" == "" (
+    set JAVA_MAX_PERM_MEM=128M
+)
 
 goto BEGIN
 
@@ -98,7 +101,7 @@ set LOCAL_CLASSPATH=%CLASSPATH%
 set JAVA_MODE=-server
 
 set CLASSPATH=%LOCAL_CLASSPATH%;%KARAF_BASE%\conf
-set DEFAULT_JAVA_DEBUG_OPTS=-Xdebug -Xnoagent -Djava.compiler=NONE -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+set DEFAULT_JAVA_DEBUG_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
 
 if "%LOCAL_CLASSPATH%" == "" goto :KARAF_CLASSPATH_EMPTY
     set CLASSPATH=%LOCAL_CLASSPATH%;%KARAF_BASE%\conf
