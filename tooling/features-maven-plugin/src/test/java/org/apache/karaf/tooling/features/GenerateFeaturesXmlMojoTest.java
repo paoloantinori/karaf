@@ -94,14 +94,19 @@ public class GenerateFeaturesXmlMojoTest extends TestCase {
         PrintStream out = new PrintStream(byteStream);
         
 		feature.write(out);
-		
+
 		String source = byteStream.toString("UTF-8");
 		
 		System.out.println(source);
 		
 		String target = FileUtils.fileRead("./src/test/resources/features-01.xml", "UTF-8");
-		
-		assertTrue(target.contains(source));
+
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            source = source.replace("\n", "").replace("\r", "");
+            target = target.replace("\n", "").replace("\r", "");
+        }
+
+        assertTrue(target.contains(source));
         
     } 
 
