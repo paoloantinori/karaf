@@ -67,7 +67,7 @@ public class MainStartTest {
     public void testStopWithTimeout() throws Exception {
         File basedir = new File(getClass().getClassLoader().getResource("foo").getPath()).getParentFile();
         File home = new File(basedir, "test-karaf-home");
-        File data = new File(home, "data");
+        File data = new File(home, "data" + System.currentTimeMillis());
 
         Utils.deleteDirectory(data);
 
