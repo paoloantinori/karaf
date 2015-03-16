@@ -82,12 +82,13 @@ public class StandardFeaturesTest extends KarafTestSupport {
         installAndAssertFeature("war");
     }
 
+    /* ENTESB-2833 - not shipping webconsole in JBoss Fuse/A-MQ
     @Test
     public void testWebconsoleFeature() throws Exception {
         System.out.println("");
         System.out.println("===== TESTING WEBCONSOLE FEATURE =====");
         installAndAssertFeature("webconsole");
-    }
+    } */
 
     @Test
     public void testEventadminFeature() throws Exception {
