@@ -483,9 +483,10 @@ public class AdminServiceImpl implements AdminService {
         if (pid.intValue() != 0 && isInstanceRoot(name)) {
             Process process;
             try {
+                Thread.sleep(3000);//sleep a bit to ensure the instances/instance.properties get flushed
                 process = ProcessBuilderFactory.newInstance().newBuilder().attach(pid.intValue());
                 process.destroy(); 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 LOGGER.debug("Unable to cleanly shutdown root instance ", e);
             }
                      
