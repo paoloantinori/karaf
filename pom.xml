@@ -267,6 +267,11 @@
           <name>Fuse Public Repository</name>
           <url>https://repository.jboss.org/nexus/content/groups/fs-public</url>
         </repository>
+        <repository>
+          <id>fuse-beta</id>
+          <name>Fuse Beta Repository</name>
+          <url>https://repository.jboss.org/nexus/content/repositories/fs-beta</url>
+        </repository>
     </repositories>
 
     <dependencyManagement>
