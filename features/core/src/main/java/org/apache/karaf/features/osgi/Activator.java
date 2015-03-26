@@ -68,6 +68,7 @@ public class Activator implements BundleActivator {
         featuresService.setRespectStartLvlDuringFeatureStartup(getBool(configuration, "respectStartLvlDuringFeatureStartup", false));
         featuresService.setResolverTimeout(getLong(configuration, "resolverTimeout", 5000));
         featuresService.setBundleContext(bundleContext);
+        featuresService.setBlackList(getString(configuration, "featuresBlackList", null));
 
         featuresListenerTracker = new ServiceTracker<FeaturesListener, FeaturesListener>(
                 bundleContext,

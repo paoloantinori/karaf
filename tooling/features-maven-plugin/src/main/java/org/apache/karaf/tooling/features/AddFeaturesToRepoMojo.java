@@ -38,6 +38,7 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.felix.utils.manifest.Parser;
 import org.apache.felix.utils.version.VersionRange;
 import org.apache.felix.utils.version.VersionTable;
 import org.apache.maven.artifact.Artifact;
@@ -78,6 +79,11 @@ public class AddFeaturesToRepoMojo extends MojoSupport {
      * @parameter
      */
     private List<String> features;
+
+    /**
+     * @parameter
+     */
+    private String blackList;
 
     /**
      * @parameter expression="${project.build.directory}/features-repo"
@@ -240,13 +246,33 @@ public class AddFeaturesToRepoMojo extends MojoSupport {
         }
         Repository repo = new Repository(URI.create(translateFromMaven(uri.replaceAll(" ", "%20"))));
         for (Feature f : repo.getFeatures()) {
-            featuresMap.put(f.getName() + "/" + f.getVersion(), f);
+            if (!isBlackListed(f)) {
+                featuresMap.put(f.getName() + "/" + f.getVersion(), f);
+            }
         }
         if (resolveDefinedRepositoriesRecursively) {
             for (String r : repo.getDefinedRepositories()) {
                 retrieveDescriptorsRecursively(r, bundles, featuresMap);
             }
         }
+    }
+
+    private boolean isBlackListed(Feature feature) {
+        if (blackList != null) {
+            for (String blf : Parser.parseDelimitedString(blackList, ",")) {
+                if (blf.contains("/")) {
+                    String[] s =  blf.split("/");
+                    VersionRange range = new VersionRange(s[1], true);
+                    Version version = VersionTable.getVersion(feature.getVersion());
+                    if (s[0].equals(feature.getName()) && range.contains(version)) {
+                        return true;
+                    }
+                } else if (blf.equals(feature.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     // resolves the bundle in question

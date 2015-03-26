@@ -16,8 +16,12 @@
  */
 package org.apache.karaf.features.internal;
 
+import org.apache.felix.utils.manifest.Parser;
+import org.apache.felix.utils.version.VersionRange;
+import org.apache.felix.utils.version.VersionTable;
 import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.Repository;
+import org.osgi.framework.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -49,9 +53,15 @@ public class RepositoryImpl implements Repository {
     private List<Feature> features;
     private List<URI> repositories;
     private boolean valid;
+    private String blackList;
 
     public RepositoryImpl(URI uri) {
         this.uri = uri;
+    }
+
+    public RepositoryImpl(URI uri, String blackList) {
+        this.uri = uri;
+        this.blackList = blackList;
     }
 
     public String getName() {
@@ -179,7 +189,9 @@ public class RepositoryImpl implements Repository {
                         f.addConditional(conditional);
                     }
 
-                    features.add(f);
+                    if (!isBlackListed(f)) {
+                        features.add(f);
+                    }
                 }
             }
         } catch (SAXException e) {
@@ -195,6 +207,24 @@ public class RepositoryImpl implements Repository {
             valid = false;
             throw (IOException) new IOException(e.getMessage() + " : " + uri).initCause(e);
         }
+    }
+
+    private boolean isBlackListed(Feature feature) {
+        if (blackList != null) {
+            for (String blf : Parser.parseDelimitedString(blackList, ",")) {
+                if (blf.contains("/")) {
+                    String[] s =  blf.split("/");
+                    VersionRange range = new VersionRange(s[1], true);
+                    Version version = VersionTable.getVersion(feature.getVersion());
+                    if (s[0].equals(feature.getName()) && range.contains(version)) {
+                        return true;
+                    }
+                } else if (blf.equals(feature.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private void parseContent(Element e, ContentImpl content, int absl) throws IOException {

@@ -128,6 +128,7 @@ public class FeaturesServiceImpl implements FeaturesService {
     private List<FeaturesListener> listeners = new CopyOnWriteArrayIdentityList<FeaturesListener>();
     private ThreadLocal<Repository> repo = new ThreadLocal<Repository>();
     private EventAdminListener eventAdminListener;
+    private String blackList;
 
     public FeaturesServiceImpl() {
     }
@@ -192,6 +193,10 @@ public class FeaturesServiceImpl implements FeaturesService {
         this.bootFeaturesAsynchronous = bootFeaturesAsynchronous;
     }
 
+    public void setBlackList(String blackList) {
+        this.blackList = blackList;
+    }
+
     /**
      * Validate repository.
      *
@@ -242,7 +247,7 @@ public class FeaturesServiceImpl implements FeaturesService {
     protected RepositoryImpl internalAddRepository(URI uri) throws Exception {
         validateRepository(uri);
         RepositoryImpl repo = null;
-        repo = new RepositoryImpl(uri);
+        repo = new RepositoryImpl(uri, blackList);
         repositories.put(uri, repo);
         uris.add(uri);
         repo.load();
