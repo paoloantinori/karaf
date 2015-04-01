@@ -16,6 +16,7 @@
  */
 package org.apache.karaf.features.internal;
 
+import static java.util.jar.JarFile.MANIFEST_NAME;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,6 +51,7 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
 
 import org.apache.felix.utils.manifest.Clause;
 import org.apache.felix.utils.manifest.Parser;
@@ -602,7 +604,68 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
             bundles.add(b.getBundleId());
             state.bundleInfos.put(b.getBundleId(), bInfo);
         }
+        
+        for (BundleInfo bInfo : feature.getBundles()) {
+            Bundle bundle = isBundleInstalled(bInfo);
+            if (bundle != null && !bundles.contains(bundle.getBundleId())) {
+                bundles.add(bundle.getBundleId());
+            }
+        }
         state.features.put(feature, bundles);
+    }
+    
+    protected Bundle isBundleInstalled(BundleInfo bundleInfo) throws IOException, BundleException {
+        InputStream is;
+        String bundleLocation = bundleInfo.getLocation();
+        LOGGER.debug("Checking " + bundleLocation);
+        try {
+            is = new BufferedInputStream(new URL(bundleLocation).openStream());
+        } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage());
+            throw e;
+        }
+        try {
+            is.mark(256 * 1024);
+            JarInputStream jar = new JarInputStream(is);
+            Manifest m = jar.getManifest();
+            if (m == null) {
+                ZipEntry entry;
+                while ((entry = jar.getNextEntry()) != null) {
+                    if (MANIFEST_NAME.equals(entry.getName())) {
+                        m = new Manifest(jar);
+                        break;
+                    }
+                }
+                if (m == null) {
+                    throw new BundleException("Manifest not present in the zip " + bundleLocation);
+                }
+            }
+            String sn = m.getMainAttributes().getValue(Constants.BUNDLE_SYMBOLICNAME);
+            if (sn == null) {
+                throw new BundleException("Jar is not a bundle, no Bundle-SymbolicName " + bundleLocation);
+            }
+            // remove attributes from the symbolic name (like ;blueprint.graceperiod:=false suffix)
+            int attributeIndexSep = sn.indexOf(';');
+            if (attributeIndexSep != -1) {
+                sn = sn.substring(0, attributeIndexSep);
+            }
+            String vStr = m.getMainAttributes().getValue(Constants.BUNDLE_VERSION);
+            Version v = vStr == null ? Version.emptyVersion : Version.parseVersion(vStr);
+            for (Bundle b : bundleContext.getBundles()) {
+                if (b.getSymbolicName() != null && b.getSymbolicName().equals(sn)) {
+                    vStr = (String) b.getHeaders().get(Constants.BUNDLE_VERSION);
+                    Version bv = vStr == null ? Version.emptyVersion : Version.parseVersion(vStr);
+                    if (v.equals(bv)) {
+                        LOGGER.debug("Found installed bundle: " + b);
+                        return b;
+                    }
+                }
+            }
+            return null;
+        } finally {
+            is.close();
+        }
+        
     }
 
     private String createConfigurationKey(String pid, String factoryPid) {

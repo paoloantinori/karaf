@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -212,6 +213,19 @@ public class FeaturesServiceImplTest extends TestCase {
                 expect(bundle.getBundleId()).andReturn(10l).anyTimes();
                 replay(bundle);
                 return bundle;
+            }
+            
+            @Override
+            protected  Bundle isBundleInstalled(BundleInfo bundleInfo) throws IOException, BundleException {
+                // let's return a mock bundle and bundle id to keep the features service happy
+                Bundle bundle = createNiceMock(Bundle.class);
+                expect(bundle.getBundleId()).andReturn(10l).anyTimes();
+                replay(bundle);
+                return bundle;
+            }
+
+            protected Set<Bundle> findBundlesToRefresh() {
+                return Collections.emptySet();
             }
         };
         impl.addRepository(getClass().getResource("repo2.xml").toURI());
