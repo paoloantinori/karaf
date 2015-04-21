@@ -215,7 +215,6 @@
         <serp.bundle.version>1.14.1_1</serp.bundle.version>
         <servicemix.specs.version>2.5.0</servicemix.specs.version>
         <servlet.api.version>3.0.1</servlet.api.version>
-        <servicemix.specs.version>2.5.0</servicemix.specs.version>
         <slf4j.version>1.7.7</slf4j.version>
 
         <spring.osgi.version>1.2.1</spring.osgi.version>
