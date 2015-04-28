@@ -225,8 +225,11 @@ public class LDAPLoginModule extends AbstractKarafLoginModule {
             // SearchResult.getNameInNamespace = cn=admin\,\=\+\<\>#\;\\,ou=people,dc=example,dc=com
             //
             // the second escapes the slashes correctly.
-            userDN = result.getNameInNamespace().replace("," + userBaseDN, "");
             userDNNamespace = (String) result.getNameInNamespace();
+            // handle case where cn, ou, dc case doesn't match
+            int indexOfUserBaseDN = userDNNamespace.toLowerCase().indexOf("," + userBaseDN.toLowerCase());
+            userDN = (indexOfUserBaseDN > 0) ? userDNNamespace.substring(0, indexOfUserBaseDN) : result.getName();
+
             namingEnumeration.close();
         } catch (Exception e) {
             throw new LoginException("Can't connect to the LDAP server: " + e.getMessage());
