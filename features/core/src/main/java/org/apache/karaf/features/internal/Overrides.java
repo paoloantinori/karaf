@@ -17,14 +17,17 @@
 package org.apache.karaf.features.internal;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -47,7 +50,9 @@ public class Overrides {
     private static final Logger LOGGER = LoggerFactory.getLogger(Overrides.class);
 
     protected static final String OVERRIDE_RANGE = "range";
-
+    
+    protected static Map<String, Manifest> manifests = new ConcurrentHashMap<String, Manifest>();
+    
     /**
      * Compute a list of bundles to install, taking into account overrides.
      *
@@ -73,15 +78,18 @@ public class Overrides {
         if (overrides.isEmpty()) {
             return infos;
         }
-        try {
-            Map<String, Manifest> manifests = new HashMap<String, Manifest>();
+        try {            
             for (Clause override : overrides) {
-                Manifest manifest = getManifest(override.getName());
-                manifests.put(override.getName(), manifest);
+                if (!manifests.containsKey(override.getName())) {
+                    Manifest manifest = getManifest(override.getName());
+                    if (manifest != null) {
+                        manifests.put(override.getName(), manifest);
+                    }
+                }
             }
             List<BundleInfo> newInfos = new ArrayList<BundleInfo>();
-            for (BundleInfo info : infos) {
-                Manifest manifest = getManifest(info.getLocation());
+            for (BundleInfo info : infos) {                
+                Manifest manifest = !manifests.containsKey(info.getLocation()) ? getManifest(info.getLocation()) : manifests.get(info.getLocation());
                 if (manifest != null) {
                     String bsn = getBundleSymbolicName(manifest);
                     Version ver = getBundleVersion(manifest);
@@ -134,9 +142,15 @@ public class Overrides {
         }
     }
 
-    public static List<Clause> loadOverrides(String overridesUrl) {
+    public static List<Clause> loadOverrides(String overridesUrl) {           
         List<Clause> overrides = new ArrayList<Clause>();
+
         try {
+            String mfPath = System.getProperty("karaf.home") + File.separatorChar 
+                    + "patches" + File.separatorChar + "manifest-cache";
+            File mfFile = new File(mfPath);
+            mfFile.mkdirs();
+            
             if (overridesUrl != null) {
                 InputStream is = new URL(overridesUrl).openStream();
                 try {
@@ -173,19 +187,64 @@ public class Overrides {
     }
 
     private static Manifest getManifest(String url) throws IOException {
-        InputStream is = new URL(url).openStream();
+        boolean cacheMf = false;
+        File mfFile = null;
+         
+        // check for cached .mf files so we don't have to open every single JAR in system
+        try {                
+            String mfPath = System.getProperty("karaf.home") + File.separatorChar 
+                    + "patches" + File.separatorChar + "manifest-cache" + File.separatorChar 
+                    + url.replace(File.separatorChar, '#') + ".mf";
+            mfFile = new File(mfPath);
+            if (mfFile.exists()) {
+                FileInputStream is2 = null;
+                try {
+                    is2 = new FileInputStream(mfFile);
+                    return new Manifest(is2);
+                } finally {
+                    if (is2 != null) {
+                        is2.close();
+                    }
+                }
+                
+            } else {
+                cacheMf = true;
+            }                       
+        } catch (Exception e) {
+            LOGGER.debug("Couldn't load cached manifest for " + url, e);
+        }
+        InputStream is = null;        
         try {
-            ZipInputStream zis = new ZipInputStream(is);
+            is = new URL(url).openStream();
+            ZipInputStream zis = new ZipInputStream(is);            
             ZipEntry entry = null;
             while ( (entry = zis.getNextEntry()) != null ) {
                 if ("META-INF/MANIFEST.MF".equals(entry.getName())) {
-                    return new Manifest(zis);
+                    Manifest manifest = new Manifest(zis);
+                    if (cacheMf) {                        
+                        FileOutputStream os = null;
+                        try {
+                            if (mfFile != null) {
+                                os = new FileOutputStream(mfFile);
+                                manifest.write(os);
+                            }
+                        } finally {
+                            if (os != null) {
+                                os.close();
+                            }
+                        }
+                    }
+                    return manifest;
                 }
             }
-            return null;
+        } catch (Exception e) {
+            LOGGER.debug("Couldn't load manifest for " + url, e);
         } finally {
-            is.close();
+            if (is != null) {
+                is.close();
+            }
         }
+        return null;
     }
 
     private static String extractVersionRange(Clause override) {
