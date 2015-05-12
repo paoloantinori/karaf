@@ -1420,11 +1420,11 @@ public class Main {
         boolean lockLogged = false;
         setStartLevel(lockStartLevel);
         while (!exiting) {
+            setupShutdown(props);
             if (lock.lock()) {
                 if (lockLogged) {
                     LOG.info("Lock acquired.");
                 }
-                setupShutdown(props);
                 setStartLevel(defaultStartLevel);
                 for (;;) {
                     if (!dataDir.isDirectory()) {
