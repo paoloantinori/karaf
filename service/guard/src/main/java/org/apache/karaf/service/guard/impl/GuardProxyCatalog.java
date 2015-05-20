@@ -114,13 +114,18 @@ public class GuardProxyCatalog implements ServiceListener {
         myBundleContext.removeServiceListener(this);
 
         // Remove all proxy registrations
-        for (ServiceRegistrationHolder holder : proxyMap.values()) {
-            ServiceRegistration<?> reg = holder.registration;
-            if (reg != null) {
-                LOG.info("Unregistering proxy service of {} with properties {}",
+        try {
+            for (ServiceRegistrationHolder holder : proxyMap.values()) {
+                ServiceRegistration<?> reg = holder.registration;
+                if (reg != null) {
+                    LOG.info("Unregistering proxy service of {} with properties {}",
                         reg.getReference().getProperty(Constants.OBJECTCLASS), copyProperties(reg.getReference()));
-                reg.unregister();
+                    reg.unregister();
+                }
             }
+        } catch (Exception e) {
+            //due to very dynamic nature of OSGi, the ServiceReference may become invaild
+            LOG.debug("The ServiceReference become invalid: ", e);
         }
         proxyMap.clear();
     }
@@ -238,14 +243,19 @@ public class GuardProxyCatalog implements ServiceListener {
 
             @Override
             public void run(final ProxyManager pm) throws Exception {
-                String[] objectClassProperty = (String[]) originalRef.getProperty(Constants.OBJECTCLASS);
-                ServiceFactory<Object> sf = new ProxyServiceFactory(pm, originalRef);
-                registrationHolder.registration = originalRef.getBundle().getBundleContext().registerService(
+                try {
+                    String[] objectClassProperty = (String[]) originalRef.getProperty(Constants.OBJECTCLASS);
+                    ServiceFactory<Object> sf = new ProxyServiceFactory(pm, originalRef);
+                    registrationHolder.registration = originalRef.getBundle().getBundleContext().registerService(
                         objectClassProperty, sf, proxyPropertiesRoles());
 
-                Dictionary<String, Object> actualProxyProps = copyProperties(registrationHolder.registration.getReference());
-                LOG.debug("Created proxy of service {} under {} with properties {}",
+                    Dictionary<String, Object> actualProxyProps = copyProperties(registrationHolder.registration.getReference());
+                    LOG.debug("Created proxy of service {} under {} with properties {}",
                         orgServiceID, actualProxyProps.get(Constants.OBJECTCLASS), actualProxyProps);
+                } catch (Exception e) {
+                    //due to very dynamic nature of OSGi, the ServiceReference may become invaild
+                    LOG.debug("The ServiceReference become invalid: ", e);
+                }
             }
 
             private Dictionary<String, Object> proxyPropertiesRoles() throws Exception {
