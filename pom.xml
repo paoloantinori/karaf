@@ -132,7 +132,7 @@
         <injection.bundle.version>1.0</injection.bundle.version>
         <jasypt.bundle.version>1.9.2_1</jasypt.bundle.version>
         <javassist.version>3.9.0.GA</javassist.version>
-        <jetty.version>8.1.15.v20140411</jetty.version>
+        <jetty.version>8.1.17.v20150415</jetty.version>
         <geronimo.annotation-spec.version>1.0.1</geronimo.annotation-spec.version>
         <geronimo.jaspic-spec.version>1.1</geronimo.jaspic-spec.version>
         <geronimo.jms-spec.version>1.1.1</geronimo.jms-spec.version>
