@@ -295,6 +295,15 @@ public class AdminServiceImpl implements AdminService {
                 copyResourceToDir(karafBase, "etc/startup.properties", true, textResources);
                 copyResourceToDir(karafBase, "etc/users.properties", true, textResources);
 
+                if (System.getProperty("karaf.home") != null && System.getProperty("karaf.home").length() > 0) {
+                    File home = new File(System.getProperty("karaf.home"));
+                    // align child with any bundles we have overriden in the root instance
+                    File rootOverrides = new File(home, "etc/overrides.properties");
+                    if (rootOverrides.exists()) {
+                        copy(rootOverrides, new File(karafBase, "etc/overrides.properties"));
+                    }
+                }
+
                 HashMap<String, String> props = new HashMap<String, String>();
                 props.put("${SUBST-KARAF-NAME}", name);
                 props.put("${SUBST-KARAF-HOME}", System.getProperty("karaf.home"));
