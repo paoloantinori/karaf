@@ -284,6 +284,12 @@ public class AdminServiceImpl implements AdminService {
                     copy(new File(home, "etc/startup.properties"), new File(karafBase, "etc/startup.properties"));
                     copy(new File(home, "etc/config.properties"), new File(karafBase, "etc/config.properties"));
                     copy(new File(home, "etc/org.apache.karaf.jaas.cfg"), new File(karafBase, "etc/org.apache.karaf.jaas.cfg"));
+
+                    // align child with any bundles we have overriden in the root instance
+                    File rootOverrides = new File(home, "etc/overrides.properties");
+                    if (rootOverrides.exists()) {
+                        copy(rootOverrides, new File(karafBase, "etc/overrides.properties"));
+                    }
                 }
 
                 HashMap<String, String> props = new HashMap<String, String>();
