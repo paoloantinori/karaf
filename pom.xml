@@ -1746,6 +1746,7 @@
                                 <exclude>**/bundle.info</exclude>
                                 <exclude>**/*.txt</exclude>
                                 <exclude>**/foo</exclude>
+                                <exclude>**/simple</exclude>
                                 <exclude>**/pom.properties</exclude>
                                 <exclude>**/*.rat</exclude>
                                 <exclude>**/build-main.xml</exclude>
