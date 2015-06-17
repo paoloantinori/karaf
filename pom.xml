@@ -162,7 +162,7 @@
         <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
         <hibernate.ejb.version>3.4.0.GA</hibernate.ejb.version>
         <hibernate3.version>3.3.2.GA</hibernate3.version>
-        <hibernate42.version>4.2.15.Final</hibernate42.version>
+        <hibernate42.version>4.2.18.Final-redhat-2</hibernate42.version>
         <hibernate43.version>4.3.6.Final</hibernate43.version>
         <hibernate.validator.version>5.0.3.Final</hibernate.validator.version>
 
@@ -273,6 +273,11 @@
           <id>fuse-beta</id>
           <name>Fuse Beta Repository</name>
           <url>https://repository.jboss.org/nexus/content/repositories/fs-beta</url>
+        </repository>
+        <repository>
+          <id>redhat-product</id>
+          <name>Redhat Product Repository</name>
+          <url>https://maven.repository.redhat.com/techpreview/all</url>
         </repository>
     </repositories>
 

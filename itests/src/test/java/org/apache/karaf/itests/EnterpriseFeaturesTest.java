@@ -47,15 +47,15 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     @Test
     public void testHibernateFeatures() throws Exception {
         System.out.println("");
-        System.out.println("===== TESTING HIBERNATE " + System.getProperty("hibernate43.version") + " FEATURE =====");
-        installAndAssertFeature("hibernate", System.getProperty("hibernate43.version"));
+        System.out.println("===== TESTING HIBERNATE " + System.getProperty("hibernate42.version") + " FEATURE =====");
+        installAndAssertFeature("hibernate", System.getProperty("hibernate42.version"));
     }
 
     @Test
     public void testHibernateEnversFeatures() throws Exception {
         System.out.println("");
-        System.out.println("===== TESTING HIBERNATE-ENVERS " + System.getProperty("hibernate43.version") + " FEATURE =====");
-        installAndAssertFeature("hibernate-envers", System.getProperty("hibernate43.version"));
+        System.out.println("===== TESTING HIBERNATE-ENVERS " + System.getProperty("hibernate42.version") + " FEATURE =====");
+        installAndAssertFeature("hibernate-envers", System.getProperty("hibernate42.version"));
     }
 
     @Test
