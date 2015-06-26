@@ -286,6 +286,7 @@
             <includes>
                 <include>org.apache.aries.blueprint:org.apache.aries.blueprint.api</include>
                 <include>org.apache.aries.blueprint:org.apache.aries.blueprint.core</include>
+                <include>org.apache.aries.blueprint:org.apache.aries.blueprint.core.compatibility</include>
                 <include>org.apache.aries.blueprint:org.apache.aries.blueprint.cm</include>
             </includes>
         </dependencySet>
