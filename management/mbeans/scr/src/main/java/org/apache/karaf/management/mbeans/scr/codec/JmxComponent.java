@@ -17,6 +17,7 @@
 package org.apache.karaf.management.mbeans.scr.codec;
 
 import org.apache.felix.scr.Component;
+import org.apache.felix.scr.Reference;
 import org.apache.karaf.management.mbeans.scr.ScrServiceMBean;
 
 import javax.management.openmbean.CompositeData;
@@ -52,7 +53,7 @@ public class JmxComponent {
             itemValues[1] = component.getName();
             itemValues[2] = getState(component);
             itemValues[3] = JmxProperty.tableFrom(component.getProperties());
-            itemValues[4] = JmxReference.tableFrom(component.getReferences());
+            itemValues[4] = JmxReference.tableFrom(safe(component.getReferences()));
             data = new CompositeDataSupport(COMPONENT, itemNames, itemValues);
         } catch (OpenDataException e) {
             throw new IllegalStateException("Cannot form feature open data", e);
@@ -69,6 +70,10 @@ public class JmxComponent {
             table.put(new JmxComponent(component).asCompositeData());
         }
         return table;
+    }
+
+    private Reference[] safe(Reference[] references) {
+        return references == null ? new Reference[0] : references;
     }
 
     private static CompositeType createComponenetType() {

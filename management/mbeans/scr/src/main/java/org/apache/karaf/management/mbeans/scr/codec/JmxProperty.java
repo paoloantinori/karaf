@@ -64,11 +64,13 @@ public class JmxProperty {
 
     public static TabularData tableFrom(Dictionary properties) {
         TabularDataSupport table = new TabularDataSupport(PROPERTY_TABLE);
-        Enumeration p = properties.keys();
-        while (p.hasMoreElements()) {
-            Object key = p.nextElement();
-            Object value = properties.get(key);
-            table.put(new JmxProperty(String.valueOf(key), String.valueOf(value)).asCompositeData());
+        if (properties != null) {
+            Enumeration p = properties.keys();
+            while (p.hasMoreElements()) {
+                Object key = p.nextElement();
+                Object value = properties.get(key);
+                table.put(new JmxProperty(String.valueOf(key), String.valueOf(value)).asCompositeData());
+            }
         }
         return table;
     }
