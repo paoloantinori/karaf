@@ -233,7 +233,7 @@ public class ConnectorServerFactory {
             try {
                 this.setupSsl();
             } catch (Exception e) {
-                LOGGER.error("Can't init JMXConnectorServer with SSL enabled: " + e.getMessage());
+                LOGGER.info("Can't init JMXConnectorServer with SSL enabled: " + e.getMessage());
                 return;
             }
         }
@@ -364,7 +364,7 @@ public class ConnectorServerFactory {
             try {
                 this.init();
             } catch (Exception e) {
-                LOGGER.error("Can't re-init JMXConnectorServer with SSL enabled when register a keystore:" + e.getMessage());
+                LOGGER.info("Can't re-init JMXConnectorServer with SSL enabled when register a keystore:" + e.getMessage());
             }
         }
     }
@@ -374,7 +374,7 @@ public class ConnectorServerFactory {
             try {
                 this.init();
             } catch (Exception e) {
-                LOGGER.error("Can't re-init JMXConnectorServer with SSL enabled when unregister a keystore: " + e.getMessage());
+                LOGGER.info("Can't re-init JMXConnectorServer with SSL enabled when unregister a keystore: " + e.getMessage());
             }
         }
     }
