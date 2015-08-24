@@ -230,6 +230,8 @@
         <xbean.version>3.18</xbean.version>
         <!--from xerces-j2-2.11.0-22.fc21 build at http://koji.fedoraproject.org/koji/buildinfo?buildID=576421 (fixes CVE-2013-4002) -->
         <xerces.version>2.11.0-22</xerces.version>
+        <xalan.bundle.version>2.7.2_2</xalan.bundle.version>
+        <xalan-serializer.bundle.version>2.7.2_1</xalan-serializer.bundle.version>
         <javax.mail.version>1.4.5</javax.mail.version>
         <weld.version>2.1.1.Final</weld.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -719,6 +721,16 @@
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
                 <version>${xerces.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.servicemix.bundles</groupId>
+                <artifactId>org.apache.servicemix.bundles.xalan</artifactId>
+                <version>${xalan.bundle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.servicemix.bundles</groupId>
+                <artifactId>org.apache.servicemix.bundles.xalan-serializer</artifactId>
+                <version>${xalan-serializer.bundle.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.json</groupId>
