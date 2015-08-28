@@ -232,6 +232,7 @@
         <xerces.version>2.11.0-22</xerces.version>
         <xalan.bundle.version>2.7.2_2</xalan.bundle.version>
         <xalan-serializer.bundle.version>2.7.2_1</xalan-serializer.bundle.version>
+        <bcprov.version>1.52</bcprov.version>
         <javax.mail.version>1.4.5</javax.mail.version>
         <weld.version>2.1.1.Final</weld.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

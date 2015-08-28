@@ -20,6 +20,8 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.KeyPair;
+import java.security.Provider;
+import java.security.Security;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
@@ -52,6 +54,7 @@ public class Main {
     private static final String GROUP_PREFIX = "_g_";
 
     public static void main(String[] args) throws Exception {
+        addProvider("org.bouncycastle.jce.provider.BouncyCastleProvider");
         Properties shellCfg = loadProps(new File(System.getProperty("karaf.etc"), "org.apache.karaf.shell.cfg"));
 
         String host = shellCfg.getProperty("sshHost", "localhost");
@@ -316,6 +319,13 @@ public class Main {
         System.exit(exitStatus);
     }
 
+    private static void addProvider(String provider) {
+        try {
+            Security.addProvider((Provider) Class.forName(provider).newInstance());
+        } catch (Throwable t) {
+            System.err.println("Unable to register security provider: " + t);
+        }
+    }
 
     private static Properties loadProps(File file) {
         Properties props = new Properties();
