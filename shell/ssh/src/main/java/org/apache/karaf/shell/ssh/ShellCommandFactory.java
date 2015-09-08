@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 public class ShellCommandFactory implements CommandFactory {
 
     public static final String SHELL_INIT_SCRIPT = "karaf.shell.init.script";
+    public static final String EXEC_INIT_SCRIPT = "karaf.exec.init.script";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShellCommandFactory.class);
 
@@ -117,7 +118,10 @@ public class ShellCommandFactory implements CommandFactory {
                             
                             result = JaasHelper.doAs(subject, new PrivilegedExceptionAction<Object>() {
                                 public Object run() throws Exception {
-                                    String scriptFileName = System.getProperty(SHELL_INIT_SCRIPT);
+                                    String scriptFileName = System.getProperty(EXEC_INIT_SCRIPT);
+                                    if (scriptFileName == null) {
+                                        scriptFileName = System.getProperty(SHELL_INIT_SCRIPT);
+                                    }
                                     executeScript(scriptFileName, commandSession);
                                     return commandSession.execute(command);
                                 }
@@ -126,7 +130,10 @@ public class ShellCommandFactory implements CommandFactory {
                             throw e.getException();
                         }
                     } else {
-                        String scriptFileName = System.getProperty(SHELL_INIT_SCRIPT);
+                        String scriptFileName = System.getProperty(EXEC_INIT_SCRIPT);
+                        if (scriptFileName == null) {
+                            scriptFileName = System.getProperty(SHELL_INIT_SCRIPT);
+                        }
                         executeScript(scriptFileName, commandSession);
                         result = commandSession.execute(command);
                     }
