@@ -122,7 +122,7 @@
 
     <properties>
         <aopalliance.bundle.version>1.0_6</aopalliance.bundle.version>
-        <ant.bundle.version>1.8.2_2</ant.bundle.version>
+        <ant.bundle.version>1.7.0_6</ant.bundle.version>
         <antlr.bundle.version>2.7.7_5</antlr.bundle.version>
         <asm.version>5.0.3</asm.version>
         <asm.springsource.version>1.5.3</asm.springsource.version>
@@ -247,7 +247,7 @@
         <xalan-serializer.bundle.version>2.7.2_1</xalan-serializer.bundle.version>
         <bcprov.version>1.52</bcprov.version>
         <javax.mail.version>1.4.5</javax.mail.version>
-        <weld.version>2.1.1.Final</weld.version>
+        <weld.version>2.1.2.Final</weld.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appendedResourcesDirectory>${basedir}/etc/appended-resources</appendedResourcesDirectory>
         <bnd.version.policy>[$(version;==;$(@)),$(version;+;$(@)))</bnd.version.policy>
