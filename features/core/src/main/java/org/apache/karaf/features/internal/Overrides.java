@@ -225,6 +225,7 @@ public class Overrides {
                         FileOutputStream os = null;
                         try {
                             if (mfFile != null) {
+                                mfFile.getParentFile().mkdirs();
                                 os = new FileOutputStream(mfFile);
                                 manifest.write(os);
                             }
