@@ -194,7 +194,7 @@ public class Overrides {
         try {                
             String mfPath = System.getProperty("karaf.home") + File.separatorChar 
                     + "patches" + File.separatorChar + "manifest-cache" + File.separatorChar 
-                    + url.replace(File.separatorChar, '#') + ".mf";
+                    + url.replace(File.separatorChar, '#').replace(":", "_") + ".mf";
             mfFile = new File(mfPath);
             if (mfFile.exists()) {
                 FileInputStream is2 = null;
@@ -225,6 +225,7 @@ public class Overrides {
                         FileOutputStream os = null;
                         try {
                             if (mfFile != null) {
+                                mfFile.getParentFile().mkdirs();
                                 os = new FileOutputStream(mfFile);
                                 manifest.write(os);
                             }
