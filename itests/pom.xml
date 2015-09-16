@@ -68,6 +68,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.ops4j.pax.swissbox</groupId>
+            <artifactId>pax-swissbox-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.ops4j.pax.swissbox</groupId>
+            <artifactId>pax-swissbox-framework</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.ops4j.base</groupId>
             <artifactId>ops4j-base-exec</artifactId>
             <scope>test</scope>

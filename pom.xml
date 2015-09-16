@@ -1199,6 +1199,16 @@
 
             <dependency>
                 <groupId>org.ops4j.pax.swissbox</groupId>
+                <artifactId>pax-swissbox-core</artifactId>
+                <version>${pax.swissbox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ops4j.pax.swissbox</groupId>
+                <artifactId>pax-swissbox-framework</artifactId>
+                <version>${pax.swissbox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ops4j.pax.swissbox</groupId>
                 <artifactId>pax-swissbox-bnd</artifactId>
                 <version>${pax.swissbox.version}</version>
             </dependency>
