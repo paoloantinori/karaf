@@ -207,6 +207,7 @@
         <aries.transaction.blueprint.version>1.0.2</aries.transaction.blueprint.version>
         <aries.transaction.jdbc.version>2.1.1</aries.transaction.jdbc.version>
         <aries.util.version>1.1.0</aries.util.version>
+        <deltaspike.version>1.2.1</deltaspike.version>
         <jansi.version>1.11</jansi.version>
         <jline.version>2.12.1.redhat-001</jline.version>
         <jledit.version>0.2.1</jledit.version>
@@ -218,7 +219,10 @@
         <org.json.version>20140107</org.json.version>
         <pax.base.version>1.5.0</pax.base.version>
         <pax.cdi.version>0.11.0</pax.cdi.version>
+        <pax.cdi.feature.version>0.11.0.redhat-001</pax.cdi.feature.version>
         <pax.exam.version>4.4.0</pax.exam.version>
+        <pax.jdbc.version>0.3.0</pax.jdbc.version>
+        <pax.jpa.version>0.3.0</pax.jpa.version>
         <pax.logging.version>1.8.2</pax.logging.version>
         <pax.url.version>2.4.2</pax.url.version>
         <pax.swissbox.version>1.8.2</pax.swissbox.version>
@@ -599,6 +603,13 @@
             <dependency>
                 <groupId>org.apache.karaf.assemblies.features</groupId>
                 <artifactId>enterprise</artifactId>
+                <type>xml</type>
+                <classifier>features</classifier>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.karaf.assemblies.features</groupId>
+                <artifactId>pax-cdi-features</artifactId>
                 <type>xml</type>
                 <classifier>features</classifier>
                 <version>${project.version}</version>

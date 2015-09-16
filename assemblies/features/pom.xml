@@ -37,6 +37,7 @@
         <module>standard</module>
         <module>enterprise</module>
         <module>spring</module>
+        <module>pax-cdi</module>
     </modules>
 
 </project>
