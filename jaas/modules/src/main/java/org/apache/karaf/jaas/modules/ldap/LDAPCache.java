@@ -34,8 +34,8 @@ public class LDAPCache {
     public static LDAPCache getCache(Map<String, ?> options) {
         LDAPCache cache = CACHES.get(options);
         if (cache == null) {
-            CACHES.putIfAbsent(options, new LDAPCache(options));
-            cache = CACHES.get(options);
+        	cache = new LDAPCache(options);
+            CACHES.putIfAbsent(options, cache);
         }
         return cache;
     }
