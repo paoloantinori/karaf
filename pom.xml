@@ -223,7 +223,7 @@
         <pax.exam.version>4.4.0</pax.exam.version>
         <pax.jdbc.version>0.3.0</pax.jdbc.version>
         <pax.jpa.version>0.3.0</pax.jpa.version>
-        <pax.logging.version>1.8.2</pax.logging.version>
+        <pax.logging.version>1.8.4</pax.logging.version>
         <pax.url.version>2.4.2</pax.url.version>
         <pax.swissbox.version>1.8.2</pax.swissbox.version>
         <pax.web.version>3.2.5</pax.web.version>
@@ -251,7 +251,7 @@
         <xalan-serializer.bundle.version>2.7.2_1</xalan-serializer.bundle.version>
         <bcprov.version>1.52</bcprov.version>
         <javax.mail.version>1.4.5</javax.mail.version>
-        <weld.version>2.1.2.Final</weld.version>
+        <weld.version>2.3.0.Final</weld.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appendedResourcesDirectory>${basedir}/etc/appended-resources</appendedResourcesDirectory>
         <bnd.version.policy>[$(version;==;$(@)),$(version;+;$(@)))</bnd.version.policy>
