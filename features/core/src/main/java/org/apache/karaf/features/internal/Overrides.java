@@ -194,7 +194,7 @@ public class Overrides {
         try {                
             String mfPath = System.getProperty("karaf.home") + File.separatorChar 
                     + "patches" + File.separatorChar + "manifest-cache" + File.separatorChar 
-                    + url.replace(File.separatorChar, '#') + ".mf";
+                    + url.replace(File.separatorChar, '#').replace(':', '#') + ".mf";
             mfFile = new File(mfPath);
             if (mfFile.exists()) {
                 FileInputStream is2 = null;
