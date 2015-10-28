@@ -175,7 +175,7 @@
         <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
         <hibernate.ejb.version>3.4.0.GA</hibernate.ejb.version>
         <hibernate3.version>3.3.2.GA</hibernate3.version>
-        <hibernate42.version>4.2.19.Final-redhat-1</hibernate42.version>
+        <hibernate42.version>4.2.20.Final-redhat-1</hibernate42.version>
         <hibernate43.version>4.3.6.Final</hibernate43.version>
         <hibernate.validator.version>5.0.3.Final</hibernate.validator.version>
 
