@@ -13,7 +13,6 @@
  */
 package org.apache.karaf.itests;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
@@ -97,7 +96,6 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
         installAndAssertFeature("jms");
     }
 
-    @Ignore("ENTESB-4310")
     @Test
     public void testWeldFeature() throws Exception {
         System.out.println("");
