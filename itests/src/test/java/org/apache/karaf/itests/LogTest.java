@@ -21,6 +21,7 @@ import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 
+import org.apache.karaf.jaas.boot.principal.RolePrincipal;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
@@ -33,8 +34,8 @@ public class LogTest extends KarafTestSupport {
 
     @Test
     public void setDebugAndDisplay() throws Exception {
-        System.out.println(executeCommand("log:set DEBUG"));
-        String displayOutput = executeCommand("log:display");
+        System.out.println(executeCommand("log:set DEBUG", new RolePrincipal("admin")));
+        String displayOutput = executeCommand("log:display", new RolePrincipal("admin"));
         System.out.println(displayOutput);
         assertTrue(displayOutput.contains("DEBUG"));
     }
@@ -58,13 +59,13 @@ public class LogTest extends KarafTestSupport {
 
     @Test
     public void setGetDebugAndClear() throws Exception {
-        System.out.println(executeCommand("log:set DEBUG"));
-        String getOutput = executeCommand("log:get");
+        System.out.println(executeCommand("log:set DEBUG", new RolePrincipal("admin")));
+        String getOutput = executeCommand("log:get", new RolePrincipal("admin"));
         System.out.println(getOutput);
         assertTrue(getOutput.contains("DEBUG"));
-        System.out.println(executeCommand("log:set INFO"));
-        System.out.println(executeCommand("log:clear"));
-        String displayOutput = executeCommand("log:display");
+        System.out.println(executeCommand("log:set INFO", new RolePrincipal("admin")));
+        System.out.println(executeCommand("log:clear", new RolePrincipal("admin")));
+        String displayOutput = executeCommand("log:display", new RolePrincipal("admin"));
         System.out.println(displayOutput.trim());
         assertTrue(displayOutput.trim().isEmpty());
     }

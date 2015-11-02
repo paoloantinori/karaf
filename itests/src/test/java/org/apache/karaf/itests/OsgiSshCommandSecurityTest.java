@@ -77,12 +77,12 @@ public class OsgiSshCommandSecurityTest extends SshCommandTestBase {
         assertCommand(manageruser, "osgi:install xyz", Result.NOT_FOUND);
         assertCommand("karaf", "osgi:install xyz", Result.OK);
         
-        assertCommand(vieweruser, "osgi:name", Result.OK);
+        assertCommand(vieweruser, "osgi:name", Result.NO_CREDENTIALS);
         assertCommand(vieweruser, "osgi:start-level", Result.OK);
         assertCommand(vieweruser, "osgi:start-level 150", Result.NO_CREDENTIALS);
         assertCommand(vieweruser, "osgi:shutdown", Result.NOT_FOUND);
 
-        assertCommand(manageruser, "osgi:name", Result.OK);
+        assertCommand(manageruser, "osgi:name", Result.NO_CREDENTIALS);
         assertCommand(manageruser, "osgi:start-level", Result.OK);
         assertCommand(manageruser, "osgi:start-level 0", Result.NO_CREDENTIALS);
         assertCommand(manageruser, "osgi:start-level  1 ", Result.NO_CREDENTIALS);

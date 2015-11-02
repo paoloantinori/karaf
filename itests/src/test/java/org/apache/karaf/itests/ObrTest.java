@@ -37,7 +37,7 @@ public class ObrTest extends KarafTestSupport {
 
     @Before
     public void installObrFeature() throws Exception {
-        System.out.println(executeCommand("features:install obr", new RolePrincipal("admin") ));
+        System.out.println(executeCommand("features:install obr", 30000L, false, new RolePrincipal("admin") ));
         // give it time on faster machines to complete
         Thread.sleep(500);
     }

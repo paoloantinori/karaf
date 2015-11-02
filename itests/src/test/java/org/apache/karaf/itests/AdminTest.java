@@ -22,6 +22,8 @@ import javax.management.ObjectName;
 import javax.management.openmbean.TabularData;
 import javax.management.remote.JMXConnector;
 
+import org.apache.karaf.jaas.boot.principal.RolePrincipal;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.junit.PaxExam;
@@ -34,12 +36,12 @@ public class AdminTest extends KarafTestSupport {
 
     @Test
     public void createDestroyCommand() throws Exception {
-        System.out.println(executeCommand("admin:create itest"));
-        String adminListOutput = executeCommand("admin:list");
+        System.out.println(executeCommand("admin:create itest", new RolePrincipal("admin")));
+        String adminListOutput = executeCommand("admin:list", new RolePrincipal("admin"));
         System.out.println(adminListOutput);
         assertTrue(adminListOutput.contains("itest"));
-        System.out.println(executeCommand("admin:destroy itest"));
-        adminListOutput = executeCommand("admin:list");
+        System.out.println(executeCommand("admin:destroy itest", new RolePrincipal("admin")));
+        adminListOutput = executeCommand("admin:list", new RolePrincipal("admin"));
         System.out.println(adminListOutput);
         assertFalse(adminListOutput.contains("itest"));
     }
@@ -66,8 +68,8 @@ public class AdminTest extends KarafTestSupport {
 
     @Test
     public void cloneCommand() throws Exception {
-        System.out.println(executeCommand("admin:clone root itest"));
-        String adminListOutput = executeCommand("admin:list");
+        System.out.println(executeCommand("admin:clone root itest", new RolePrincipal("admin")));
+        String adminListOutput = executeCommand("admin:list", new RolePrincipal("admin"));
         System.out.println(adminListOutput);
         assertTrue(adminListOutput.contains("itest"));
     }
@@ -91,9 +93,9 @@ public class AdminTest extends KarafTestSupport {
 
     @Test
     public void renameCommand() throws Exception {
-        System.out.println(executeCommand("admin:create itest"));
-        System.out.println(executeCommand("admin:rename itest new_itest"));
-        String instanceListOutput = executeCommand("admin:list");
+        System.out.println(executeCommand("admin:create itest", new RolePrincipal("admin")));
+        System.out.println(executeCommand("admin:rename itest new_itest", new RolePrincipal("admin")));
+        String instanceListOutput = executeCommand("admin:list", new RolePrincipal("admin"));
         System.out.println(instanceListOutput);
         assertTrue(instanceListOutput.contains("new_itest"));
     }

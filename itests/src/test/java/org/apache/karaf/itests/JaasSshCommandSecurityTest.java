@@ -31,16 +31,16 @@ public class JaasSshCommandSecurityTest extends SshCommandTestBase {
         String userName = "XXX" + System.nanoTime();
         assertCommand(vieweruser, "jaas:manage --realm karaf;" +
         		"jaas:useradd " + userName + " pwd;" +
-				"jaas:update", Result.NOT_FOUND);
+				"jaas:update", Result.NO_CREDENTIALS);
         String r = assertCommand(vieweruser, "jaas:manage --realm karaf;" +
-				"jaas:users", Result.OK);
+				"jaas:users", Result.NO_CREDENTIALS);
         Assert.assertFalse("The viewer should not have the credentials to add the new user",
                 r.contains(userName));
 
         assertCommand("karaf", "jaas:manage --realm karaf;" +
                 "jaas:useradd " + userName + " pwd;" +
                 "jaas:update", Result.OK);
-        String r2 = assertCommand(vieweruser, "jaas:manage --realm karaf;" +
+        String r2 = assertCommand("karaf", "jaas:manage --realm karaf;" +
                 "jaas:users", Result.OK);
         Assert.assertTrue("The admin user should have the rights to add the new user",
                 r2.contains(userName));

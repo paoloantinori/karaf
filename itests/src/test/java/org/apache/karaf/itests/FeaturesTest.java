@@ -34,10 +34,10 @@ public class FeaturesTest extends KarafTestSupport {
 
     @Test
     public void listCommand() throws Exception {
-        String listOutput = executeCommand("features:list");
+        String listOutput = executeCommand("features:list", new RolePrincipal("admin"));
         System.out.println(listOutput);
         assertFalse(listOutput.isEmpty());
-        listOutput = executeCommand("features:list -i");
+        listOutput = executeCommand("features:list -i", new RolePrincipal("admin"));
         System.out.println(listOutput);
         assertFalse(listOutput.isEmpty());
     }
@@ -62,11 +62,11 @@ public class FeaturesTest extends KarafTestSupport {
         String featureInstallOutput = executeCommand("features:install -v eventadmin", new RolePrincipal("admin"));
         System.out.println(featureInstallOutput);
         assertFalse(featureInstallOutput.isEmpty());
-        String featureListOutput = executeCommand("features:list -i | grep eventadmin");
+        String featureListOutput = executeCommand("features:list -i | grep eventadmin", new RolePrincipal("admin"));
         System.out.println(featureListOutput);
         assertFalse(featureListOutput.isEmpty());
         System.out.println(executeCommand("features:uninstall eventadmin", new RolePrincipal("admin")));
-        featureListOutput = executeCommand("features:list -i | grep eventadmin");
+        featureListOutput = executeCommand("features:list -i | grep eventadmin", new RolePrincipal("admin"));
         System.out.println(featureListOutput);
         assertTrue(featureListOutput.isEmpty());
     }
@@ -88,12 +88,12 @@ public class FeaturesTest extends KarafTestSupport {
 
     @Test
     public void repoAddRemoveCommand() throws Exception {
-        System.out.println(executeCommand("features:addurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features"));
-        String repoListOutput = executeCommand("features:listurl");
+        System.out.println(executeCommand("features:addurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features", new RolePrincipal("admin")));
+        String repoListOutput = executeCommand("features:listurl", new RolePrincipal("admin"));
         System.out.println(repoListOutput);
         assertTrue(repoListOutput.contains("apache-karaf-cellar"));
-        System.out.println(executeCommand("features:removeurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features"));
-        repoListOutput = executeCommand("features:listurl");
+        System.out.println(executeCommand("features:removeurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features", new RolePrincipal("admin")));
+        repoListOutput = executeCommand("features:listurl", new RolePrincipal("admin"));
         System.out.println(repoListOutput);
         assertFalse(repoListOutput.contains("apache-karaf-cellar"));
     }

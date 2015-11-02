@@ -58,10 +58,10 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void classesCommand() throws Exception {
-        String classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api");
+        String classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
         System.out.println(classesOutput);
         assertFalse(classesOutput.isEmpty());
-        classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api");
+        classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
         System.out.println(classesOutput);
         assertTrue(classesOutput.contains("org/apache/aries/proxy"));
     }
@@ -75,14 +75,14 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void headersCommand() throws Exception {
-        String headersOutput = executeCommand("osgi:headers --force org.apache.aries.proxy.api");
+        String headersOutput = executeCommand("osgi:headers --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
         System.out.println(headersOutput);
         assertTrue(headersOutput.contains("Bundle-SymbolicName = org.apache.aries.proxy.api"));
     }
 
     @Test
     public void infoCommand() throws Exception {
-        String infoOutput = executeCommand("osgi:info --force org.apache.aries.proxy.api");
+        String infoOutput = executeCommand("osgi:info --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
         System.out.println(infoOutput);
         assertTrue(infoOutput.contains("Apache Aries Proxy API"));
     }
@@ -98,7 +98,7 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void nameCommand() throws Exception {
-        String nameOutput = executeCommand("osgi:name");
+        String nameOutput = executeCommand("osgi:name", new RolePrincipal("admin"));
         System.out.println(nameOutput);
         assertEquals("root", nameOutput.trim());
     }
@@ -120,7 +120,7 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void versionCommand() throws Exception {
-        String versionOutput = executeCommand("osgi:version");
+        String versionOutput = executeCommand("osgi:version", new RolePrincipal("admin"));
         System.out.println(versionOutput);
         assertTrue(versionOutput.contains("2.4"));
     }

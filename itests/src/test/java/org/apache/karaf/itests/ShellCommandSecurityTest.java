@@ -33,7 +33,7 @@ public class ShellCommandSecurityTest extends SshCommandTestBase {
 
         addViewer(vieweruser);
 
-        assertCommand(vieweruser, "shell:date", Result.OK);
+        assertCommand(vieweruser, "shell:date", Result.NO_CREDENTIALS);
         assertCommand(vieweruser, "shell:edit", Result.NOT_FOUND);
         assertCommand(vieweruser, "shell:exec", Result.NOT_FOUND);
         assertCommand(vieweruser, "shell:new", Result.NOT_FOUND);
