@@ -77,6 +77,7 @@ public class Main {
                     host = args[++i];
                 } else if (args[i].equals("-u")) {
                     user = args[++i];
+                    password = null;//get chance to input the password with interactive way
                 } else if (args[i].equals("-v")) {
                     level++;
                 } else if (args[i].equals("-r")) {
