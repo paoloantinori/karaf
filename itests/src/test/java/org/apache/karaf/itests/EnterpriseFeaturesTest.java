@@ -13,6 +13,7 @@
  */
 package org.apache.karaf.itests;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
@@ -52,6 +53,7 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     }
 
     @Test
+    @Ignore("ENTESB-4301")
     public void testHibernateFeatures() throws Exception {
         System.out.println("");
         System.out.println("===== TESTING HIBERNATE " + System.getProperty("hibernate42.version") + " FEATURE =====");
@@ -59,6 +61,7 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     }
 
     @Test
+    @Ignore("ENTESB-4301")
     public void testHibernateEnversFeatures() throws Exception {
         System.out.println("");
         System.out.println("===== TESTING HIBERNATE-ENVERS " + System.getProperty("hibernate42.version") + " FEATURE =====");
