@@ -409,7 +409,6 @@ run() {
 
 
     if [ -z "$KARAF_EXEC" ]; then
-        echo A
         KARAF_EXEC=""
         JAVA_OPTS="$JAVA_OPTS -Dkaraf.restart.jvm.supported=true"
     fi
