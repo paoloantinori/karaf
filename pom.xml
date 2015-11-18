@@ -226,7 +226,7 @@
         <pax.logging.version>1.8.4</pax.logging.version>
         <pax.url.version>2.4.2</pax.url.version>
         <pax.swissbox.version>1.8.2</pax.swissbox.version>
-        <pax.web.version>3.2.5</pax.web.version>
+        <pax.web.version>4.2.2</pax.web.version>
         <pax.tinybundles.version>1.3.2</pax.tinybundles.version>
         <plexus.utils.version>3.0</plexus.utils.version>
         <portlet-api.version>2.0</portlet-api.version>
@@ -615,6 +615,13 @@
             <dependency>
                 <groupId>org.apache.karaf.assemblies.features</groupId>
                 <artifactId>pax-cdi-features</artifactId>
+                <type>xml</type>
+                <classifier>features</classifier>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.karaf.assemblies.features</groupId>
+                <artifactId>pax-web-features</artifactId>
                 <type>xml</type>
                 <classifier>features</classifier>
                 <version>${project.version}</version>

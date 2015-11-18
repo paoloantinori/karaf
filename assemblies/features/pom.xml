@@ -38,6 +38,7 @@
         <module>enterprise</module>
         <module>spring</module>
         <module>pax-cdi</module>
+        <module>pax-web</module>
     </modules>
 
 </project>

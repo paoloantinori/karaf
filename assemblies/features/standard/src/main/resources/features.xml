@@ -18,7 +18,7 @@
 -->
 <features name="karaf-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
 
-    <repository>mvn:org.ops4j.pax.web/pax-web-features/${pax.web.version}/xml/features</repository>
+    <repository>mvn:org.apache.karaf.assemblies.features/pax-web-features/${project.version}/xml/features</repository>
 
     <!--
     <feature name="framework-security" version="${project.version}" description="OSGi Security for Karaf">

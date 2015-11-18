@@ -28,21 +28,12 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>standard</artifactId>
-    <name>Apache Karaf :: Assemblies :: Features :: Standard</name>
+    <artifactId>pax-web-features</artifactId>
+    <name>Apache Karaf :: Assemblies :: Features :: PAX-WEB</name>
 
     <properties>
         <appendedResourcesDirectory>${basedir}/../../../etc/appended-resources</appendedResourcesDirectory>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.karaf.assemblies.features</groupId>
-            <artifactId>pax-web-features</artifactId>
-            <type>xml</type>
-            <classifier>features</classifier>
-        </dependency>
-    </dependencies>
 
     <build>
         <resources>
@@ -54,50 +45,49 @@
                 </includes>
             </resource>
         </resources>
-        <plugins>  
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <configuration>
-              <useDefaultDelimiters>false</useDefaultDelimiters>
-              <delimiters>
-                <delimiter>${*}</delimiter>
-              </delimiters>
-            </configuration>
-            <executions>
-              <execution>
-                <id>filter</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>resources</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-artifacts</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>attach-artifact</goal>
-                </goals>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
-                  <artifacts>
-                    <artifact>
-                      <file>target/classes/features.xml</file>
-                      <type>xml</type>
-                      <classifier>features</classifier>
-                    </artifact>
-                  </artifacts>
+                    <useDefaultDelimiters>false</useDefaultDelimiters>
+                    <delimiters>
+                        <delimiter>${*}</delimiter>
+                    </delimiters>
                 </configuration>
-              </execution>
-            </executions>
-          </plugin>
+                <executions>
+                    <execution>
+                        <id>filter</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/classes/features.xml</file>
+                                    <type>xml</type>
+                                    <classifier>features</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
 </project>
-
