@@ -88,7 +88,7 @@
         </config>
         <feature version="[7.0,10.0)">pax-jetty</feature>
 
-        <bundle dependency="true" start-level="20">mvn:org.ow2.asm/asm-all/5.0.2</bundle>
+        <bundle dependency="true" start-level="20">mvn:org.ow2.asm/asm-all/5.0.3</bundle>
         <bundle dependency="true" start-level="20">mvn:org.apache.xbean/xbean-bundleutils/4.1</bundle>
         <bundle dependency="true" start-level="20">mvn:org.apache.xbean/xbean-reflect/4.1</bundle>
         <bundle dependency="true" start-level="20">mvn:org.apache.xbean/xbean-finder/4.1</bundle>
