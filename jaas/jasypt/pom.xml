@@ -82,9 +82,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.googlecode.pojosr</groupId>
-            <artifactId>de.kalpatec.pojosr.framework</artifactId>
-            <version>0.1.6</version>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.connect</artifactId>
+            <version>0.1.0</version>
             <scope>test</scope>
         </dependency>
 

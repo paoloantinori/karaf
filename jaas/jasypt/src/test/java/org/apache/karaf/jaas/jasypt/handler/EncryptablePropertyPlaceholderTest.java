@@ -30,12 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarInputStream;
 
-import de.kalpatec.pojosr.framework.PojoServiceRegistryFactoryImpl;
-import de.kalpatec.pojosr.framework.launch.BundleDescriptor;
-import de.kalpatec.pojosr.framework.launch.ClasspathScanner;
-import de.kalpatec.pojosr.framework.launch.PojoServiceRegistry;
-import de.kalpatec.pojosr.framework.launch.PojoServiceRegistryFactory;
-import junit.framework.TestCase;
+import org.apache.felix.connect.PojoServiceRegistryFactoryImpl;
+import org.apache.felix.connect.launch.BundleDescriptor;
+import org.apache.felix.connect.launch.ClasspathScanner;
+import org.apache.felix.connect.launch.PojoServiceRegistry;
+import org.apache.felix.connect.launch.PojoServiceRegistryFactory;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 import org.junit.After;
@@ -51,9 +50,10 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.util.tracker.ServiceTracker;
 
+import static org.junit.Assert.assertEquals;
 import static org.ops4j.pax.swissbox.tinybundles.core.TinyBundles.newBundle;
 
-public class EncryptablePropertyPlaceholderTest extends TestCase {
+public class EncryptablePropertyPlaceholderTest {
 
     public static final long DEFAULT_TIMEOUT = 30000;
 
@@ -89,7 +89,7 @@ public class EncryptablePropertyPlaceholderTest extends TestCase {
                            .set("Bundle-SymbolicName", "test")
                            .set("Bundle-Version", "0.0.0")));
 
-        Map config = new HashMap();
+        Map<String, Object> config = new HashMap<String, Object>();
         config.put(PojoServiceRegistryFactory.BUNDLE_DESCRIPTORS, bundles);
         PojoServiceRegistry reg = new PojoServiceRegistryFactoryImpl().newPojoServiceRegistry(config);
         bundleContext = reg.getBundleContext();
@@ -107,7 +107,7 @@ public class EncryptablePropertyPlaceholderTest extends TestCase {
         }
         return new BundleDescriptor(
                 getClass().getClassLoader(),
-                new URL("jar:" + file.toURI().toString() + "!/"),
+                new URL("jar:" + file.toURI().toString() + "!/").toString(),
                 headers);
     }
 
@@ -141,7 +141,7 @@ public class EncryptablePropertyPlaceholderTest extends TestCase {
     }
 
     protected <T> T getOsgiService(Class<T> type, String filter, long timeout) {
-        ServiceTracker tracker = null;
+        ServiceTracker<T, T> tracker = null;
         try {
             String flt;
             if (filter != null) {
@@ -154,7 +154,7 @@ public class EncryptablePropertyPlaceholderTest extends TestCase {
                 flt = "(" + Constants.OBJECTCLASS + "=" + type.getName() + ")";
             }
             Filter osgiFilter = FrameworkUtil.createFilter(flt);
-            tracker = new ServiceTracker(bundleContext, osgiFilter, null);
+            tracker = new ServiceTracker<T, T>(bundleContext, osgiFilter, null);
             tracker.open(true);
             // Note that the tracker is not closed to keep the reference
             // This is buggy, as the service reference may change i think
@@ -200,7 +200,7 @@ public class EncryptablePropertyPlaceholderTest extends TestCase {
     /*
      * Provides an iterable collection of references, even if the original array is null
      */
-    private static final Collection<ServiceReference> asCollection(ServiceReference[] references) {
+    private static Collection<ServiceReference> asCollection(ServiceReference[] references) {
         List<ServiceReference> result = new LinkedList<ServiceReference>();
         if (references != null) {
             for (ServiceReference reference : references) {
