@@ -46,6 +46,7 @@
         <bundle start-level="30">mvn:org.eclipse.jetty/jetty-jaas/${jetty.version}</bundle>
         <bundle start-level="30">mvn:org.eclipse.jetty/jetty-xml/${jetty.version}</bundle>
         <bundle start-level="30">mvn:org.eclipse.jetty/jetty-client/${jetty.version}</bundle>
+        <bundle start-level="30">mvn:org.apache.aries.spifly/org.apache.aries.spifly.dynamic.bundle/1.0.6</bundle>
         <bundle start-level="30">mvn:org.eclipse.jetty.websocket/websocket-server/${jetty.version}</bundle>
         <bundle start-level="30">mvn:org.eclipse.jetty.websocket/websocket-client/${jetty.version}</bundle>
         <bundle start-level="30">mvn:org.eclipse.jetty.websocket/websocket-common/${jetty.version}</bundle>
