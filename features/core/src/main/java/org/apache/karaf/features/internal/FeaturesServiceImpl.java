@@ -601,16 +601,12 @@ public class FeaturesServiceImpl implements FeaturesService, FrameworkListener {
         Set<Long> bundles = new TreeSet<Long>();
         for (BundleInfo bInfo : override(resolve(feature), this.overrides)) {
             Bundle b = installBundleIfNeeded(state, bInfo, verbose);
-            bundles.add(b.getBundleId());
-            state.bundleInfos.put(b.getBundleId(), bInfo);
-        }
-        
-        for (BundleInfo bInfo : feature.getBundles()) {
-            Bundle bundle = isBundleInstalled(bInfo);
-            if (bundle != null && !bundles.contains(bundle.getBundleId())) {
-                bundles.add(bundle.getBundleId());
+            if (state.installed.contains(b)) {
+                bundles.add(b.getBundleId());
+                state.bundleInfos.put(b.getBundleId(), bInfo);
             }
         }
+        
         state.features.put(feature, bundles);
     }
     

@@ -812,6 +812,7 @@ public class FeaturesServiceTest extends TestCase {
         expect(installedBundle1.getBundleId()).andReturn(12345L);
         expect(installedBundle1.getBundleId()).andReturn(12345L);
         expect(installedBundle1.getBundleId()).andReturn(12345L);
+        expect(installedBundle1.getBundleId()).andReturn(12345L);
         expect(installedBundle1.getSymbolicName()).andReturn(headers.get(Constants.BUNDLE_SYMBOLICNAME)).anyTimes();
         expect(installedBundle1.getHeaders()).andReturn(headers).anyTimes();
         expect(bundleContext.getBundles()).andReturn(new Bundle[] { installedBundle1 }).times(3);
