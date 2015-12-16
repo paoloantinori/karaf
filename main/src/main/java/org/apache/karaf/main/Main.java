@@ -622,8 +622,6 @@ public class Main {
             final String instanceName = System.getProperty("karaf.name");
             final String pid = isStartingInstance ? getPid() : "0";
             
-            final boolean isRoot = karafHome.equals(karafBase);
-            
             if (instanceName != null) {
                 String storage = System.getProperty("karaf.instances");
                 if (storage == null) {
@@ -666,40 +664,24 @@ public class Main {
                 FileLockUtils.execute(propertiesFile, new FileLockUtils.RunnableWithProperties() {
                     public void run(org.apache.felix.utils.properties.Properties props) throws IOException {
                         if (props.isEmpty()) {
-                            if (isRoot) {
-                                props.setProperty("count", "1");
-                                props.setProperty("item.0.name", instanceName);
-                                props.setProperty("item.0.loc", karafHome.getAbsolutePath());
-                                props.setProperty("item.0.pid", pid);
-                                props.setProperty("item.0.root", "true");
-                            } else {
-                                String errMsg = "Child instance " + (isStartingInstance ? "started" : "stopped") + " but no root registered in ";
-                                throw new IllegalStateException(errMsg + propertiesFile);
-                            }
+                            // it's the first instance running, so we consider as root
+                            props.setProperty("count", "1");
+                            props.setProperty("item.0.name", instanceName);
+                            props.setProperty("item.0.loc", karafHome.getAbsolutePath());
+                            props.setProperty("item.0.pid", pid);
+                            props.setProperty("item.0.root", "true");
                         } else {
                             int count = Integer.parseInt(props.getProperty("count"));
-                            // update root name if karaf.name got updated since the last container start
-                            if (isRoot) {
-                                for (int i = 0; i < count; i++) {
-                                    //looking for root instance entry
-                                    boolean root = Boolean.parseBoolean(props.getProperty("item." + i + ".root", "false"));
-                                    if (root) {
-                                        props.setProperty("item." + i + ".name", instanceName);
-                                        props.setProperty("item." + i + ".pid", pid);
-                                        return;
-                                    }
+                            for (int i = 0; i < count; i++) {
+                                String name = props.getProperty("item." + i + ".name");
+                                if (name.equals(instanceName)) {
+                                    props.setProperty("item." + i + ".pid", pid);
+                                    return;
                                 }
-                                throw new IllegalStateException("Unable to find root instance in " + propertiesFile);
-                            } else {
-                                for (int i = 0; i < count; i++) {
-                                    String name = props.getProperty("item." + i + ".name");
-                                    if (name.equals(instanceName)) {
-                                        props.setProperty("item." + i + ".pid", pid);
-                                        return;
-                                    }
-                                }
-                                throw new IllegalStateException("Unable to find instance '" + instanceName + "'in " + propertiesFile);
                             }
+                            // it's not found, let assume it's the root instance, so 0
+                            props.setProperty("item.0.name", instanceName);
+                            props.setProperty("item.0.pid", pid);
                         }
                     }
                 }, true);
@@ -1310,13 +1292,13 @@ public class Main {
         return null;
     }
 
-    private static File findFile(File dir, String name) {
+    private static File findFile(File dir, String name) {        
         File theFile = new File(dir, name);
 
         if (theFile.exists() && !theFile.isDirectory()) {
             return theFile;
         }
-
+        
         for (File file : dir.listFiles()) {
             if (file.isDirectory()) {
                 return findFile(file, name);
