@@ -124,7 +124,7 @@
         <aopalliance.bundle.version>1.0_6</aopalliance.bundle.version>
         <ant.bundle.version>1.7.0_6</ant.bundle.version>
         <antlr.bundle.version>2.7.7_5</antlr.bundle.version>
-        <asm.version>5.0.3</asm.version>
+        <asm.version>5.0.4</asm.version>
         <asm.springsource.version>1.5.3</asm.springsource.version>
         <aspectj.bundle.version>1.8.6_1</aspectj.bundle.version>
         <bndlib.version>2.4.0</bndlib.version>
