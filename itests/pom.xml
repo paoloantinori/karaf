@@ -151,6 +151,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+		<version>${surefire.itests.version}</version>
                 <configuration>
                     <systemPropertyVariables>
                         <org.ops4j.pax.logging.DefaultServiceLog.level>INFO</org.ops4j.pax.logging.DefaultServiceLog.level>
@@ -180,6 +181,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
+			<version>${surefire.itests.version}</version>
                         <configuration>
                             <!-- when the local repo location has been specified, we need to pass on this information to PAX mvn url -->
                             <argLine>-Dorg.ops4j.pax.url.mvn.localRepository=${maven.repo.local}</argLine>
