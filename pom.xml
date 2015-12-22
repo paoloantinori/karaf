@@ -248,6 +248,7 @@
         <directory-version>2.0.0-M16</directory-version>
         <sshd.version>0.14.0</sshd.version>
         <struts.bundle.version>1.3.10_1</struts.bundle.version>
+	<surefire.version>2.19</surefire.version>
         <xbean.version>3.18</xbean.version>
         <xbean4.version>4.5</xbean4.version>
         <!--from xerces-j2-2.11.0-22.fc21 build at http://koji.fedoraproject.org/koji/buildinfo?buildID=576421 (fixes CVE-2013-4002) -->
@@ -1543,7 +1544,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.16</version>
+                    <version>${surefire.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -1765,7 +1766,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.16</version>
+                <version>${surefire.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
