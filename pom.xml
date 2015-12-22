@@ -176,7 +176,7 @@
         <hibernate.annotations.version>3.4.0.GA</hibernate.annotations.version>
         <hibernate.ejb.version>3.4.0.GA</hibernate.ejb.version>
         <hibernate3.version>3.3.2.GA</hibernate3.version>
-        <hibernate42.version>4.2.20.Final-redhat-1</hibernate42.version>
+        <hibernate42.version>4.2.22.Final-redhat-1</hibernate42.version>
         <hibernate43.version>4.3.6.Final</hibernate43.version>
         <hibernate.validator.version>5.0.3.Final</hibernate.validator.version>
 
@@ -195,7 +195,7 @@
         <aries.jmx.blueprint.core.version>1.1.0</aries.jmx.blueprint.core.version>
         <aries.jpa.version>1.0.2</aries.jpa.version>
         <aries.jpa.api.version>1.0.2</aries.jpa.api.version>
-        <aries.jpa.container.version>1.0.2</aries.jpa.container.version>
+        <aries.jpa.container.version>1.0.3</aries.jpa.container.version>
         <aries.jpa.container.context.version>1.0.4</aries.jpa.container.context.version>
         <aries.jpa.blueprint.version>1.0.4</aries.jpa.blueprint.version>
         <aries.jndi.version>1.0.0</aries.jndi.version>
