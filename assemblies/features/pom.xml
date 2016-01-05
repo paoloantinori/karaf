@@ -39,6 +39,7 @@
         <module>spring</module>
         <module>pax-cdi</module>
         <module>pax-web</module>
+        <module>jclouds</module>
     </modules>
 
 </project>
