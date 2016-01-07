@@ -162,7 +162,7 @@
 
     <feature name="weld" description="JBoss Weld CDI container support" version="${weld.version}" resolver="(obr)">
         <details>Add support of JBoss Weld CDI container.</details>
-        <feature>pax-cdi-1.2-weld</feature>
+        <feature>pax-cdi-weld</feature>
     </feature>
 
     <feature name="application-without-isolation" description="Provide EBA archive support" version="${aries.application.version}">
