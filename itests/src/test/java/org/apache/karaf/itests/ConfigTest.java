@@ -35,12 +35,14 @@ public class ConfigTest extends KarafTestSupport {
 
     @Test
     public void listCommand() throws Exception {
-        String configListOutput = executeCommand("config:list");
+        String configListOutput = executeCommand("config:list", ADMIN_ROLE);
         System.out.println(configListOutput);
         assertFalse(configListOutput.isEmpty());
-        configListOutput = executeCommand("config:list \"(service.pid=org.apache.karaf.features)\"");
+        assertTrue("config:list command should contain entry for shell bundle", configListOutput.contains("org.apache.karaf.shell.ssh"));
+        configListOutput = executeCommand("config:list \"(service.pid=org.apache.karaf.features)\"", ADMIN_ROLE);
         System.out.println(configListOutput);
         assertFalse(configListOutput.isEmpty());
+        assertTrue("config:list should contain response for org.apache.karaf.features", configListOutput.contains("org.apache.karaf.features"));
     }
 
     @Test

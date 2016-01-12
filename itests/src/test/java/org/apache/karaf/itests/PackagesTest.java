@@ -32,11 +32,15 @@ import org.ops4j.pax.exam.spi.reactors.PerMethod;
 @ExamReactorStrategy(PerMethod.class)
 public class PackagesTest extends KarafTestSupport {
 
+    private static final String TEST_PACKAGE = "org.apache.karaf.features; version";
+
     @Test
     public void exportsCommand() throws Exception {
-        String exportsOutput = executeCommand("packages:exports");
+        String exportsOutput = executeCommand("packages:exports", ADMIN_ROLE);
         System.out.println(exportsOutput);
         assertFalse(exportsOutput.isEmpty());
+        assertTrue("Exported packages should contain '" + TEST_PACKAGE + "'.",
+                exportsOutput.contains(TEST_PACKAGE));
     }
 
     @Test
@@ -47,6 +51,7 @@ public class PackagesTest extends KarafTestSupport {
             MBeanServerConnection connection = connector.getMBeanServerConnection();
             ObjectName name = new ObjectName("org.apache.karaf:type=packages,name=root");
             ArrayList exports = (ArrayList) connection.invoke(name, "exportedPackages", new Object[]{ }, new String[]{ });
+            System.out.println(exports);
             assertTrue(exports.size() > 0);
         } finally {
             if (connector != null)
@@ -56,9 +61,11 @@ public class PackagesTest extends KarafTestSupport {
 
     @Test
     public void importsCommand() throws Exception {
-        String importsOutput = executeCommand("packages:imports");
+        String importsOutput = executeCommand("packages:imports", ADMIN_ROLE);
         System.out.println(importsOutput);
         assertFalse(importsOutput.isEmpty());
+        assertTrue("Imported packages should contain '" + TEST_PACKAGE + "'.",
+                importsOutput.contains(TEST_PACKAGE));
     }
 
     @Test
@@ -69,6 +76,7 @@ public class PackagesTest extends KarafTestSupport {
             MBeanServerConnection connection = connector.getMBeanServerConnection();
             ObjectName name = new ObjectName("org.apache.karaf:type=packages,name=root");
             ArrayList imports = (ArrayList) connection.invoke(name, "importedPackages", new Object[]{ }, new String[]{ });
+            System.out.println(imports);
             assertTrue(imports.size() > 0);
         } finally {
             if (connector != null)

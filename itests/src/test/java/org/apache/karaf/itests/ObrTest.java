@@ -37,15 +37,15 @@ public class ObrTest extends KarafTestSupport {
 
     @Before
     public void installObrFeature() throws Exception {
-        System.out.println(executeCommand("features:install obr", 30000L, false, new RolePrincipal("admin") ));
+        System.out.println(executeCommand("features:install obr", 30000L, false, ADMIN_ROLE));
         // give it time on faster machines to complete
         Thread.sleep(500);
     }
 
     @Test
     public void listCommands() throws Exception {
-        System.out.println(executeCommand("obr:listUrl"));
-        System.out.println(executeCommand("obr:list"));
+        System.out.println(executeCommand("obr:listUrl", ADMIN_ROLE));
+        System.out.println(executeCommand("obr:list", ADMIN_ROLE));
     }
 
     @Test

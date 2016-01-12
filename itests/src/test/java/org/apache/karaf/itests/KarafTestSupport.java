@@ -31,6 +31,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 import javax.management.remote.JMXConnector;
@@ -42,6 +44,8 @@ import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.apache.karaf.features.Feature;
 import org.apache.karaf.features.FeaturesService;
+import org.apache.karaf.jaas.boot.principal.RolePrincipal;
+
 import org.ops4j.pax.exam.Configuration;
 import org.ops4j.pax.exam.MavenUtils;
 import org.ops4j.pax.exam.Option;
@@ -65,6 +69,8 @@ public class KarafTestSupport {
 
     static final Long COMMAND_TIMEOUT = 10000L;
     static final Long SERVICE_TIMEOUT = 30000L;
+
+    public static final Principal ADMIN_ROLE = new RolePrincipal("admin");
 
     ExecutorService executor = Executors.newCachedThreadPool();
 
@@ -385,4 +391,24 @@ public class KarafTestSupport {
         }
     }
 
+    /**
+     * Helper method to check number of regex occurrences in given text.
+     *
+     * @param regex pattern to search in text
+     * @param text source text
+     * @return number of regex occurrences in text
+     */
+    public static int countMatches(String regex, String text) {
+        Pattern p = Pattern.compile(regex);
+        int count = 0;
+        Matcher m = p.matcher(text);
+        while (m.find()) {
+            System.out.println("Found regex match: '" + m.group() + "'");
+            count++;
+        }
+        if (count == 0) {
+            System.out.println("Nothing found for regex '" + regex + "'");
+        }
+        return count;
+    }
 }

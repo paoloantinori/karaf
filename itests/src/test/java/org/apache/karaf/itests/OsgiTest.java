@@ -16,6 +16,7 @@ package org.apache.karaf.itests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
@@ -30,15 +31,20 @@ import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
 
+import java.net.ConnectException;
+import java.util.concurrent.TimeUnit;
+
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
 public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void listCommand() throws Exception {
-        String listOutput = executeCommand("osgi:list -t 0");
+        String listOutput = executeCommand("osgi:list -t 0 -l", ADMIN_ROLE);
         System.out.println(listOutput);
         assertFalse(listOutput.isEmpty());
+        assertTrue("osgi:list -t 0 -l should contain jaas modules bundle",
+                countMatches("org.apache.karaf.jaas.modules", listOutput) > 0);
     }
 
     @Test
@@ -50,6 +56,9 @@ public class OsgiTest extends KarafTestSupport {
             ObjectName name = new ObjectName("org.apache.karaf:type=bundles,name=root");
             TabularData bundles = (TabularData) connection.invoke(name, "list", new Object[]{ }, new String[]{ });
             assertTrue(bundles.size() > 0);
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            fail("Unexpected exception raised: " + e);
         } finally {
             if (connector != null)
                 connector.close();
@@ -58,31 +67,32 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void classesCommand() throws Exception {
-        String classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
+        String classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api", ADMIN_ROLE);
         System.out.println(classesOutput);
         assertFalse(classesOutput.isEmpty());
-        classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
-        System.out.println(classesOutput);
-        assertTrue(classesOutput.contains("org/apache/aries/proxy"));
+        assertTrue("osgi:classes for org.apache.aries.proxy.api should contain package org/apache/aries",
+                countMatches("org/apache/aries/.*", classesOutput) > 1);
     }
 
     @Test
     public void findClassCommand() throws Exception {
-        String findClassOutput = executeCommand("osgi:find-class jmx");
+        String findClassOutput = executeCommand("osgi:find-class jmx", ADMIN_ROLE);
         System.out.println(findClassOutput);
         assertFalse(findClassOutput.isEmpty());
+        assertTrue("osgi:find-class jmx should contain 'jmx' in package",
+                countMatches(".*jmx.*", findClassOutput) > 1);
     }
 
     @Test
     public void headersCommand() throws Exception {
-        String headersOutput = executeCommand("osgi:headers --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
+        String headersOutput = executeCommand("osgi:headers --force org.apache.aries.proxy.api", ADMIN_ROLE);
         System.out.println(headersOutput);
         assertTrue(headersOutput.contains("Bundle-SymbolicName = org.apache.aries.proxy.api"));
     }
 
     @Test
     public void infoCommand() throws Exception {
-        String infoOutput = executeCommand("osgi:info --force org.apache.aries.proxy.api", new RolePrincipal("admin"));
+        String infoOutput = executeCommand("osgi:info --force org.apache.aries.proxy.api", ADMIN_ROLE);
         System.out.println(infoOutput);
         assertTrue(infoOutput.contains("Apache Aries Proxy API"));
     }
@@ -90,15 +100,17 @@ public class OsgiTest extends KarafTestSupport {
     @Test
     public void installCommand() throws Exception {
         String installOutput = executeCommand("osgi:install mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/2.4_6",
-                                              new RolePrincipal("admin"));
+                                              ADMIN_ROLE);
         System.out.println(installOutput);
-        String listOutput = executeCommand("osgi:list | grep -i commons-lang");
+        String listOutput = executeCommand("osgi:list -l", ADMIN_ROLE);
         assertFalse(listOutput.isEmpty());
+        assertTrue("osgi:list should contain installed commons-lang",
+                countMatches(".*\\[Installed.*commons-lang.*", listOutput) > 0);
     }
 
     @Test
     public void nameCommand() throws Exception {
-        String nameOutput = executeCommand("osgi:name", new RolePrincipal("admin"));
+        String nameOutput = executeCommand("osgi:name", ADMIN_ROLE);
         System.out.println(nameOutput);
         assertEquals("root", nameOutput.trim());
     }
@@ -120,7 +132,7 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void versionCommand() throws Exception {
-        String versionOutput = executeCommand("osgi:version", new RolePrincipal("admin"));
+        String versionOutput = executeCommand("osgi:version", ADMIN_ROLE);
         System.out.println(versionOutput);
         assertTrue(versionOutput.contains("2.4"));
     }
@@ -142,14 +154,14 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void startLevelCommand() throws Exception {
-        String startLevelOutput = executeCommand("osgi:start-level", new RolePrincipal("viewer"));
+        String startLevelOutput = executeCommand("osgi:start-level", ADMIN_ROLE);
         System.out.println(startLevelOutput);
         assertTrue(startLevelOutput.contains("100"));
     }
 
     @Test
     public void shutdownCommand() throws Exception {
-        System.out.println(executeCommand("osgi:shutdown -f", new RolePrincipal("admin")));
+        System.out.println(executeCommand("osgi:shutdown -f", ADMIN_ROLE));
     }
 
 }

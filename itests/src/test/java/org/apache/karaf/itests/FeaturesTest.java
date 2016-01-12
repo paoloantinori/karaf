@@ -34,12 +34,16 @@ public class FeaturesTest extends KarafTestSupport {
 
     @Test
     public void listCommand() throws Exception {
-        String listOutput = executeCommand("features:list", new RolePrincipal("admin"));
+        String listOutput = executeCommand("features:list", ADMIN_ROLE);
         System.out.println(listOutput);
         assertFalse(listOutput.isEmpty());
-        listOutput = executeCommand("features:list -i", new RolePrincipal("admin"));
+        assertTrue("There should be uninstalled feature eventadmin", countMatches("\\[uninstalled.+?eventadmin", listOutput) > 0);
+        listOutput = executeCommand("features:list -i", ADMIN_ROLE);
         System.out.println(listOutput);
         assertFalse(listOutput.isEmpty());
+        assertTrue("There should be installed feature 'features'", countMatches("\\[installed.+?features", listOutput) > 0);
+        assertTrue("Uninstalled features shouldn't be printed.", countMatches("\\[uninstalled.+?eventadmin", listOutput) == 0);
+
     }
 
     @Test
@@ -59,14 +63,15 @@ public class FeaturesTest extends KarafTestSupport {
 
     @Test
     public void installUninstallCommand() throws Exception {
-        String featureInstallOutput = executeCommand("features:install -v eventadmin", new RolePrincipal("admin"));
+        String featureInstallOutput = executeCommand("features:install -v eventadmin", ADMIN_ROLE);
         System.out.println(featureInstallOutput);
         assertFalse(featureInstallOutput.isEmpty());
-        String featureListOutput = executeCommand("features:list -i | grep eventadmin", new RolePrincipal("admin"));
+        String featureListOutput = executeCommand("features:list -i | grep eventadmin", ADMIN_ROLE);
         System.out.println(featureListOutput);
         assertFalse(featureListOutput.isEmpty());
-        System.out.println(executeCommand("features:uninstall eventadmin", new RolePrincipal("admin")));
-        featureListOutput = executeCommand("features:list -i | grep eventadmin", new RolePrincipal("admin"));
+        assertTrue("There should installed feature eventadmin", countMatches("\\[installed.+?eventadmin", featureListOutput) > 0);
+        System.out.println(executeCommand("features:uninstall eventadmin", ADMIN_ROLE));
+        featureListOutput = executeCommand("features:list -i | grep eventadmin", ADMIN_ROLE);
         System.out.println(featureListOutput);
         assertTrue(featureListOutput.isEmpty());
     }
@@ -78,8 +83,18 @@ public class FeaturesTest extends KarafTestSupport {
             connector = this.getJMXConnector();
             MBeanServerConnection connection = connector.getMBeanServerConnection();
             ObjectName name = new ObjectName("org.apache.karaf:type=features,name=root");
+
+            // install eventadmin and check if featureInfo installed==true
             connection.invoke(name, "installFeature", new Object[] { "eventadmin" }, new String[]{ "java.lang.String" });
+            Object featureInfo = connection.invoke(name, "infoFeature", new Object[] {"eventadmin"}, new String[] { "java.lang.String"});
+            System.out.println(featureInfo.toString());
+            assertTrue("eventadmin should be installed", countMatches("installed *= *true", featureInfo.toString().toLowerCase()) > 0);
+
+            // uninstall eventadmin and check if featureInfo installed==false
             connection.invoke(name, "uninstallFeature", new Object[] { "eventadmin" }, new String[]{ "java.lang.String" });
+            featureInfo = connection.invoke(name, "infoFeature", new Object[] {"eventadmin"}, new String[] { "java.lang.String"});
+            System.out.println(featureInfo.toString());
+            assertTrue("eventadmin should be installed", countMatches("installed *= *false", featureInfo.toString().toLowerCase()) > 0);
         } finally {
             if (connector != null)
                 connector.close();
@@ -88,12 +103,12 @@ public class FeaturesTest extends KarafTestSupport {
 
     @Test
     public void repoAddRemoveCommand() throws Exception {
-        System.out.println(executeCommand("features:addurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features", new RolePrincipal("admin")));
-        String repoListOutput = executeCommand("features:listurl", new RolePrincipal("admin"));
+        System.out.println(executeCommand("features:addurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features", ADMIN_ROLE));
+        String repoListOutput = executeCommand("features:listurl", ADMIN_ROLE);
         System.out.println(repoListOutput);
         assertTrue(repoListOutput.contains("apache-karaf-cellar"));
-        System.out.println(executeCommand("features:removeurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features", new RolePrincipal("admin")));
-        repoListOutput = executeCommand("features:listurl", new RolePrincipal("admin"));
+        System.out.println(executeCommand("features:removeurl mvn:org.apache.karaf.cellar/apache-karaf-cellar/2.2.4/xml/features", ADMIN_ROLE));
+        repoListOutput = executeCommand("features:listurl", ADMIN_ROLE);
         System.out.println(repoListOutput);
         assertFalse(repoListOutput.contains("apache-karaf-cellar"));
     }
