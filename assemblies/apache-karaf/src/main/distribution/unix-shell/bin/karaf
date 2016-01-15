@@ -383,6 +383,12 @@ run() {
                 OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
                 shift
                 ;;
+            'daemon')
+                OPTS="-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true"
+                KARAF_DAEMON="true"
+                KARAF_EXEC="exec"
+                shift
+                ;;
             'client')
                 OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false"
                 shift
@@ -439,10 +445,14 @@ run() {
            $MAIN "$@"
 
         KARAF_RC=$?
-        if [ "$KARAF_RC" -eq 10 ]; then
-           echo "Restarting JVM..."
+        if [ $KARAF_DAEMON ] ; then
+            exit $KARAF_RC
         else
-           exit $KARAF_RC
+            if [ "$KARAF_RC" -eq 10 ]; then
+               echo "Restarting JVM..."
+            else
+               exit $KARAF_RC
+            fi
         fi
     done
 }

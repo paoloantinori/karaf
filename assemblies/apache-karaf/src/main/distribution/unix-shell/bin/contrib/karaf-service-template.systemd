@@ -1,3 +1,4 @@
+#
 #    Licensed to the Apache Software Foundation (ASF) under one or more
 #    contributor license agreements.  See the NOTICE file distributed with
 #    this work for additional information regarding copyright ownership.
@@ -12,21 +13,33 @@
 #    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #    See the License for the specific language governing permissions and
 #    limitations under the License.
-
-#
-# Karaf Service
-#
-KARAF_SERVICE_PATH="${KARAF_SERVICE_PATH}"
-KARAF_SERVICE_NAME="${KARAF_SERVICE_NAME}"
-KARAF_SERVICE_LOG="${KARAF_SERVICE_LOG}"
-KARAF_SERVICE_USER="${KARAF_SERVICE_USER}"
-KARAF_SERVICE_GROUP="${KARAF_SERVICE_GROUP}"
-KARAF_LOCKFILE="/var/lock/subsys/$KARAF_SERVICE_NAME"
-KARAF_SERVICE_PIDFILE=${KARAF_SERVICE_PIDFILE}
-#
-# Karaf
 #
 
-#
-# User
-#
+[Unit]
+Description=Karaf - ${KARAF_SERVICE_NAME}
+After=syslog.target network.target
+
+[Service]
+EnvironmentFile=${KARAF_SERVICE_CONF}
+#Environment="KARAF_OPTS=-Dkaraf.systemd.enabled=true"
+
+User=${KARAF_SERVICE_USER}
+Group=${KARAF_SERVICE_GROUP}
+PIDFile=${KARAF_SERVICE_PIDFILE}
+ExecStart=${KARAF_SERVICE_PATH}/bin/${KARAF_SERVICE_EXECUTABLE} daemon
+ExecStop=${KARAF_SERVICE_PATH}/bin/${KARAF_SERVICE_EXECUTABLE} stop
+
+Restart=on-failure
+RestartSec=5s
+StartLimitInterval=60s
+StartLimitBurst=3
+
+SuccessExitStatus=0 143
+
+LimitNOFILE=102642
+
+#WatchdogSec=60
+
+[Install]
+WantedBy=multi-user.target
+

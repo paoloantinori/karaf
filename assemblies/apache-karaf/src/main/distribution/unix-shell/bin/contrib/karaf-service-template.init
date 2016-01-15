@@ -15,20 +15,25 @@
 #    limitations under the License.
 #
 # Karaf control script
-#
-# chkconfig: - 80 20
 # description: Karaf startup script
 # processname: ${KARAF_SERVICE_NAME}
 # pidfile: ${KARAF_SERVICE_PIDFILE}
 # config: ${KARAF_SERVICE_CONF}
 #
 
-# Source function library.
-. /etc/init.d/functions
+# Location of JDK
+if [ -n "$JAVA_HOME" ]; then
+    export JAVA_HOME
+fi
 
-# Load Java configuration.
-[ -r /etc/java/java.conf ] && . /etc/java/java.conf
-export JAVA_HOME
+# Setup the JVM
+if [ -z "$JAVA" ]; then
+    if [ -n "$JAVA_HOME" ]; then
+        JAVA="$JAVA_HOME/bin/java"
+    else
+        JAVA="java"
+    fi
+fi
 
 if [ -r "${KARAF_SERVICE_CONF}" ]; then
     . "${KARAF_SERVICE_CONF}"
@@ -48,20 +53,18 @@ fi
 prog=${KARAF_SERVICE_NAME}
 currenttime=$(date +%s%N | cut -b1-13)
 
-start() {
-    echo -n "Starting $prog: "
+do_start() {
+    echo "Starting $prog: "
     if [ -f $KARAF_SERVICE_PIDFILE ]; then
         read ppid < $KARAF_SERVICE_PIDFILE
-        if [ `ps --pid $ppid 2> /dev/null | grep -c $ppid 2> /dev/null` -eq '1' ]; then
-            echo -n "$prog is already running"
-            failure
-            echo
+        if [ `ps -p $ppid 2> /dev/null | grep -c $ppid 2> /dev/null` -eq '1' ]; then
+            echo "$prog is already running"
             return 1
         else
             rm -f $KARAF_SERVICE_PIDFILE
         fi
     fi
-    
+
     mkdir -p $(dirname $KARAF_SERVICE_LOG)
     cat /dev/null > $KARAF_SERVICE_LOG
     chown $KARAF_SERVICE_USER:$KARAF_SERVICE_GROUP  $KARAF_SERVICE_LOG
@@ -70,59 +73,51 @@ start() {
     chown $KARAF_SERVICE_USER:$KARAF_SERVICE_GROUP $(dirname $KARAF_SERVICE_PIDFILE) || true
 
     if [ ! -z "$KARAF_SERVICE_USER" ]; then
-        if [ -r /etc/rc.d/init.d/functions ]; then
-            daemon \
-                --user="$KARAF_SERVICE_USER" \
-                --pidfile="$KARAF_SERVICE_PIDFILE" \
-                " { $KARAF_SERVICE_PATH/bin/karaf daemon >> $KARAF_SERVICE_LOG 2>&1 & } ; echo \$! >| $KARAF_SERVICE_PIDFILE "
-        else
-            su - $KARAF_SERVICE_USER \
-                -c " { $KARAF_SERVICE_PATH/bin/karaf daemon >> $KARAF_SERVICE_LOG 2>&1 & } ; echo \$! >| $KARAF_SERVICE_PIDFILE "
+        su - $KARAF_SERVICE_USER \
+            -c " { $KARAF_SERVICE_PATH/bin/$KARAF_SERVICE_EXECUTABLE daemon >> $KARAF_SERVICE_LOG 2>&1 & } ; echo \$! >| $KARAF_SERVICE_PIDFILE "
+
+        sleep 1
+        if [ -f $KARAF_SERVICE_PIDFILE ]; then
+            chown $KARAF_SERVICE_USER:$KARAF_SERVICE_GROUP $KARAF_SERVICE_PIDFILE
         fi
     fi
- 
+
     RETVAL=$?
-    echo
-    
-    if [ $RETVAL -eq 0 ]; then
-        touch $KARAF_LOCKFILE
-    fi
-    
     return $RETVAL
 }
 
-stop() {
-    echo -n $"Stopping $prog: "
+do_stop() {
+    echo $"Stopping $prog: "
     count=0;
 
     if [ -f $KARAF_SERVICE_PIDFILE ]; then
         read kpid < $KARAF_SERVICE_PIDFILE
         let kwait=$SHUTDOWN_WAIT
 
-        # Try issuing SIGTERM
-        su - $KARAF_SERVICE_USER -c $KARAF_SERVICE_PATH/bin/stop
-        until [ `ps --pid $kpid 2> /dev/null | grep -c $kpid 2> /dev/null` -eq '0' ] || [ $count -gt $kwait ]
+        su - $KARAF_SERVICE_USER \
+            -c "$KARAF_SERVICE_PATH/bin/$KARAF_SERVICE_EXECUTABLE stop >> $KARAF_SERVICE_LOG 2>&1"
+
+        until [ `ps -p $kpid 2> /dev/null | grep -c $kpid 2> /dev/null` -eq '0' ] || [ $count -gt $kwait ]
         do
             sleep 1
             let count=$count+1;
         done
 
         if [ $count -gt $kwait ]; then
-            kill -9 $kpid
+            if [ `ps -p $ppid 2> /dev/null | grep -c $ppid 2> /dev/null` -eq '1' ]; then
+                kill -9 $kpid
+            fi
         fi
     fi
 
     rm -f $KARAF_SERVICE_PIDFILE
     rm -f $KARAF_LOCKFILE
-
-    success
-    echo
 }
 
-status() {
+do_status() {
     if [ -f $KARAF_SERVICE_PIDFILE ]; then
         read ppid < $KARAF_SERVICE_PIDFILE
-        if [ `ps --pid $ppid 2> /dev/null | grep -c $ppid 2> /dev/null` -eq '1' ]; then
+        if [ `ps -p $ppid 2> /dev/null | grep -c $ppid 2> /dev/null` -eq '1' ]; then
             echo "$prog is running (pid $ppid)"
             return 0
         else
@@ -136,17 +131,17 @@ status() {
 
 case "$1" in
     start)
-        start
+        do_start
         ;;
     stop)
-        stop
+        do_stop
         ;;
     restart)
-        $0 stop
-        $0 start
+        do_stop
+        do_start
         ;;
     status)
-        status
+        do_status
         ;;
     *)
         ## If no parameters are given, print which are avaiable.
