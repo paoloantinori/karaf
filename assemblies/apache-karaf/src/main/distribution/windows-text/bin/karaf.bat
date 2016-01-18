@@ -288,6 +288,7 @@ if "%KARAF_PROFILER%" == "" goto :RUN
     if "%1" == "status" goto :EXECUTE_STATUS
     if "%1" == "console" goto :EXECUTE_CONSOLE
     if "%1" == "server" goto :EXECUTE_SERVER
+    if "%1" == "daemon" goto :EXECUTE_DAEMON
     if "%1" == "client" goto :EXECUTE_CLIENT
     if "%1" == "clean" goto :EXECUTE_CLEAN
     if "%1" == "debug" goto :EXECUTE_DEBUG
@@ -309,6 +310,12 @@ if "%KARAF_PROFILER%" == "" goto :RUN
 
 :EXECUTE_SERVER
     SET OPTS=-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true
+    shift
+    goto :RUN_LOOP
+
+:EXECUTE_DAEMON
+    SET OPTS=-Dkaraf.startLocalConsole=false -Dkaraf.startRemoteShell=true
+    SET KARAF_DAEMON=true
     shift
     goto :RUN_LOOP
 
@@ -342,10 +349,22 @@ if "%KARAF_PROFILER%" == "" goto :RUN
     )
 
     "%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%KARAF_HOME%\lib\endorsed" -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%KARAF_HOME%\lib\ext" -Dkaraf.instances="%KARAF_HOME%\instances" -Dkaraf.home="%KARAF_HOME%" -Dkaraf.base="%KARAF_BASE%" -Djava.io.tmpdir="%KARAF_DATA%\tmp" -Dkaraf.data="%KARAF_DATA%" -Dkaraf.etc="%KARAF_ETC%" -Dkaraf.restart.jvm.supported=true -Djava.util.logging.config.file="%KARAF_ETC%\java.util.logging.properties" -Djavax.management.builder.initial=org.apache.karaf.management.boot.KarafMBeanServerBuilder %KARAF_OPTS% %MAIN% %ARGS%
-    if ERRORLEVEL 10 (
-        echo Restarting JVM...
-        goto EXECUTE
-    )
+    rem If KARAF_DAEMON is defined, auto-restart is bypassed and control given
+    rem back to the operating system
+    if defined "%KARAF_DAEMON%" (
+        rem If Karaf has been started by winsw, the process can be restarted
+        rem by executing KARAF_DAEMON% restart!
+        rem   https://github.com/kohsuke/winsw#restarting-service-from-itself
+        if defined "%WINSW_EXECUTABLE%" (
+            if ERRORLEVEL 10 (
+                echo Restarting ...
+                %KARAF_DAEMON% restart!
+        )
+    ) else (
+        if ERRORLEVEL 10 (
+            echo Restarting JVM...
+            goto EXECUTE
+        )
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
