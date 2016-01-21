@@ -254,23 +254,23 @@ limitations under the License.
         <bundle>mvn:org.apache.jclouds.provider/rackspace-cloudservers-uk/${jclouds.version}</bundle>
     </feature>
 
-    <feature name='jclouds-rackspace-clouddns-us' description='Racksapce Cloud DNS US' version='${jclouds.feature.version}' resolver='(obr)'>
+    <feature name='jclouds-rackspace-clouddns-us' description='Rackspace Cloud DNS US' version='${jclouds.feature.version}' resolver='(obr)'>
         <feature version='${jclouds.feature.version}'>jclouds-api-rackspace-clouddns</feature>
         <bundle>mvn:org.apache.jclouds.provider/rackspace-clouddns-us/${jclouds.version}</bundle>
     </feature>
 
-    <feature name='jclouds-rackspace-clouddns-uk' description='Racksapce Cloud DNS UK' version='${jclouds.feature.version}' resolver='(obr)'>
+    <feature name='jclouds-rackspace-clouddns-uk' description='Rackspace Cloud DNS UK' version='${jclouds.feature.version}' resolver='(obr)'>
         <feature version='${jclouds.feature.version}'>jclouds-api-rackspace-clouddns</feature>
         <bundle>mvn:org.apache.jclouds.provider/rackspace-clouddns-uk/${jclouds.version}</bundle>
     </feature>
 
-    <feature name='jclouds-rackspace-cloudblockstorage-us' description='Racksapce Cloud Block Storage US' version='${jclouds.feature.version}' resolver='(obr)'>
+    <feature name='jclouds-rackspace-cloudblockstorage-us' description='Rackspace Cloud Block Storage US' version='${jclouds.feature.version}' resolver='(obr)'>
         <feature version='${jclouds.feature.version}'>jclouds-api-openstack-cinder</feature>
         <feature version='${jclouds.feature.version}'>jclouds-api-rackspace-cloudidentity</feature>
         <bundle>mvn:org.apache.jclouds.provider/rackspace-cloudblockstorage-us/${jclouds.version}</bundle>
     </feature>
 
-    <feature name='jclouds-rackspace-cloudblockstorage-uk' description='Racksapce Cloud Block Storage UK' version='${jclouds.feature.version}' resolver='(obr)'>
+    <feature name='jclouds-rackspace-cloudblockstorage-uk' description='Rackspace Cloud Block Storage UK' version='${jclouds.feature.version}' resolver='(obr)'>
         <feature version='${jclouds.feature.version}'>jclouds-api-openstack-cinder</feature>
         <feature version='${jclouds.feature.version}'>jclouds-api-rackspace-cloudidentity</feature>
         <bundle>mvn:org.apache.jclouds.provider/rackspace-cloudblockstorage-uk/${jclouds.version}</bundle>
