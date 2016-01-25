@@ -14,15 +14,17 @@
 package org.apache.karaf.itests;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.apache.karaf.jaas.boot.principal.RolePrincipal;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerMethod;
+
+import java.io.File;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerMethod.class)
@@ -30,7 +32,7 @@ public class WrapperTest extends KarafTestSupport {
 
     @Before
     public void installObrFeature() throws Exception {
-        System.out.println(executeCommand("features:install wrapper", new RolePrincipal("admin")));
+        System.out.println(executeCommand("features:install wrapper", ADMIN_ROLE));
         // give it time on faster machines to complete
         Thread.sleep(500);
     }
@@ -38,9 +40,18 @@ public class WrapperTest extends KarafTestSupport {
 
     @Test
     public void installCommand() throws Exception {
-        String installOutput = executeCommand("wrapper:install");
+        String installOutput = executeCommand("wrapper:install", ADMIN_ROLE);
         System.out.println(installOutput);
         assertFalse(installOutput.isEmpty());
-    }
 
+        assertTrue("wrapper:install should print path to karaf-wrapper",
+                countMatches(".*karaf-wrapper.conf", installOutput) > 0);
+
+        assertTrue("wrapper:install should print what to 'symlink'",
+                countMatches(".*ln -s.*", installOutput) > 0);
+
+        String karafHome = System.getProperty("karaf.home");
+        File karafService = new File(karafHome + File.separator + "bin", "karaf-service");
+        assertTrue(karafService + " script should exist", karafService.exists());
+    }
 }
