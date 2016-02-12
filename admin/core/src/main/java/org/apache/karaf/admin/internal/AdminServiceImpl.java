@@ -16,10 +16,27 @@
  */
 package org.apache.karaf.admin.internal;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.InterruptedIOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Scanner;
 
 import org.apache.karaf.admin.AdminService;
 import org.apache.karaf.admin.Instance;
@@ -285,11 +302,6 @@ public class AdminServiceImpl implements AdminService {
                     if (rootOverrides.exists()) {
                         copy(rootOverrides, new File(karafBase, "etc/overrides.properties"));
                     }
-                    // inject parent features repositories, required by patching mechanism
-                    File rootFeatures = new File(home, FEATURES_CFG);
-                    if (rootFeatures.exists()) {
-                        aggregateFeaturesRepositories(rootFeatures, new File(karafBase, FEATURES_CFG));
-                    }
                 }
 
                 HashMap<String, String> props = new HashMap<String, String>();
@@ -345,44 +357,6 @@ public class AdminServiceImpl implements AdminService {
                 return instance;
             }
         }, true);
-    }
-
-    private void aggregateFeaturesRepositories(File rootFeatures, File childFeatures) throws IOException {
-        final String FEATURES_REPOSITORIES = "featuresRepositories";
-        Set<String> resultingUris = new HashSet<String>();
-
-        Properties rootProperties = new Properties();
-        rootProperties.load(new FileReader(rootFeatures));
-
-        Properties childProperties = new Properties();
-        childProperties.load(new FileReader(childFeatures));
-
-        String featuresRepositoriesRoot = rootProperties.getProperty(FEATURES_REPOSITORIES);
-        String featuresRepositoriesChild = childProperties.getProperty(FEATURES_REPOSITORIES);
-
-        String[] uris = featuresRepositoriesRoot.split(",");
-        for(String uri : uris){
-            resultingUris.add(uri);
-        }
-        uris = featuresRepositoriesChild.split(",");
-        for(String uri : uris){
-            resultingUris.add(uri);
-        }
-
-        StringBuilder concUris = new StringBuilder();
-        Iterator<String> iterator = resultingUris.iterator();
-        while(iterator.hasNext()){
-            String uri = iterator.next();
-            concUris.append(uri);
-            if(iterator.hasNext()){
-                concUris.append(",");
-            }
-        }
-        org.apache.felix.utils.properties.Properties storage = new org.apache.felix.utils.properties.Properties(childFeatures, true);
-        storage.load(childFeatures);
-        storage.put(FEATURES_REPOSITORIES, concUris.toString());
-        storage.save();
-
     }
 
     void handleFeatures(File file, final InstanceSettings settings) throws IOException {
@@ -1158,8 +1132,6 @@ public class AdminServiceImpl implements AdminService {
             out.close();
         }
     }
-
-
 
     private static final String DELIM_START = "${";
     private static final String DELIM_STOP = "}";
