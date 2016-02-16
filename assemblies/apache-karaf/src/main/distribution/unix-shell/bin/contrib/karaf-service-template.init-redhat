@@ -107,7 +107,7 @@ stop() {
 
         # Try issuing SIGTERM
         su - $KARAF_SERVICE_USER \
-            -c "\"$KARAF_SERVICE_PATH/bin/$KARAF_SERVICE_EXECUTABLE\" stop"
+            -c "export JAVA_HOME=$JAVA_HOME; \"$KARAF_SERVICE_PATH/bin/$KARAF_SERVICE_EXECUTABLE\" stop"
 
         until [ `ps --pid $kpid 2> /dev/null | grep -c $kpid 2> /dev/null` -eq '0' ] || [ $count -gt $kwait ]
         do
