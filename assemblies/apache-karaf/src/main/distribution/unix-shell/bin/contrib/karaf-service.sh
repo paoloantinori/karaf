@@ -162,7 +162,7 @@ if [[ ! $KARAF_SERVICE_TEMPLATE ]]; then
                     ${KARAF_SERVICE_CONF}
 
                 chmod 755 ${PWD}/${KARAF_SERVICE_NAME} 
-            elif [ -f /etc/debian-release ]; then
+            elif [ -f /etc/debian-release ] || [ -f /etc/debian_version ]; then
                 generate_service_descriptor \
                     $INIT_DEBIAN_TEMPLATE \
                     ${PWD}/${KARAF_SERVICE_NAME} \
