@@ -112,12 +112,19 @@ case "$1" in
 
     # PID file
     PID_PATH=$(dirname "$KARAF_SERVICE_PIDFILE")
-    mkdir -p "$PID_PATH"
+    if [ ! -d "$PID_PATH" ]; then
+        mkdir -p "$PID_PATH"
+    fi
+
     chown $KARAF_SERVICE_USER:$KARAF_SERVICE_GROUP "$PID_PATH" || true
 
     # Console log
     LOG_PATH=$(dirname "$KARAF_SERVICE_LOG")
-    mkdir "$LOG_PATH"
+
+    if [ ! -d "$LOG_PATH" ]; then
+        mkdir -p "$LOG_PATH"
+    fi
+
     cat /dev/null > "$KARAF_SERVICE_LOG"
     chown $KARAF_SERVICE_USER:$KARAF_SERVICE_GROUP "$LOG_PATH"
     chown $KARAF_SERVICE_USER:$KARAF_SERVICE_GROUP "$KARAF_SERVICE_LOG"
@@ -166,7 +173,7 @@ case "$1" in
         children_pids=$(pgrep -P $kpid)
 
         su - $KARAF_SERVICE_USER \
-            -c "$KARAF_SERVICE_PATH/bin/$KARAF_SERVICE_EXECUTABLE stop"
+            -c "export JAVA_HOME=$JAVA_HOME; \"$KARAF_SERVICE_PATH/bin/$KARAF_SERVICE_EXECUTABLE\" stop"
 
         count=0
         until [ `ps --pid $kpid 2> /dev/null | grep -c $kpid 2> /dev/null` -eq '0' ] || [ $count -gt $kwait ]
@@ -180,7 +187,6 @@ case "$1" in
                 --stop \
                 --quiet \
                 --pidfile "$KARAF_SERVICE_PIDFILE" \
-                --remove-pidfile
                 --user "$KARAF_SERVICE_USER" \
                 --retry=TERM/$SHUTDOWN_WAIT/KILL/5 \
             > /dev/null 2>&1
