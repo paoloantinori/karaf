@@ -51,6 +51,17 @@
             <directory>src/main/distribution/windows-text</directory>
             <outputDirectory>/</outputDirectory>
             <lineEnding>dos</lineEnding>
+            <excludes>
+                <exclude>bin/contrib/karaf-service-win.exe</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/distribution/windows-text</directory>
+            <outputDirectory>/</outputDirectory>
+            <lineEnding>keep</lineEnding>
+            <includes>                
+                <include>bin/contrib/karaf-service-win.exe</include>
+            </includes>
         </fileSet>
         <fileSet>
             <directory>target/classes/bin</directory>
