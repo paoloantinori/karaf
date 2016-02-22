@@ -215,6 +215,21 @@ if not "%JAVA%" == "" goto :Check_JAVA_END
     set JAVA=%JAVA_HOME%\bin\java
 :Check_JAVA_END
 
+:CheckRootInstance
+    set ROOT_INSTANCE_RUNNING=false
+    if exist "%KARAF_HOME%\instances\instance.properties" (
+        for /f "delims=" %%x in ( 'findstr "item.0.pid" "%KARAF_HOME%\instances\instance.properties" ' ) do @set pid=%%x
+        for /f "delims=" %%i in ( 'findstr "item.0.name" "%KARAF_HOME%\instances\instance.properties" ' ) do @set name=%%i
+    )
+    set ROOT_INSTANCE_PID=%pid:~13%
+
+    set ROOT_INSTANCE_NAME=%name:~14%
+    if not "%ROOT_INSTANCE_PID%"=="0" (
+        tasklist /fi "PID eq %ROOT_INSTANCE_PID%" /fi "STATUS eq running" /fo 2>NUL
+        if "%ERRORLEVEL%"=="0" set ROOT_INSTANCE_RUNNING=true
+    )
+
+
 if not exist "%JAVA_HOME%\bin\server\jvm.dll" (
     if not exist "%JAVA_HOME%\jre\bin\server\jvm.dll" (
         echo WARNING: Running Karaf on a Java HotSpot Client VM because server-mode is not available.
@@ -272,6 +287,8 @@ goto :EOF
 
 :CLASSPATH_END
 
+SET CHECK_ROOT_INSTANCE_RUNNING=true
+
 rem Execute the JVM or the load the profiler
 if "%KARAF_PROFILER%" == "" goto :RUN
     rem Execute the profiler if it has been configured
@@ -296,15 +313,18 @@ if "%KARAF_PROFILER%" == "" goto :RUN
 
 :EXECUTE_STOP
     SET MAIN=org.apache.karaf.main.Stop
+    SET CHECK_ROOT_INSTANCE_RUNNING=false
     shift
     goto :RUN_LOOP
 
 :EXECUTE_STATUS
     SET MAIN=org.apache.karaf.main.Status
+    SET CHECK_ROOT_INSTANCE_RUNNING=false
     shift
     goto :RUN_LOOP
 
 :EXECUTE_CONSOLE
+    SET CHECK_ROOT_INSTANCE_RUNNING=false
     shift
     goto :RUN_LOOP
 
@@ -321,6 +341,7 @@ if "%KARAF_PROFILER%" == "" goto :RUN
 
 :EXECUTE_CLIENT
     SET OPTS=-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=false
+    SET CHECK_ROOT_INSTANCE_RUNNING=false
     shift
     goto :RUN_LOOP
 
@@ -348,7 +369,15 @@ if "%KARAF_PROFILER%" == "" goto :RUN
         MOVE /Y "%KARAF_HOME%\lib.next" "%KARAF_HOME%\lib"
     )
 
+    SET IS_RUNNABLE=false
+    if "%ROOT_INSTANCE_RUNNING%" == "false" SET IS_RUNNABLE=true
+    if "%CHECK_ROOT_INSTANCE_RUNNING%" == "false" SET IS_RUNNABLE=true
+    if "%IS_RUNNABLE%" == "true" (
     "%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%KARAF_HOME%\lib\endorsed" -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%KARAF_HOME%\lib\ext" -Dkaraf.instances="%KARAF_HOME%\instances" -Dkaraf.home="%KARAF_HOME%" -Dkaraf.base="%KARAF_BASE%" -Djava.io.tmpdir="%KARAF_DATA%\tmp" -Dkaraf.data="%KARAF_DATA%" -Dkaraf.etc="%KARAF_ETC%" -Dkaraf.restart.jvm.supported=true -Djava.util.logging.config.file="%KARAF_ETC%\java.util.logging.properties" -Djavax.management.builder.initial=org.apache.karaf.management.boot.KarafMBeanServerBuilder %KARAF_OPTS% %MAIN% %ARGS%
+    ) else (
+        echo There is a Root instance already running with name %ROOT_INSTANCE_NAME% and pid %ROOT_INSTANCE_PID%
+        goto :END
+    )
     rem If KARAF_DAEMON is defined, auto-restart is bypassed and control given
     rem back to the operating system
     if defined "%KARAF_DAEMON%" (
@@ -365,6 +394,7 @@ if "%KARAF_PROFILER%" == "" goto :RUN
             echo Restarting JVM...
             goto EXECUTE
         )
+    )
 
 rem # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
