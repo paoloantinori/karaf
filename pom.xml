@@ -180,7 +180,7 @@
         <hibernate3.version>3.3.2.GA</hibernate3.version>
         <hibernate42.version>4.2.22.Final-redhat-1</hibernate42.version>
         <hibernate43.version>4.3.6.Final</hibernate43.version>
-        <hibernate.validator.version>5.0.3.Final</hibernate.validator.version>
+        <hibernate.validator.version>5.2.2.Final</hibernate.validator.version>
 
         <aries.application.version>1.0.0</aries.application.version>
         <aries.application.api.version>1.0.0</aries.application.api.version>
@@ -222,7 +222,7 @@
         <jclouds.feature.version>1.9.1.redhat-001</jclouds.feature.version>
         <jline.version>2.12.1.redhat-001</jline.version>
         <jledit.version>0.2.1</jledit.version>
-        <joda-time2-version>2.7</joda-time2-version>
+        <joda-time2-version>2.9</joda-time2-version>
         <jsw.version>3.2.3</jsw.version>
         <log4j.version>1.2.17</log4j.version>
         <maven.version>3.0-alpha-2</maven.version>
