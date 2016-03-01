@@ -132,7 +132,6 @@
         <cglib2.version>2.2.0</cglib2.version>
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
         <commons-digester.version>2.1</commons-digester.version>
-        <commons-beanutils.bundle.version>1.8.3_1</commons-beanutils.bundle.version>
         <commons-codec.version>1.10</commons-codec.version>
         <commons-collections.version>3.2.1.redhat-7</commons-collections.version>
         <commons-compress.version>1.6</commons-compress.version>
