@@ -155,6 +155,7 @@
         <!-- needed by jclouds 1.9.1 -->
         <guava-version>16.0</guava-version>
         <guice.version>3.0</guice.version>
+        <guice.smx.version>3.0_1</guice.smx.version>
         <easymock.version>3.2</easymock.version>
         <equinox.version>3.9.1-v20140110-1610</equinox.version>
         <felix.bundlerepository.version>2.0.4</felix.bundlerepository.version>
