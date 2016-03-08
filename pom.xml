@@ -126,7 +126,7 @@
         <antlr.bundle.version>2.7.7_5</antlr.bundle.version>
         <asm.version>5.0.4</asm.version>
         <asm.springsource.version>1.5.3</asm.springsource.version>
-        <aspectj.bundle.version>1.8.6_1</aspectj.bundle.version>
+        <aspectj.bundle.version>1.8.7_2</aspectj.bundle.version>
         <bndlib.version>2.4.0</bndlib.version>
         <cglib.bundle.version>3.2.0_1</cglib.bundle.version>
         <cglib2.version>2.2.0</cglib2.version>
