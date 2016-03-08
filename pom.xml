@@ -256,7 +256,7 @@
         <spring32.version>3.2.14.RELEASE_1</spring32.version>
         <spring40.version>4.0.7.RELEASE_1</spring40.version>
         <spring41.version>4.1.7.RELEASE_1</spring41.version>
-        <spring.security32.version>3.2.6.RELEASE</spring.security32.version>
+        <spring.security32.version>3.2.8.RELEASE</spring.security32.version>
         <spring.security.bundle.version>3.2.8.RELEASE_1</spring.security.bundle.version>
         <directory-version>2.0.0-M16</directory-version>
         <sshd.version>0.14.0</sshd.version>
