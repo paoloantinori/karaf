@@ -228,7 +228,7 @@
         <maven.version>3.0-alpha-2</maven.version>
         <mina.version>2.0.9</mina.version>
         <myfaces.version>2.2.9</myfaces.version>
-        <netty3.version>3.9.6.Final</netty3.version>
+        <netty3.version>3.10.5.Final</netty3.version>
         <osgi.version>5.0.0</osgi.version>
         <org.json.version>20140107</org.json.version>
         <pax.base.version>1.5.0</pax.base.version>
