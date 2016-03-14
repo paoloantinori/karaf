@@ -214,7 +214,7 @@
         <deltaspike.version>1.5.1</deltaspike.version>
         <groovy1-version>1.8.6</groovy1-version>
         <http-client-version>4.5.1</http-client-version>
-        <http-core-version>4.4.1</http-core-version>
+        <http-core-version>4.4.4</http-core-version>
         <jansi.version>1.11</jansi.version>
         <javax.inject.bundle.version>1_2</javax.inject.bundle.version>
         <jclouds.version>1.9.1</jclouds.version>
