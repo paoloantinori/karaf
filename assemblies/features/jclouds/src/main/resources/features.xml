@@ -32,7 +32,7 @@ limitations under the License.
         <bundle dependency='true'>mvn:com.google.guava/guava/${guava-version}</bundle>
         <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oauth-commons/20100527_1</bundle>
         <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jersey-core/1.11_1</bundle>
-        <bundle dependency='true'>mvn:com.google.code.gson/gson/2.3</bundle>
+        <bundle dependency='true'>mvn:com.google.code.gson/gson/2.4</bundle>
         <bundle>mvn:org.apache.jclouds/jclouds-core/${jclouds.version}</bundle>
     </feature>
 
