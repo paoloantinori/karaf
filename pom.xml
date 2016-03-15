@@ -153,7 +153,7 @@
         <geronimo.jta-spec.version>1.1.1</geronimo.jta-spec.version>
         <geronimo.servlet.version>1.0</geronimo.servlet.version>
         <!-- needed by jclouds 1.9.1 -->
-        <guava-version>16.0</guava-version>
+        <guava-version>16.0.1</guava-version>
         <guice.version>3.0</guice.version>
         <easymock.version>3.2</easymock.version>
         <equinox.version>3.9.1-v20140110-1610</equinox.version>
