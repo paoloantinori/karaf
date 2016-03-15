@@ -28,7 +28,7 @@ import org.apache.felix.gogo.commands.Command;
 public class ConnectCommand extends AdminCommandSupport {
 
     @Option(name="-u", aliases={"--username"}, description="Remote user name", required = false, multiValued = false)
-    private String username;
+    private String username = "karaf";
 
     @Option(name = "-p", aliases = {"--password"}, description = "Remote password", required = false, multiValued = false)
     private String password;
@@ -54,6 +54,7 @@ public class ConnectCommand extends AdminCommandSupport {
 
         int port = getExistingInstance(instance).getSshPort();
         if (username != null) {
+            System.out.println("You are using username " + username);
             if (password == null) {
                 session.execute("ssh -l " + username + " -p " + port + " localhost " + cmdStr);
             } else {
