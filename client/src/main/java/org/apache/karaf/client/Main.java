@@ -184,7 +184,7 @@ public class Main {
                     System.out.println("  -d [delay]    intra-retry delay (defaults to 2 seconds)");
                     System.out.println("  -b            batch mode, specify multiple commands via standard input");
                     System.out.println("  -f [file]    read commands from the specified file");
-                    System.out.println("  -k [keyFile]    specify the private keyFile location when using key login, need have BouncyCastle registered as security provider using this flag");
+                    System.out.println("  -k [keyFile]    specify the private keyFile location when using key login");
                     System.out.println("  [commands]    commands to run");
                     System.out.println("If no commands are specified, the client will be put in an interactive mode");
                     System.exit(0);
