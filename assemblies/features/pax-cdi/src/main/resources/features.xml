@@ -83,7 +83,8 @@
         <bundle dependency="true">mvn:org.ops4j.pax.jdbc/pax-jdbc/${pax.jdbc.version}</bundle>
         <bundle>mvn:org.apache.deltaspike.modules/deltaspike-jpa-module-api/${deltaspike.version}</bundle>
         <bundle>mvn:org.apache.deltaspike.modules/deltaspike-jpa-module-impl/${deltaspike.version}</bundle>
-        <bundle>mvn:org.ops4j.pax.cdi.fragment/pax-cdi-fragment-ds-jpa/${pax.cdi.version}</bundle>
+        <!-- PAXCDI-136 -->
+        <!--<bundle>mvn:org.ops4j.pax.cdi.fragment/pax-cdi-fragment-ds-jpa/${pax.cdi.version}</bundle>-->
     </feature>
 
     <feature name="deltaspike-partial-bean" description="Apache Deltaspike partial bean support" version="${deltaspike.version}"
