@@ -268,7 +268,7 @@
         <xbean4.version>4.5</xbean4.version>
         <!--from xerces-j2-2.11.0-22.fc21 build at http://koji.fedoraproject.org/koji/buildinfo?buildID=576421 (fixes CVE-2013-4002) -->
         <xerces.version>2.11.0-22</xerces.version>
-        <xalan.bundle.version>2.7.2_2</xalan.bundle.version>
+        <xalan.bundle.version>2.7.2_3</xalan.bundle.version>
         <xalan-serializer.bundle.version>2.7.2_1</xalan-serializer.bundle.version>
         <bcprov.version>1.52</bcprov.version>
         <javax.mail.version>1.4.7</javax.mail.version>
