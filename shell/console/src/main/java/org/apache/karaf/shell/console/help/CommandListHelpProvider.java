@@ -74,7 +74,12 @@ public class CommandListHelpProvider implements HelpProvider {
                     Action action = (Action) mth.invoke(function);
                     Class<? extends Action> clazz = action.getClass();
                     Command ann = clazz.getAnnotation(Command.class);
-                    description = ann.description();
+                    if (ann != null) {
+                        description = ann.description();
+                    } else {
+                        String[] tokens = name.split(":");
+                        description = tokens.length >= 2 ? tokens[1] : tokens[0];
+                    }
                 } catch (Throwable e) {
                 }
                 if (name.startsWith("*:")) {
