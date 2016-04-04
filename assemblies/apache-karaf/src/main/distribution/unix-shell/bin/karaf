@@ -289,6 +289,7 @@ setupDefaults() {
         fi
         DEFAULT_JAVA_OPTS="-server $DEFAULT_JAVA_OPTS -Dcom.sun.management.jmxremote"
     elif [ "$JVM_VENDOR" = "IBM" ]; then
+        DEFAULT_JAVA_OPTS="-Xshareclasses:none $DEFAULT_JAVA_OPTS"
         if $os400; then
             DEFAULT_JAVA_OPTS="$DEFAULT_JAVA_OPTS"
         elif $aix; then
