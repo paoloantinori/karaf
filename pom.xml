@@ -238,7 +238,7 @@
         <pax.jdbc.version>0.3.0</pax.jdbc.version>
         <pax.jpa.version>0.3.0</pax.jpa.version>
         <pax.logging.version>1.8.4</pax.logging.version>
-        <pax.url.version>2.4.6</pax.url.version>
+        <pax.url.version>2.4.7</pax.url.version>
         <pax.swissbox.version>1.8.2</pax.swissbox.version>
         <pax.web.version>4.2.6</pax.web.version>
         <pax.web.feature.version>4.2.6.redhat-001</pax.web.feature.version>
