@@ -66,7 +66,7 @@ limitations under the License.
 
     <feature name='jclouds-api-byon' description='jclouds - API - Byon' version='${jclouds.feature.version}' resolver='(obr)'>
         <feature version='${jclouds.feature.version}'>jclouds-compute</feature>
-        <bundle dependency='true'>mvn:org.yaml/snakeyaml/1.11</bundle>
+        <bundle dependency='true'>mvn:org.yaml/snakeyaml/1.17</bundle>
         <bundle>mvn:org.apache.jclouds.api/byon/${jclouds.version}</bundle>
     </feature>
 
