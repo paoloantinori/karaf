@@ -226,7 +226,7 @@
         <jsw.version>3.2.3</jsw.version>
         <log4j.version>1.2.17</log4j.version>
         <maven.version>3.0-alpha-2</maven.version>
-        <mina.version>2.0.9</mina.version>
+        <mina.version>2.0.13</mina.version>
         <myfaces.version>2.2.9</myfaces.version>
         <netty3.version>3.10.5.Final</netty3.version>
         <osgi.version>5.0.0</osgi.version>
