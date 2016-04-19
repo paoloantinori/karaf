@@ -26,13 +26,18 @@ import javax.management.ObjectName;
 import javax.management.StandardMBean;
 import javax.management.openmbean.CompositeData;
 import javax.management.openmbean.CompositeDataSupport;
+import javax.management.openmbean.KeyAlreadyExistsException;
 import javax.management.openmbean.TabularData;
 import javax.management.openmbean.TabularDataSupport;
 
 import org.apache.karaf.management.JMXSecurityMBean;
 import org.apache.karaf.management.KarafMBeanServerGuard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JMXSecurityMBeanImpl extends StandardMBean implements JMXSecurityMBean {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JMXSecurityMBeanImpl.class);
 
     private MBeanServer mbeanServer;
     private KarafMBeanServerGuard guard;
@@ -83,25 +88,34 @@ public class JMXSecurityMBeanImpl extends StandardMBean implements JMXSecurityMB
 
         for (Map.Entry<String, List<String>> entry : bulkQuery.entrySet()) {
             String objectName = entry.getKey();
+            String currentMethod = "";
             List<String> methods = entry.getValue();
-            if (methods.size() == 0) {
-                boolean res = canInvoke(context, objectName);
-                CompositeData data = new CompositeDataSupport(CAN_INVOKE_RESULT_ROW_TYPE, CAN_INVOKE_RESULT_COLUMNS, new Object[]{ objectName, "", res });
-                table.put(data);
-            } else {
-                for (String method : methods) {
-                    List<String> argTypes = new ArrayList<String>();
-                    String name = parseMethodName(method, argTypes);
-
-                    boolean res;
-                    if (name.equals(method)) {
-                        res = canInvoke(context, objectName, name);
-                    } else {
-                        res = canInvoke(context, objectName, name, argTypes.toArray(new String[]{}));
-                    }
-                    CompositeData data = new CompositeDataSupport(CAN_INVOKE_RESULT_ROW_TYPE, CAN_INVOKE_RESULT_COLUMNS, new Object[]{ objectName, method, res });
+            try {
+                CompositeData data = null;
+                if (methods.size() == 0) {
+                    boolean res = canInvoke(context, objectName);
+                    currentMethod = "";
+                    data = new CompositeDataSupport(CAN_INVOKE_RESULT_ROW_TYPE, CAN_INVOKE_RESULT_COLUMNS, new Object[] { objectName, currentMethod, res });
                     table.put(data);
+                } else {
+                    for (String method : methods) {
+                        currentMethod = method;
+                        List<String> argTypes = new ArrayList<String>();
+                        String name = parseMethodName(method, argTypes);
+
+                        boolean res;
+                        if (name.equals(method)) {
+                            res = canInvoke(context, objectName, name);
+                        } else {
+                            res = canInvoke(context, objectName, name, argTypes.toArray(new String[] {}));
+                        }
+                        data = new CompositeDataSupport(CAN_INVOKE_RESULT_ROW_TYPE, CAN_INVOKE_RESULT_COLUMNS, new Object[] { objectName, method, res });
+                        table.put(data);
+                    }
                 }
+            } catch (KeyAlreadyExistsException e) {
+                // somehow we were getting this exception - let's ignore
+                LOG.warn(e.getMessage() + " (objectName = " + objectName + ", method = \"" + currentMethod + "\")");
             }
         }
 
