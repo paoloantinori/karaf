@@ -258,6 +258,8 @@
         <spring42.version>4.2.5.RELEASE_1</spring42.version>
         <spring.security32.version>3.2.8.RELEASE</spring.security32.version>
         <spring.security.bundle.version>3.2.8.RELEASE_1</spring.security.bundle.version>
+        <spring.security40.version>4.0.4.RELEASE</spring.security40.version>
+        <spring.security40.bundle.version>4.0.4.RELEASE_1</spring.security40.bundle.version>
         <directory-version>2.0.0-M16</directory-version>
         <sshd.version>0.14.0</sshd.version>
         <sshj.version>0.10.0</sshj.version>
