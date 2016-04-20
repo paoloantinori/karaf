@@ -23,6 +23,7 @@ setlocal
 set DIRNAME=%~dp0%
 set PROGNAME=%~nx0%
 set ARGS=%*
+set KARAF_TITLE=JBoss Fuse
 
 rem Sourcing environment settings for karaf similar to tomcats setenv
 SET KARAF_SCRIPT="karaf.bat"
