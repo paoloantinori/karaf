@@ -127,7 +127,7 @@
         <asm.version>5.0.4</asm.version>
         <asm.springsource.version>1.5.3</asm.springsource.version>
         <aspectj.bundle.version>1.8.7_2</aspectj.bundle.version>
-        <bndlib.version>2.4.0</bndlib.version>
+        <bndlib.version>2.4.1</bndlib.version>
         <cglib.bundle.version>3.2.0_1</cglib.bundle.version>
         <cglib2.version>2.2.0</cglib2.version>
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
@@ -274,9 +274,13 @@
         <weld.version>2.3.0.Final</weld.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <appendedResourcesDirectory>${basedir}/etc/appended-resources</appendedResourcesDirectory>
-        <bnd.version.policy>[$(version;==;$(@)),$(version;+;$(@)))</bnd.version.policy>
+        <!--<bnd.version.policy>[$(version;==;$(@)),$(version;+;$(@)))</bnd.version.policy>-->
+        <bnd.version.provider.policy><![CDATA[$<range;[==,=+)>]]></bnd.version.provider.policy>
+        <bnd.version.consumer.policy><![CDATA[$<range;[==,+)>]]></bnd.version.consumer.policy>
         <!-- Disable OBR repository update by default -->
         <obrRepository>NONE</obrRepository>
+        <!-- other properties -->
+        <compiler.fork>false</compiler.fork>
     </properties>
 
     <repositories>
@@ -763,7 +767,7 @@
             </dependency>
             <dependency>
                 <groupId>biz.aQute.bnd</groupId>
-                <artifactId>bndlib</artifactId>
+                <artifactId>biz.aQute.bndlib</artifactId>
                 <version>${bndlib.version}</version>
             </dependency>
             <dependency>
@@ -1554,7 +1558,8 @@
                         <instructions>
                             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                             <Export-Package>${project.artifactId}*;version=${project.version}</Export-Package>
-                            <_versionpolicy>${bnd.version.policy}</_versionpolicy>
+                            <_provider-policy>${bnd.version.provider.policy}</_provider-policy>
+                            <_consumer-policy>${bnd.version.consumer.policy}</_consumer-policy>
                         </instructions>
                     </configuration>
                 </plugin>

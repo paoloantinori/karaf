@@ -78,14 +78,14 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.3.7</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>manual</Bundle-SymbolicName>
                         <Export-Package>*;-split-package:=merge-first</Export-Package>
                         <Import-Package />
-                        <_versionpolicy>[$(version;==;$(@)),$(version;+;$(@)))</_versionpolicy>
+                        <_provider-policy>${bnd.version.provider.policy}</_provider-policy>
+                        <_consumer-policy>${bnd.version.consumer.policy}</_consumer-policy>
                         <_removeheaders>Ignore-Package,Include-Resource,Private-Package,Embed-Dependency</_removeheaders>
                     </instructions>
                     <unpackBundle>true</unpackBundle>

@@ -83,7 +83,8 @@
                             org.apache.karaf.deployer.wrap,
                             org.apache.karaf.util
                         </Private-Package>
-                        <_versionpolicy>${bnd.version.policy}</_versionpolicy>
+                        <_provider-policy>${bnd.version.provider.policy}</_provider-policy>
+                        <_consumer-policy>${bnd.version.consumer.policy}</_consumer-policy>
                     </instructions>
                 </configuration>
             </plugin>

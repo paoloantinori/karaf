@@ -100,7 +100,8 @@
                             org.apache.felix.utils.version;-split-package:=merge-first,
                             org.apache.felix.utils.manifest;-split-package:=merge-first
                         </Private-Package>
-                        <_versionpolicy>${bnd.version.policy}</_versionpolicy>
+                        <_provider-policy>${bnd.version.provider.policy}</_provider-policy>
+                        <_consumer-policy>${bnd.version.consumer.policy}</_consumer-policy>
                     </instructions>
                 </configuration>
             </plugin>

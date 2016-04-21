@@ -90,7 +90,8 @@
                             *
                         </Import-Package>
                         <Private-Package>org.apache.karaf.diagnostic.management.internal</Private-Package>
-                        <_versionpolicy>${bnd.version.policy}</_versionpolicy>
+                        <_provider-policy>${bnd.version.provider.policy}</_provider-policy>
+                        <_consumer-policy>${bnd.version.consumer.policy}</_consumer-policy>
                     </instructions>
                 </configuration>
             </plugin>
