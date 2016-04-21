@@ -26,7 +26,7 @@
         <!-- Copy license and other files from root -->
         <fileSet>
             <directory>../..</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <includes>
                 <include>README</include>
                 <include>RELEASE*</include>
@@ -39,17 +39,17 @@
         <!-- Copy over everything that needs to get unix line endings -->
         <fileSet>
             <directory>src/main/distribution/text</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <lineEnding>unix</lineEnding>
         </fileSet>
         <fileSet>
             <directory>src/main/distribution/snapshot</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <lineEnding>unix</lineEnding>
         </fileSet>
         <fileSet>
             <directory>target/classes/bin</directory>
-            <outputDirectory>/bin/</outputDirectory>
+            <outputDirectory>bin</outputDirectory>
             <lineEnding>unix</lineEnding>
             <fileMode>0755</fileMode>
             <includes>
@@ -60,18 +60,18 @@
         </fileSet>
         <fileSet>
             <directory>target/classes/etc</directory>
-            <outputDirectory>/etc/</outputDirectory>
+            <outputDirectory>etc</outputDirectory>
             <lineEnding>unix</lineEnding>
         </fileSet>
         <!-- Copy over the examples -->
         <fileSet>
             <directory>target/classes/demos</directory>
-            <outputDirectory>/demos/</outputDirectory>
+            <outputDirectory>demos</outputDirectory>
             <lineEnding>unix</lineEnding>
         </fileSet>
         <fileSet>
             <directory>../../demos</directory>
-            <outputDirectory>/demos/</outputDirectory>
+            <outputDirectory>demos</outputDirectory>
             <lineEnding>unix</lineEnding>
             <excludes>
                 <exclude>**/target/**</exclude>
@@ -82,7 +82,7 @@
         <!-- Copy over the files that need unix line endings and also chmod to 755 -->
         <fileSet>
             <directory>src/main/distribution/unix-shell</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <lineEnding>unix</lineEnding>
             <fileMode>0755</fileMode>
         </fileSet>
@@ -90,7 +90,7 @@
         <!-- Copy over jar files -->
         <fileSet>
             <directory>target/dependencies</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/features-repo</directory>
@@ -100,7 +100,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/lib</outputDirectory>
+            <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <includes>
@@ -111,7 +111,7 @@
         </dependencySet>
 
         <dependencySet>
-            <outputDirectory>/lib/endorsed</outputDirectory>
+            <outputDirectory>lib/endorsed</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <includes>
@@ -129,7 +129,7 @@
         </dependencySet>
 
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -144,7 +144,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -156,7 +156,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -166,11 +166,10 @@
                 <include>org.ops4j.pax.url:pax-url-aether</include>
                 <include>org.ops4j.pax.url:pax-url-wrap</include>
                 <include>org.ops4j.pax.url:pax-url-commons</include>
-                <include>org.ops4j.pax.url:pax-url-maven-commons</include>
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -187,7 +186,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -198,7 +197,7 @@
             </includes>
         </dependencySet>        
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -211,7 +210,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -222,7 +221,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -235,7 +234,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -248,7 +247,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -263,7 +262,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -279,7 +278,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -292,7 +291,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -303,7 +302,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -317,7 +316,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -329,7 +328,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -340,7 +339,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>

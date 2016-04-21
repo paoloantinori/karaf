@@ -174,7 +174,6 @@
                             <!-- Required by FileUpload and Util -->
                             commons-io
                         </Embed-Dependency>
-
                         <_removeheaders>
                             Embed-Dependency,Private-Package,Include-Resource
                         </_removeheaders>

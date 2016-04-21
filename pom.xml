@@ -64,8 +64,8 @@
         <connection>scm:git:https://git-wip-us.apache.org/repos/asf/karaf.git</connection>
         <developerConnection>scm:git:https://git-wip-us.apache.org/repos/asf/karaf.git</developerConnection>
         <url>https://git-wip-us.apache.org/repos/asf?p=karaf.git;a=summary</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <issueManagement>
         <system>jira</system>
@@ -261,8 +261,8 @@
         <sshd.version>0.14.0</sshd.version>
         <sshj.version>0.10.0</sshj.version>
         <struts.bundle.version>1.3.10_1</struts.bundle.version>
-	<surefire.version>2.19</surefire.version>
-	<surefire.itests.version>2.17</surefire.itests.version>
+        <surefire.version>2.19.1</surefire.version>
+        <surefire.itests.version>2.17</surefire.itests.version>
         <xbean.version>3.18</xbean.version>
         <xbean4.version>4.5</xbean4.version>
         <!--from xerces-j2-2.11.0-22.fc21 build at http://koji.fedoraproject.org/koji/buildinfo?buildID=576421 (fixes CVE-2013-4002) -->
@@ -1782,7 +1782,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
-                <version>2.4</version>
+                <version>2.5</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

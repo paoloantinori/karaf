@@ -90,7 +90,6 @@
                         <Export-Package>
                             org.apache.karaf.management.mbeans.scr,
                             org.apache.karaf.management.mbeans.scr.codec
-
                         </Export-Package>
                         <Private-Package>
                             org.apache.karaf.management.mbeans.scr.internal

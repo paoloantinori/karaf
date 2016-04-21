@@ -185,7 +185,6 @@
                 <include>org.ops4j.pax.url:pax-url-aether</include>
                 <include>org.ops4j.pax.url:pax-url-wrap</include>
                 <include>org.ops4j.pax.url:pax-url-commons</include>
-                <include>org.ops4j.pax.url:pax-url-maven-commons</include>
             </includes>
         </dependencySet>
         <dependencySet>
