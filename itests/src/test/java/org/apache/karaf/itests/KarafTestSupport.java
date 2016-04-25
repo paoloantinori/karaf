@@ -97,9 +97,8 @@ public class KarafTestSupport {
                 editConfigurationFilePut("etc/system.properties", "hibernate3.version", System.getProperty("hibernate3.version")),
                 editConfigurationFilePut("etc/system.properties", "hibernate42.version", System.getProperty("hibernate42.version")),
                 editConfigurationFilePut("etc/system.properties", "hibernate43.version", System.getProperty("hibernate43.version")),
-                editConfigurationFilePut("etc/system.properties", "spring31.version", System.getProperty("spring31.version")),
                 editConfigurationFilePut("etc/system.properties", "spring32.version", System.getProperty("spring32.version")),
-                editConfigurationFilePut("etc/system.properties", "spring40.version", System.getProperty("spring40.version"))
+                editConfigurationFilePut("etc/system.properties", "spring42.version", System.getProperty("spring42.version"))
         };
     }
 

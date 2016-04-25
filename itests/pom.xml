@@ -151,16 +151,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-		<version>${surefire.itests.version}</version>
+                <version>${surefire.itests.version}</version>
                 <configuration>
                     <systemPropertyVariables>
                         <org.ops4j.pax.logging.DefaultServiceLog.level>INFO</org.ops4j.pax.logging.DefaultServiceLog.level>
                         <hibernate3.version>${hibernate3.version}</hibernate3.version>
                         <hibernate42.version>${hibernate42.version}</hibernate42.version>
                         <hibernate43.version>${hibernate43.version}</hibernate43.version>
-                        <spring31.version>${spring31.version}</spring31.version>
                         <spring32.version>${spring32.version}</spring32.version>
-                        <spring40.version>${spring40.version}</spring40.version>
+                        <spring42.version>${spring42.version}</spring42.version>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -181,7 +180,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-			<version>${surefire.itests.version}</version>
+                        <version>${surefire.itests.version}</version>
                         <configuration>
                             <!-- when the local repo location has been specified, we need to pass on this information to PAX mvn url -->
                             <argLine>-Dorg.ops4j.pax.url.mvn.localRepository=${maven.repo.local}</argLine>
@@ -190,9 +189,8 @@
                                 <hibernate3.version>${hibernate3.version}</hibernate3.version>
                                 <hibernate42.version>${hibernate42.version}</hibernate42.version>
                                 <hibernate43.version>${hibernate43.version}</hibernate43.version>
-                                <spring31.version>${spring31.version}</spring31.version>
                                 <spring32.version>${spring32.version}</spring32.version>
-                                <spring40.version>${spring40.version}</spring40.version>
+                                <spring42.version>${spring42.version}</spring42.version>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
