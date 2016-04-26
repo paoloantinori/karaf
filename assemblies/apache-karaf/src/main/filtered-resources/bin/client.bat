@@ -117,6 +117,7 @@ if "%EXTRA_JAVA_OPTS%" == "" goto :KARAF_EXTRA_JAVA_OPTS_END
 :KARAF_EXTRA_JAVA_OPTS_END
 
 set CLASSPATH=%KARAF_HOME%\lib\bin\karaf-client.jar
+set CLASSPATH=%CLASSPATH%;%KARAF_HOME%\system\org\bouncycastle\bcpkix-jdk15on\${bcprov.version}\bcpkix-jdk15on-${bcprov.version}.jar
 set CLASSPATH=%CLASSPATH%;%KARAF_HOME%\system\org\bouncycastle\bcprov-jdk15on\${bcprov.version}\bcprov-jdk15on-${bcprov.version}.jar
 set CLASSPATH=%CLASSPATH%;%KARAF_HOME%\system\org\apache\sshd\sshd-core\${sshd.version}\sshd-core-${sshd.version}.jar
 set CLASSPATH=%CLASSPATH%;%KARAF_HOME%\system\org\apache\mina\mina-core\${mina.version}\mina-core-${mina.version}.jar
