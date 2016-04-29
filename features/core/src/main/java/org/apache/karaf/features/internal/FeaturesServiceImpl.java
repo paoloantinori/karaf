@@ -492,7 +492,7 @@ public class FeaturesServiceImpl implements FeaturesService {
             boolean print = options.contains(Option.PrintBundlesToRefresh);
             boolean refresh = !options.contains(Option.NoAutoRefreshBundles);
             if (print || refresh) {
-                bundlesToRefresh = findBundlesToRefresh();
+                bundlesToRefresh = findBundlesToRefresh(state.installed);
                 StringBuilder sb = new StringBuilder();
                 for (Bundle b : bundlesToRefresh) {
                     if (sb.length() > 0) {
@@ -827,7 +827,7 @@ public class FeaturesServiceImpl implements FeaturesService {
         }
     }
 
-    protected Set<Bundle> findBundlesToRefresh() {
+    protected Set<Bundle> findBundlesToRefresh(Set<Bundle> installed) {
         Set<Bundle> toRefresh = new HashSet<Bundle>();
         Set<Bundle> bundles = new HashSet<Bundle>(Arrays.asList(bundleContext.getBundles()));
         findBundlesWithOptionalPackagesToRefresh(bundles, toRefresh);
