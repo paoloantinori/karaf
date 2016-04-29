@@ -139,7 +139,9 @@ public class GrepAction extends AbstractAction {
                         nb++;
                     }
                     matcher2.appendTail(sb);
-                    sb.append(Ansi.ansi().reset().toString());
+                    if(color != ColorOption.never) {
+                        sb.append(Ansi.ansi().reset().toString());
+                        }
                     if (!count && lineNumber) {
                         lines.add(String.format("%6d  ", lineno) + sb.toString());
                     } else {
