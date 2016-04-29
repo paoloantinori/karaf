@@ -163,7 +163,7 @@ public class FeaturesServiceImplTest extends TestCase {
                 latch.countDown();
             }
             @Override
-            protected Set<Bundle> findBundlesToRefresh() {
+            protected Set<Bundle> findBundlesToRefresh(Set<Bundle> installed) {
                 return Collections.emptySet();
             }
         };
@@ -230,7 +230,7 @@ public class FeaturesServiceImplTest extends TestCase {
             }
 
             @Override
-            protected Set<Bundle> findBundlesToRefresh() {
+            protected Set<Bundle> findBundlesToRefresh(Set<Bundle> installed) {
                 return Collections.emptySet();
             }
         };
