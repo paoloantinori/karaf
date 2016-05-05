@@ -64,24 +64,10 @@ public class CommandListHelpProvider implements HelpProvider {
             if (command != null && !name.startsWith(command)) {
                 continue;
             }
-            String description = null;
             Function function = (Function) session.get(name);
             function = unProxy(function);
             if (function instanceof AbstractCommand) {
-                try {
-                    Method mth = AbstractCommand.class.getDeclaredMethod("createNewAction");
-                    mth.setAccessible(true);
-                    Action action = (Action) mth.invoke(function);
-                    Class<? extends Action> clazz = action.getClass();
-                    Command ann = clazz.getAnnotation(Command.class);
-                    if (ann != null) {
-                        description = ann.description();
-                    } else {
-                        String[] tokens = name.split(":");
-                        description = tokens.length >= 2 ? tokens[1] : tokens[0];
-                    }
-                } catch (Throwable e) {
-                }
+                String description = getCommandDescription(name, (AbstractCommand) function);
                 if (name.startsWith("*:")) {
                     name = name.substring(2);
                 }
@@ -89,6 +75,35 @@ public class CommandListHelpProvider implements HelpProvider {
             }
         }
         return commands;
+    }
+
+    static private String getCommandDescription(String name, AbstractCommand command) {
+        try {
+            Method createNewAction = AbstractCommand.class.getDeclaredMethod("createNewAction");
+            createNewAction.setAccessible(true);
+            Action action = (Action) createNewAction.invoke(command);
+
+            // 1st: try to get the description from an annotation.
+            Class<? extends Action> clazz = action.getClass();
+            Command ann = clazz.getAnnotation(Command.class);
+            if (ann != null) {
+                return ann.description();
+            }
+
+            // 2nd: try to get the description from a method: String description()
+            try {
+                Method method = clazz.getMethod("description");
+                method.setAccessible(true);
+                return (String) method.invoke(action);
+            } catch (Throwable ignore) {
+            }
+
+        } catch (Throwable e) {
+        }
+
+        // 3rd: Just use the command name
+        String[] tokens = name.split(":");
+        return tokens.length >= 2 ? tokens[1] : tokens[0];
     }
 
     protected void printMethodList(CommandSession session, PrintStream out, SortedMap<String, String> commands) {
