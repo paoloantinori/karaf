@@ -250,6 +250,12 @@
         <servlet.api.version>3.1.0</servlet.api.version>
         <slf4j.version>1.7.7</slf4j.version>
 
+        <!-- versions used for chooseurl command so we don't have to use LATEST-->
+        <camel-version>2.17.0.redhat-630067</camel-version>
+        <cxf-version>3.1.5.redhat-630067</cxf-version>
+        <activemq-version>5.11.0.redhat-630067</activemq-version>
+        <hawtio-version>1.4.redhat-630067</hawtio-version>
+
         <spring.osgi.version>1.2.1</spring.osgi.version>
         <spring32.version>3.2.16.RELEASE_1</spring32.version>
         <spring42.version>4.2.5.RELEASE_1</spring42.version>
