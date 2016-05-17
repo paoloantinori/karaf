@@ -284,34 +284,22 @@
     </properties>
 
     <repositories>
-        <!-- ServiceMix repo -->
         <repository>
-            <id>servicemix</id>
-            <name>Apache ServiceMix Repository</name>
-            <url>http://svn.apache.org/repos/asf/servicemix/m2-repo</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
+            <id>fusesource.public</id>
+            <name>Fusesource Public Release Repositories</name>
+            <url>https://repository.jboss.org/nexus/content/groups/fs-public</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-        </repository>
-        <!-- OPS4J SNAPSHOT repository -->
-        <repository>
-            <id>ops4j.sonatype.snapshots.deploy</id>
-            <name>OPS4J snapshot repository</name>
-            <url>https://oss.sonatype.org/content/repositories/ops4j-snapshots/</url>
             <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots>
                 <enabled>true</enabled>
-            </snapshots>
+                <updatePolicy>never</updatePolicy>
+            </releases>
         </repository>
         <repository>
             <id>fusesource.ea</id>
-            <name>JBoss Community Early Access Release Repository</name>
-            <url>https://repository.jboss.org/nexus/content/groups/ea/</url>
+            <name>Fusesource Early Access Release Repository</name>
+            <url>https://repository.jboss.org/nexus/content/groups/ea</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
