@@ -155,7 +155,7 @@
         <details>JMS support provinding service, commands, and MBean.</details>
         <feature>transaction</feature>
         <feature>management</feature>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo.jms-spec.version}</bundle>
+        <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo.jms-spec.version}</bundle>
         <bundle>mvn:org.apache.karaf.jms/org.apache.karaf.jms.core/${project.version}</bundle>
         <conditional>
             <condition>shell</condition>
