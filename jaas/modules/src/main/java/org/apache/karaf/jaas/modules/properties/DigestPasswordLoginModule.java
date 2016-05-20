@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Map;
+
 import javax.security.auth.Subject;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
@@ -44,7 +45,7 @@ import org.slf4j.LoggerFactory;
 /**
  * JAAS Login module for user / password, based on two properties files.
  */
-public class  DigestPasswordLoginModule extends AbstractKarafLoginModule {
+public class DigestPasswordLoginModule extends AbstractKarafLoginModule {
 
     private static final transient Logger LOGGER = LoggerFactory.getLogger(DigestPasswordLoginModule.class);
 
@@ -69,7 +70,6 @@ public class  DigestPasswordLoginModule extends AbstractKarafLoginModule {
         if (!f.exists()) {
             throw new LoginException("Users file not found at " + f);
         }
-
         Properties users;
         try {
             users = new Properties(f);
@@ -81,14 +81,12 @@ public class  DigestPasswordLoginModule extends AbstractKarafLoginModule {
 
         callbacks[0] = new NameCallback("Username: ");
         callbacks[1] = new PasswordCallback("Password: ", false);
-        if (callbackHandler != null) {
-            try {
-                callbackHandler.handle(callbacks);
-            } catch (IOException ioe) {
-                throw new LoginException(ioe.getMessage());
-            } catch (UnsupportedCallbackException uce) {
-                throw new LoginException(uce.getMessage() + " not available to obtain information from user");
-            }
+        try {
+            callbackHandler.handle(callbacks);
+        } catch (IOException ioe) {
+            throw new LoginException(ioe.getMessage());
+        } catch (UnsupportedCallbackException uce) {
+            throw new LoginException(uce.getMessage() + " not available to obtain information from user");
         }
         // user callback get value
         if (((NameCallback) callbacks[0]).getName() == null) {
@@ -108,6 +106,7 @@ public class  DigestPasswordLoginModule extends AbstractKarafLoginModule {
 
         // user infos container read from the users properties file
         String userInfos = null;
+
         try {
             userInfos = (String) users.get(user);
         } catch (NullPointerException e) {
@@ -120,28 +119,25 @@ public class  DigestPasswordLoginModule extends AbstractKarafLoginModule {
         		throw new FailedLoginException("User " + user + " does not exist");
         	}
         }
-        
+
         // the password is in the first position
         String[] infos = userInfos.split(",");
         String storedPassword = infos[0];
-
         CallbackHandler myCallbackHandler = null;
-
         try {
             Field field = callbackHandler.getClass().getDeclaredField("ch"); 
             field.setAccessible(true);
             myCallbackHandler = (CallbackHandler) field.get(callbackHandler);
         } catch (Exception e) {
-            throw new LoginException("Unable to load underlying callback handler");
+            throw new LoginException("Unable to get Callback Handler");    
         }
-
         if (myCallbackHandler instanceof NameDigestPasswordCallbackHandler) {
             NameDigestPasswordCallbackHandler digestCallbackHandler = (NameDigestPasswordCallbackHandler)myCallbackHandler;
             storedPassword = UsernameToken.doPasswordDigest(digestCallbackHandler.getNonce(), 
                                                             digestCallbackHandler.getCreatedTime(), 
                                                             storedPassword);
         }
-        
+
         // check the provided password
         if (!checkPassword(password, storedPassword)) {
         	if (!this.detailedLoginExcepion) {
@@ -195,4 +191,5 @@ public class  DigestPasswordLoginModule extends AbstractKarafLoginModule {
         return true;
     }
 
+    
 }
