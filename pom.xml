@@ -187,7 +187,7 @@
         <aries.application.management.version>1.0.0</aries.application.management.version>
         <aries.blueprint.version>1.0.1</aries.blueprint.version>
         <aries.blueprint.api.version>1.0.1</aries.blueprint.api.version>
-        <aries.blueprint.core.version>1.4.4</aries.blueprint.core.version>
+        <aries.blueprint.core.version>1.4.5</aries.blueprint.core.version>
         <aries.blueprint.cm.version>1.0.6</aries.blueprint.cm.version>
         <aries.blueprint.core.compatibility.version>1.0.0</aries.blueprint.core.compatibility.version>
         <aries.blueprint.web.version>1.0.1</aries.blueprint.web.version>
