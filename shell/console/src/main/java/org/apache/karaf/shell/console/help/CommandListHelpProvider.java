@@ -156,6 +156,11 @@ public class CommandListHelpProvider implements HelpProvider {
                 referenceField.setAccessible(true);
                 BundleContext context = (BundleContext) contextField.get(function);
                 ServiceReference reference = (ServiceReference) referenceField.get(function);
+                String[] ocs = (String[]) reference.getProperty("objectClass");
+                if (context == null || reference == null 
+                    || ocs==null || ocs[0].equals("org.apache.felix.scr.impl.ScrGogoCommand")) {
+                    return null;
+                }
                 Object target = context.getService(reference);
                 try {
                     if (target instanceof Function) {
