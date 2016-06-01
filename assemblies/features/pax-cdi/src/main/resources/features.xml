@@ -43,7 +43,7 @@
     <feature name="pax-cdi-weld" description="Weld CDI 1.2 support" version="${pax.cdi.feature.version}"
         resolver="(obr)">
         <feature version="${pax.cdi.feature.version}">pax-cdi</feature>
-        <bundle>mvn:org.jboss.weld/weld-osgi-bundle/2.3.4.Final</bundle>
+        <bundle>mvn:org.jboss.weld/weld-osgi-bundle/2.3.2.Final</bundle>
         <bundle dependency="true">mvn:org.jboss.classfilewriter/jboss-classfilewriter/1.1.2.Final</bundle>
         <bundle>mvn:org.jboss.logging/jboss-logging/3.3.0.Final</bundle>
         <bundle>mvn:com.google.guava/guava/18.0</bundle>
