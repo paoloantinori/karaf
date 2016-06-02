@@ -220,7 +220,7 @@
         <jclouds.version>1.9.1</jclouds.version>
         <jclouds.chef-version>1.9.1</jclouds.chef-version>
         <jclouds.feature.version>1.9.1.redhat-001</jclouds.feature.version>
-        <jline.version>2.12.1.redhat-001</jline.version>
+        <jline.version>2.12.1.redhat-002</jline.version>
         <jledit.version>0.2.1</jledit.version>
         <joda-time2-version>2.9.2</joda-time2-version>
         <jsw.version>3.2.3</jsw.version>
@@ -324,7 +324,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-<!--        <repository>
+        <repository>
             <id>brewroot</id>
             <name>Brew Repository</name>
             <url>http://download.eng.bos.redhat.com/brewroot/repos/jb-fuse-6.2-build/latest/maven</url>
@@ -335,7 +335,7 @@
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
             </releases>
-        </repository> -->
+        </repository> 
     </repositories>
 
     <dependencyManagement>
