@@ -294,6 +294,12 @@ public class AdminServiceImpl implements AdminService {
                 copyResourceToDir(karafBase, "etc/shell.init.script", true, textResources);
                 copyResourceToDir(karafBase, "etc/startup.properties", true, textResources);
                 copyResourceToDir(karafBase, "etc/users.properties", true, textResources);
+                copyResourceToDir(karafBase, "etc/org.apache.karaf.command.acl.config.cfg", true, textResources);
+                copyResourceToDir(karafBase, "etc/org.apache.karaf.command.acl.features.cfg", true, textResources);
+                copyResourceToDir(karafBase, "etc/org.apache.karaf.command.acl.jaas.cfg", true, textResources);
+                copyResourceToDir(karafBase, "etc/org.apache.karaf.command.acl.osgi.cfg", true, textResources);
+                copyResourceToDir(karafBase, "etc/org.apache.karaf.command.acl.scope_bundle.cfg", true, textResources);
+                copyResourceToDir(karafBase, "etc/org.apache.karaf.command.acl.shell.cfg", true, textResources);
 
                 if (System.getProperty("karaf.home") != null && System.getProperty("karaf.home").length() > 0) {
                     File home = new File(System.getProperty("karaf.home"));
