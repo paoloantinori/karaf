@@ -64,7 +64,28 @@
             <artifactId>org.apache.felix.gogo.runtime</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.tanukisoftware.wrapper</groupId>
+            <artifactId>tanukiwrapper-all</artifactId>
+            <version>3.2.3.redhat.003</version>
+            <type>zip</type>            
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>brewroot-tanuki</id>
+            <name>Brew Repository</name>
+            <url>http://download.eng.bos.redhat.com/brewroot/packages/tanukiwrapper-all/3.2.3/redhat.003/maven</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+    </repositories>
 
     <build>
         <resources>
@@ -90,6 +111,31 @@
             </resource>
         </resources>
         <plugins>
+		   <plugin>
+			 <groupId>org.apache.maven.plugins</groupId>
+			 <artifactId>maven-dependency-plugin</artifactId>
+			 <version>2.2</version>
+			 <executions>
+			   <execution>
+				 <id>unpack</id>
+				 <phase>process-resources</phase>
+				 <goals>
+				   <goal>unpack</goal>
+				 </goals>
+				 <configuration>
+				   <artifactItems>
+					 <artifactItem>
+					   <groupId>org.tanukisoftware.wrapper</groupId>
+					   <artifactId>tanukiwrapper-all</artifactId>
+					   <version>3.2.3.redhat.003</version>
+					   <type>zip</type>
+					 </artifactItem>
+				   </artifactItems>
+				   <outputDirectory>${basedir}/target/classes/org/apache/karaf/shell/</outputDirectory>
+				 </configuration>
+			   </execution>
+			 </executions>
+		   </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
