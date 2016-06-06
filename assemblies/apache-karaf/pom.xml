@@ -528,7 +528,7 @@
                 <executions>
                     <execution>
                         <id>copy</id>
-                        <phase>generate-resources</phase>
+                        <phase>process-resources</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
@@ -558,6 +558,15 @@
                                     <outputDirectory>target/dependencies/lib</outputDirectory>
                                     <destFileName>karaf-jmx-boot.jar</destFileName>
                                 </artifactItem>          
+                                <artifactItem>
+                                    <groupId>com.sun.winsw</groupId>
+                                    <artifactId>winsw</artifactId>
+                                    <version>${winsw.version}</version>
+                                    <classifier>bin</classifier>
+                                    <type>exe</type>
+                                    <outputDirectory>target/classes/bin/contrib</outputDirectory>
+                                    <destFileName>karaf-service-win.exe</destFileName>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -625,6 +634,14 @@
 
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>jenkins</id>
+            <name>jenkins</name>
+            <url>http://repo.jenkins-ci.org/releases/</url>
+        </repository>
+    </repositories>
 
     <profiles>
         <profile>

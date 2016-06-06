@@ -56,11 +56,11 @@
             </excludes>
         </fileSet>
         <fileSet>
-            <directory>src/main/distribution/windows-text</directory>
-            <outputDirectory>/</outputDirectory>
+            <directory>target/classes/bin/contrib</directory>
+            <outputDirectory>bin/contrib</outputDirectory>
             <lineEnding>keep</lineEnding>
             <includes>                
-                <include>bin/contrib/karaf-service-win.exe</include>
+                <include>karaf-service-win.exe</include>
             </includes>
         </fileSet>
         <fileSet>
