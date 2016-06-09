@@ -73,6 +73,7 @@
 
     <bean id="connectorFactory" class="org.apache.karaf.management.ConnectorServerFactory" init-method="init"
           destroy-method="destroy">
+        <property name="bundleContext" ref="blueprintBundleContext"/>
         <property name="server" ref="mbeanServer"/>
         <property name="guard" ref="karafMBeanServerGuard"/>
         <property name="serviceUrl" value="${serviceUrl}"/>

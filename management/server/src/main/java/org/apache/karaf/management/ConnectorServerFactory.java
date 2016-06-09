@@ -19,6 +19,8 @@ package org.apache.karaf.management;
 import org.apache.karaf.jaas.config.KeystoreInstance;
 import org.apache.karaf.jaas.config.KeystoreManager;
 import org.apache.karaf.management.internal.MBeanInvocationHandler;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +32,8 @@ import java.net.ServerSocket;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.security.GeneralSecurityException;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.Map;
 
 import javax.management.JMException;
@@ -49,7 +53,7 @@ public class ConnectorServerFactory {
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectorServerFactory.class);
 
-    private enum AuthenticatorType { NONE, PASSWORD, CERTIFICATE };
+    private enum AuthenticatorType { NONE, PASSWORD, CERTIFICATE }
 
     private MBeanServer server;
     private KarafMBeanServerGuard guard;
@@ -71,12 +75,23 @@ public class ConnectorServerFactory {
     private String trustStore;
     private String keyAlias;
 
+    private BundleContext bundleContext;
+    private ServiceRegistration<MBeanServer> guardedServiceRegistration;
+
     public MBeanServer getServer() {
         return server;
     }
 
     public void setServer(MBeanServer server) {
         this.server = server;
+    }
+
+    public BundleContext getBundleContext() {
+        return bundleContext;
+    }
+
+    public void setBundleContext(BundleContext bundleContext) {
+        this.bundleContext = bundleContext;
     }
 
     public KarafMBeanServerGuard getGuard() {
@@ -244,6 +259,12 @@ public class ConnectorServerFactory {
 
         MBeanInvocationHandler handler = new MBeanInvocationHandler(server, guard);
         MBeanServer guardedServer = (MBeanServer) Proxy.newProxyInstance(server.getClass().getClassLoader(), new Class[]{ MBeanServer.class }, handler);
+
+        Hashtable<String, Object> props = new Hashtable<String, Object>();
+        props.put("guarded", "true");
+        props.put("service.ranking", -1);
+        this.guardedServiceRegistration = this.bundleContext.registerService(MBeanServer.class, guardedServer, props);
+
         this.connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, this.environment, guardedServer);
 
         if (this.objectName != null) {
@@ -289,6 +310,9 @@ public class ConnectorServerFactory {
     public void destroy() throws Exception {
         try {
             this.connectorServer.stop();
+            if (guardedServiceRegistration != null) {
+                guardedServiceRegistration.unregister();
+            }
         } finally {
             doUnregister(this.objectName);
         }
@@ -354,7 +378,7 @@ public class ConnectorServerFactory {
         }
 
         public ServerSocket createServerSocket(int port) throws IOException {
-            ServerSocket serverSocket = (ServerSocket) ServerSocketFactory.getDefault().createServerSocket(port, 50, InetAddress.getByName(rmiServerHost));
+            ServerSocket serverSocket = ServerSocketFactory.getDefault().createServerSocket(port, 50, InetAddress.getByName(rmiServerHost));
             return serverSocket;
         }
     }
