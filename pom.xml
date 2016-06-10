@@ -130,7 +130,7 @@
         <bndlib.version>2.4.1</bndlib.version>
         <cglib.bundle.version>3.2.0_1</cglib.bundle.version>
         <cglib2.version>2.2.0</cglib2.version>
-        <commons-beanutils.version>1.9.2</commons-beanutils.version>
+        <commons-beanutils.version>1.9.2.redhat-1</commons-beanutils.version>
         <commons-digester.version>2.1</commons-digester.version>
         <commons-codec.version>1.10.0.redhat-5</commons-codec.version>
         <commons-collections.version>3.2.2.redhat-2</commons-collections.version>
