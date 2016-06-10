@@ -135,7 +135,7 @@
         </config>
         <feature>scr</feature>
         <feature version="[4.2,4.3)">pax-http</feature>
-        <bundle dependency="true" start-level="30">mvn:javax.el/javax.el-api/3.0.0</bundle>
+        <bundle dependency="true" start-level="30">mvn:javax.el/javax.el-api/2.2.5</bundle>
         <bundle dependency="true" start-level="30">mvn:org.ops4j.pax.tipi/org.ops4j.pax.tipi.tomcat-embed-core/8.0.14.1</bundle>
         <bundle dependency="true" start-level="30">mvn:org.ops4j.pax.tipi/org.ops4j.pax.tipi.tomcat-embed-websocket/8.0.14.1</bundle>
         <bundle dependency="true" start-level="30">mvn:org.ops4j.pax.tipi/org.ops4j.pax.tipi.tomcat-embed-logging-juli/8.0.14.1</bundle>

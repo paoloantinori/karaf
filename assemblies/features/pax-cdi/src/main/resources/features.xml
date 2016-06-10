@@ -27,7 +27,7 @@
         <bundle dependency="true">mvn:javax.annotation/javax.annotation-api/1.2</bundle>
         <bundle dependency="true">mvn:javax.enterprise/cdi-api/1.2</bundle>
         <bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-atinject_1.0_spec/1.0</bundle>
-        <bundle dependency="true">mvn:javax.el/javax.el-api/3.0.0</bundle>
+        <bundle dependency="true">mvn:javax.el/javax.el-api/2.2.5</bundle>
         <bundle dependency="true">mvn:org.ops4j.pax.swissbox/pax-swissbox-tracker/${pax.swissbox.version}</bundle>
         <bundle dependency="true">mvn:org.ops4j.pax.swissbox/pax-swissbox-lifecycle/${pax.swissbox.version}</bundle>
         <bundle dependency="true">mvn:org.ops4j.pax.swissbox/pax-swissbox-extender/${pax.swissbox.version}</bundle>
