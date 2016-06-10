@@ -54,7 +54,7 @@
         resolver="(obr)">
         <feature version="${pax.cdi.feature.version}">pax-cdi</feature>
         <feature>war</feature>
-        <bundle dependency="true">mvn:javax.servlet/javax.servlet-api/3.1.0</bundle>
+        <bundle dependency="true">mvn:javax.servlet/javax.servlet-api/${servlet.api.version}</bundle>
         <bundle>mvn:org.ops4j.pax.cdi/pax-cdi-web/${pax.cdi.version}</bundle>
     </feature>
 
