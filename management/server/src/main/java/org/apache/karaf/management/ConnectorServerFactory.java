@@ -38,6 +38,7 @@ import java.util.Map;
 
 import javax.management.JMException;
 import javax.management.MBeanServer;
+import javax.management.MBeanServerConnection;
 import javax.management.ObjectName;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
@@ -76,7 +77,7 @@ public class ConnectorServerFactory {
     private String keyAlias;
 
     private BundleContext bundleContext;
-    private ServiceRegistration<MBeanServer> guardedServiceRegistration;
+    private ServiceRegistration<MBeanServerConnection> guardedServiceRegistration;
 
     public MBeanServer getServer() {
         return server;
@@ -258,12 +259,13 @@ public class ConnectorServerFactory {
         }
 
         MBeanInvocationHandler handler = new MBeanInvocationHandler(server, guard);
-        MBeanServer guardedServer = (MBeanServer) Proxy.newProxyInstance(server.getClass().getClassLoader(), new Class[]{ MBeanServer.class }, handler);
+        MBeanServer guardedServer = (MBeanServer) Proxy.newProxyInstance(server.getClass().getClassLoader(),
+                new Class[] { MBeanServer.class, MBeanServerConnection.class }, handler);
 
         Hashtable<String, Object> props = new Hashtable<String, Object>();
         props.put("guarded", "true");
         props.put("service.ranking", -1);
-        this.guardedServiceRegistration = this.bundleContext.registerService(MBeanServer.class, guardedServer, props);
+        this.guardedServiceRegistration = this.bundleContext.registerService(MBeanServerConnection.class, guardedServer, props);
 
         this.connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, this.environment, guardedServer);
 
