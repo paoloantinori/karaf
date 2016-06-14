@@ -831,7 +831,9 @@ public class FeaturesServiceImpl implements FeaturesService {
         Set<Bundle> toRefresh = new HashSet<Bundle>();
         Set<Bundle> bundles = new HashSet<Bundle>(Arrays.asList(bundleContext.getBundles()));
         findBundlesWithOptionalPackagesToRefresh(bundles, toRefresh);
+        toRefresh.addAll(installed);
         findBundlesWithFragmentsToRefresh(bundles, toRefresh);
+        toRefresh.removeAll(installed);
         return toRefresh;
     }
 
