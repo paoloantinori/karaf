@@ -31,6 +31,9 @@ import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.ServerSocket;
@@ -360,6 +363,8 @@ public class Main {
                 lock(configProps);
             }
         }.start();
+
+        registerSignalHandler();
     }
 
     private void startKarafActivators(ClassLoader classLoader) throws IOException {
@@ -596,6 +601,36 @@ public class Main {
                     System.gc();
                 }
             }
+        }
+    }
+
+    private void registerSignalHandler() {
+        if (!Boolean.valueOf(System.getProperty("karaf.handle.sigterm", "true"))) {
+            return;
+        }
+
+        try {
+            final Class<?> signalClass = Class.forName("sun.misc.Signal");
+            final Class<?> signalHandlerClass = Class.forName("sun.misc.SignalHandler");
+
+            Object signalHandler = Proxy.newProxyInstance(getClass().getClassLoader(),
+                new Class<?>[] {
+                    signalHandlerClass
+                },
+                new InvocationHandler() {
+                    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                        Main.this.destroy();
+                        return null;
+                    }
+                }
+            );
+
+            signalClass.getMethod("handle", signalClass, signalHandlerClass).invoke(
+                null,
+                signalClass.getConstructor(String.class).newInstance("TERM"),
+                signalHandler
+            );
+        } catch (Exception e) {
         }
     }
 
