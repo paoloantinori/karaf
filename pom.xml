@@ -1189,6 +1189,11 @@
                 <version>${geronimo.jms-spec.version}</version>
             </dependency>
             <dependency>
+                <groupId>javax.jms</groupId>
+                <artifactId>javax.jms-api</artifactId>
+                <version>${jms2-spec.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-servlet_3.0_spec</artifactId>
                 <version>${geronimo.servlet.version}</version>
