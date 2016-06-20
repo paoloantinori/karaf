@@ -152,8 +152,6 @@
                             org.apache.karaf.jaas.config,
                             org.apache.aries.blueprint.ext,
                             org.osgi.service.event;resolution:=optional,
-                            org.apache.cxf.interceptor.security;resolution:=optional,
-                            org.apache.wss4j.dom.message.token;resolution:=optional,
                             !net.sf.ehcache*,
                             !net.spy.memcached*,
                             *
