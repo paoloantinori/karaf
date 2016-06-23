@@ -38,7 +38,7 @@
             <protocol>http</protocol>
             <username></username>
             <password></password>
-            <nonProxyHosts>127.0.0.*|repository.jboss.org|*.repository.corp</nonProxyHosts>
+            <nonProxyHosts>127.0.0.*|*.repository.corp</nonProxyHosts>
         </proxy>
         -->
     </proxies>
@@ -48,6 +48,7 @@
         with a given identifier
     -->
     <servers>
+        <!--
         <server>
             <id>maven.central.repo</id>
             <configuration>
@@ -59,6 +60,7 @@
                 </httpHeaders>
             </configuration>
         </server>
+        -->
     </servers>
 
     <mirrors />
@@ -70,12 +72,14 @@
     <profiles>
         <profile>
             <id>default</id>
+            <!--
             <repositories>
                 <repository>
-                    <id>fuse.public.repository</id>
-                    <url>https://repository.jboss.org/nexus/content/groups/fs-public</url>
+                    <id>private.repository</id>
+                    <url>http://localhost/maven-repository</url>
                 </repository>
             </repositories>
+            -->
         </profile>
     </profiles>
 
