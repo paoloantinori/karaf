@@ -308,6 +308,11 @@ public class AdminServiceImpl implements AdminService {
                     if (rootOverrides.exists()) {
                         copy(rootOverrides, new File(karafBase, "etc/overrides.properties"));
                     }
+                    // copy etc/maven-settings.xml
+                    File rootMavenSettings = new File(home, "etc/maven-settings.xml");
+                    if (rootMavenSettings.exists()) {
+                        copy(rootMavenSettings, new File(karafBase, "etc/maven-settings.xml"));
+                    }
                 }
 
                 HashMap<String, String> props = new HashMap<String, String>();

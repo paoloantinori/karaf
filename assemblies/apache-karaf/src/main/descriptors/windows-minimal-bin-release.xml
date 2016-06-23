@@ -26,7 +26,7 @@
         <!-- Copy license and other files from root -->
         <fileSet>
             <directory>../..</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <includes>
                 <include>README</include>
                 <include>RELEASE*</include>
@@ -39,19 +39,19 @@
         <!-- Copy over everything that needs to get dos line endings -->
         <fileSet>
             <directory>src/main/distribution/text</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <lineEnding>dos</lineEnding>
         </fileSet>
         <fileSet>
             <directory>src/main/distribution/release</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <lineEnding>dos</lineEnding>
         </fileSet>
         <fileSet>
             <directory>src/main/distribution/windows-text</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
             <lineEnding>dos</lineEnding>
-            <excludes>                
+            <excludes>
                 <exclude>bin/contrib/karaf-service-win.exe</exclude>
             </excludes>
         </fileSet>
@@ -65,7 +65,7 @@
         </fileSet>
         <fileSet>
             <directory>target/classes/bin</directory>
-            <outputDirectory>/bin/</outputDirectory>
+            <outputDirectory>bin</outputDirectory>
             <lineEnding>dos</lineEnding>
             <includes>
                 <include>admin.bat</include>
@@ -77,25 +77,25 @@
                 <exclude>org.apache.karaf.features.cfg</exclude>
                 <exclude>startup.properties</exclude>
             </excludes>
-            <outputDirectory>/etc/</outputDirectory>
+            <outputDirectory>etc</outputDirectory>
             <lineEnding>dos</lineEnding>
         </fileSet>
         <fileSet>
             <directory>target/classes/minimal</directory>
-            <outputDirectory>/etc/</outputDirectory>
+            <outputDirectory>etc</outputDirectory>
             <lineEnding>dos</lineEnding>
         </fileSet>
 
         <!-- Copy over files that should not get the line endings converted -->
         <fileSet>
             <directory>src/main/distribution/binary</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
         </fileSet>
 
         <!-- Copy over the files that should not get the line endings converted but need to be chmod to 755 -->
         <fileSet>
             <directory>src/main/distribution/windows-binary</directory>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
         </fileSet>
 
         <!-- Copy over jar files -->
@@ -105,7 +105,7 @@
                 <exclude>*.html</exclude>
                 <exclude>*.pdf</exclude>
             </excludes>
-            <outputDirectory>/</outputDirectory>
+            <outputDirectory></outputDirectory>
         </fileSet>
         <fileSet>
             <directory>target/features-repo</directory>
@@ -119,7 +119,7 @@
 
     <dependencySets>
         <dependencySet>
-            <outputDirectory>/lib</outputDirectory>
+            <outputDirectory>lib</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <includes>
@@ -130,7 +130,7 @@
         </dependencySet>
 
         <dependencySet>
-            <outputDirectory>/lib/endorsed</outputDirectory>
+            <outputDirectory>lib/endorsed</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <includes>
@@ -143,7 +143,7 @@
         </dependencySet>
 
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -157,7 +157,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -169,7 +169,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -182,7 +182,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -199,7 +199,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -210,7 +210,7 @@
             </includes>
         </dependencySet>         
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -221,7 +221,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -234,7 +234,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -247,7 +247,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -265,7 +265,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -278,7 +278,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -289,7 +289,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -303,7 +303,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -315,7 +315,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -326,7 +326,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>
@@ -337,7 +337,7 @@
             </includes>
         </dependencySet>
         <dependencySet>
-            <outputDirectory>/system</outputDirectory>
+            <outputDirectory>system</outputDirectory>
             <unpack>false</unpack>
             <useProjectArtifact>false</useProjectArtifact>
             <outputFileNameMapping>

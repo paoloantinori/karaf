@@ -97,7 +97,6 @@
                 <exclude>**/*.jnilib</exclude>
                 <exclude>**/*.cert</exclude>
                 <exclude>apache-karaf/src/main/release/bin/*/wrapper</exclude>
-
                 <exclude>**/target/**</exclude>
                 <exclude>**/build/**</exclude>
                 <exclude>activemq-data/**</exclude>
@@ -119,5 +118,4 @@
             <lineEnding>dos</lineEnding>
         </fileSet>
     </fileSets>
-
 </assembly>
