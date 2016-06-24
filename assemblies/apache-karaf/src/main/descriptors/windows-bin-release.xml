@@ -368,6 +368,17 @@
                 <include>org.ow2.asm:asm-all</include>
             </includes>
         </dependencySet>
+        <dependencySet>
+            <outputDirectory>system</outputDirectory>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputFileNameMapping>
+                javax/servlet/${artifact.artifactId}/${artifact.baseVersion}/${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}
+            </outputFileNameMapping>
+            <includes>
+                <include>javax.servlet:javax.servlet-api</include>
+            </includes>
+        </dependencySet>
     </dependencySets>
 
 </assembly>
