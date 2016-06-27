@@ -98,9 +98,7 @@ public class KarafTestSupport {
                 editConfigurationFilePut("etc/system.properties", "hibernate42.version", System.getProperty("hibernate42.version")),
                 editConfigurationFilePut("etc/system.properties", "hibernate43.version", System.getProperty("hibernate43.version")),
                 editConfigurationFilePut("etc/system.properties", "spring32.version", System.getProperty("spring32.version")),
-                editConfigurationFilePut("etc/system.properties", "spring42.version", System.getProperty("spring42.version")),
-                editConfigurationFileExtend("etc/org.ops4j.pax.url.mvn.cfg", "org.ops4j.pax.url.mvn.defaultRepositories", ",file:${user.home}/.m2/repository"),
-                editConfigurationFileExtend("etc/config.properties", "org.ops4j.pax.url.mvn.defaultRepositories", ",file:${user.home}/.m2/repository@snapshots@id=local")
+                editConfigurationFilePut("etc/system.properties", "spring42.version", System.getProperty("spring42.version"))
         };
     }
 

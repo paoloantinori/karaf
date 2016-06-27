@@ -512,6 +512,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
                     <useDefaultDelimiters>false</useDefaultDelimiters>
+                    <escapeString>\</escapeString>
                     <delimiters>
                         <delimiter>${*}</delimiter>
                     </delimiters>
