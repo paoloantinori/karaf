@@ -350,14 +350,17 @@ public class AdminServiceImpl implements AdminService {
                 handleFeatures(new File(karafBase, FEATURES_CFG), settings);
 
                 // copy some properties from root to child before starting it
-                File rootBase = new File(System.getProperty("karaf.base"));
-                copyProperties(rootBase, karafBase, "etc/org.apache.karaf.management.cfg",
-                        "rmiRegistryPort",
-                        "rmiRegistryHost",
-                        "rmiServerPort",
-                        "rmiServerHost",
-                        "serviceUrl");
-                copyProperties(rootBase, karafBase, "etc/org.ops4j.pax.url.mvn.cfg");
+                String rootKarafBase = System.getProperty("karaf.base");
+                if (rootKarafBase != null) {
+                    File rootBase = new File(rootKarafBase);
+                    copyProperties(rootBase, karafBase, "etc/org.apache.karaf.management.cfg",
+                            "rmiRegistryPort",
+                            "rmiRegistryHost",
+                            "rmiServerPort",
+                            "rmiServerHost",
+                            "serviceUrl");
+                    copyProperties(rootBase, karafBase, "etc/org.ops4j.pax.url.mvn.cfg");
+                }
 
                 for (String resource : textResources.keySet()) {
                     copyFilteredResourceToDir(resource, karafBase, textResources, props);
