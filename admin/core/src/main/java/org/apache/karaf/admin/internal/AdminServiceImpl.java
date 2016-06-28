@@ -30,13 +30,16 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Set;
 
 import org.apache.karaf.admin.AdminService;
 import org.apache.karaf.admin.Instance;
@@ -346,6 +349,19 @@ public class AdminServiceImpl implements AdminService {
 
                 handleFeatures(new File(karafBase, FEATURES_CFG), settings);
 
+                // copy some properties from root to child before starting it
+                String rootKarafBase = System.getProperty("karaf.base");
+                if (rootKarafBase != null) {
+                    File rootBase = new File(rootKarafBase);
+                    copyProperties(rootBase, karafBase, "etc/org.apache.karaf.management.cfg",
+                            "rmiRegistryPort",
+                            "rmiRegistryHost",
+                            "rmiServerPort",
+                            "rmiServerHost",
+                            "serviceUrl");
+                    copyProperties(rootBase, karafBase, "etc/org.ops4j.pax.url.mvn.cfg");
+                }
+
                 for (String resource : textResources.keySet()) {
                     copyFilteredResourceToDir(resource, karafBase, textResources, props);
                 }
@@ -368,6 +384,32 @@ public class AdminServiceImpl implements AdminService {
                 return instance;
             }
         }, true);
+    }
+
+    /**
+     * Copies all properties from <code>source</code> to <code>destination</code> except those specified in
+     * <code>preserve</code>
+     * @param source
+     * @param destination
+     * @param fileName
+     * @param preserve
+     */
+    private void copyProperties(File source, File destination, String fileName, String ... preserve) throws IOException {
+        org.apache.felix.utils.properties.Properties s = new org.apache.felix.utils.properties.Properties(false);
+        File sourceFile = new File(source, fileName);
+        s.load(sourceFile);
+        org.apache.felix.utils.properties.Properties d = new org.apache.felix.utils.properties.Properties(false);
+        File destFile = new File(destination, fileName);
+        d.load(destFile);
+        Set<String> except = new HashSet<String>(Arrays.asList(preserve));
+
+        for (String key : s.keySet()) {
+            if (!except.contains(key)) {
+                d.setProperty(key, s.getProperty(key));
+            }
+        }
+
+        d.save(destFile);
     }
 
     void handleFeatures(File file, final InstanceSettings settings) throws IOException {
