@@ -20,17 +20,22 @@ import org.apache.karaf.management.mbeans.services.ServicesMBean;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.management.NotCompliantMBeanException;
 import javax.management.StandardMBean;
 import javax.management.openmbean.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Implementation of the Services MBean.
  */
 public class ServicesMBeanImpl extends StandardMBean implements ServicesMBean {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ServicesMBeanImpl.class);
 
     private BundleContext bundleContext;
 
@@ -66,6 +71,8 @@ public class ServicesMBeanImpl extends StandardMBean implements ServicesMBean {
             bundles = bundleContext.getBundles();
         }
         for (Bundle bundle : bundles) {
+            String[] interfaces = null;
+            List<String> properties = null;
             try {
                 ServiceReference[] serviceReferences;
                 if (inUse) {
@@ -75,8 +82,8 @@ public class ServicesMBeanImpl extends StandardMBean implements ServicesMBean {
                 }
                 if (serviceReferences != null) {
                     for (ServiceReference reference : serviceReferences) {
-                        String[] interfaces = (String[]) reference.getProperty("objectClass");
-                        List<String> properties = new ArrayList<String>();
+                        interfaces = (String[]) reference.getProperty("objectClass");
+                        properties = new ArrayList<String>();
                         for (String key : reference.getPropertyKeys()) {
                             properties.add(key + " = " + reference.getProperty(key));
                         }
@@ -86,8 +93,12 @@ public class ServicesMBeanImpl extends StandardMBean implements ServicesMBean {
                         table.put(data);
                     }
                 }
+            } catch (KeyAlreadyExistsException e) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Key already exists: {} - Interfaces = {}, Properties = {}", bundle, Arrays.asList(interfaces), properties);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.error(e.getMessage(), e);
             }
         }
         return table;
