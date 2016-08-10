@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;
 import javax.management.NotCompliantMBeanException;
 import javax.management.ObjectName;
@@ -90,7 +91,12 @@ public class JMXSecurityMBeanImpl extends StandardMBean implements JMXSecurityMB
             String objectName = entry.getKey();
             List<String> methods = entry.getValue();
             if (methods.size() == 0) {
-                boolean res = canInvoke(context, objectName);
+                boolean res = false;
+                try {
+                    res = canInvoke(context, objectName);
+                } catch (InstanceNotFoundException ignored) {
+                    // instance may be gone between javax.management.MBeanServer.queryNames() and checking RBAC info
+                }
                 CompositeData data = new CompositeDataSupport(CAN_INVOKE_RESULT_ROW_TYPE, CAN_INVOKE_RESULT_COLUMNS, new Object[]{ objectName, "", res });
                 table.put(data);
             } else {
@@ -98,11 +104,15 @@ public class JMXSecurityMBeanImpl extends StandardMBean implements JMXSecurityMB
                     List<String> argTypes = new ArrayList<String>();
                     String name = parseMethodName(method, argTypes);
 
-                    boolean res;
-                    if (name.equals(method)) {
-                        res = canInvoke(context, objectName, name);
-                    } else {
-                        res = canInvoke(context, objectName, name, argTypes.toArray(new String[]{}));
+                    boolean res = false;
+                    try {
+                        if (name.equals(method)) {
+                            res = canInvoke(context, objectName, name);
+                        } else {
+                            res = canInvoke(context, objectName, name, argTypes.toArray(new String[]{}));
+                        }
+                    } catch (InstanceNotFoundException ignored) {
+                        // instance may be gone between javax.management.MBeanServer.queryNames() and checking RBAC info
                     }
                     CompositeData data = new CompositeDataSupport(CAN_INVOKE_RESULT_ROW_TYPE, CAN_INVOKE_RESULT_COLUMNS, new Object[]{ objectName, method, res });
                     try {
