@@ -241,7 +241,7 @@
         <pax.logging.version>1.8.5</pax.logging.version>
         <pax.url.version>2.4.7</pax.url.version>
         <pax.swissbox.version>1.8.2</pax.swissbox.version>
-        <pax.web.version>4.2.7</pax.web.version>
+        <pax.web.version>4.2.8</pax.web.version>
         <pax.web.feature.version>4.2.7.redhat-001</pax.web.feature.version>
         <pax.tinybundles.version>1.3.2</pax.tinybundles.version>
         <plexus.utils.version>3.0</plexus.utils.version>
