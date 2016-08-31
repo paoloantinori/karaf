@@ -17,6 +17,8 @@
 
 package java.lang;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 /**
  * {@code Exception} is the superclass of all classes that represent recoverable
@@ -30,13 +32,14 @@ package java.lang;
 public class Exception extends Throwable {
     private static final long serialVersionUID = -3387516993124229948L;
 
-    private transient Class[] classContext = SecurityManagerEx.getInstance().getThrowableContext(this);
+    private transient Reference<Class<?>>[] classContext;
 
     /**
      * Constructs a new {@code Exception} that includes the current stack trace.
      */
     public Exception() {
         super();
+        initClassContext();
     }
 
     /**
@@ -48,6 +51,7 @@ public class Exception extends Throwable {
      */
     public Exception(String detailMessage) {
         super(detailMessage);
+        initClassContext();
     }
 
     /**
@@ -61,6 +65,7 @@ public class Exception extends Throwable {
      */
     public Exception(String detailMessage, Throwable throwable) {
         super(detailMessage, throwable);
+        initClassContext();
     }
 
     /**
@@ -72,10 +77,46 @@ public class Exception extends Throwable {
      */
     public Exception(Throwable throwable) {
         super(throwable);
+        initClassContext();
+    }
+
+    /**
+     * Constructs a new exception with the specified detail message,
+     * cause, suppression enabled or disabled, and writable stack
+     * trace enabled or disabled.
+     *
+     * @param  message the detail message.
+     * @param cause the cause.  (A {@code null} value is permitted,
+     * and indicates that the cause is nonexistent or unknown.)
+     * @param enableSuppression whether or not suppression is enabled
+     *                          or disabled
+     * @param writableStackTrace whether or not the stack trace should
+     *                           be writable
+     * @since 1.7
+     */
+    protected Exception(String message, Throwable cause,
+                        boolean enableSuppression,
+                        boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+        initClassContext();
     }
 
     public Class[] getClassContext() {
-        return classContext;
+        Class<?>[] context = new Class<?>[classContext.length];
+        for (int i = 0; i < classContext.length; i++) {
+            Class<?> c = classContext[i].get();
+            context[i] = c == null ? Object.class : c;
+        }
+        return context;
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initClassContext() {
+        Class[] context = SecurityManagerEx.getInstance().getThrowableContext(this);
+        classContext = new Reference[context.length];
+        for (int i = 0; i < context.length; i++) {
+            classContext[i] = new WeakReference<Class<?>>(context[i]);
+        }
     }
 
     private static class SecurityManagerEx extends SecurityManager
