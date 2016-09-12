@@ -103,11 +103,11 @@
 
     <feature name="pax-http" version="${pax.web.feature.version}" description="Implementation of the OSGI HTTP Service">
         <details>Allows to publish servlets using pax web and jetty</details>
-        <feature version="[4.2,4.3)">pax-http-jetty</feature>
+        <feature version="[4.3,4.4)">pax-http-jetty</feature>
     </feature>
 
     <feature name="pax-http-whiteboard" description="Provide HTTP Whiteboard pattern support" version="${pax.web.feature.version}">
-        <feature version="[4.2,4.3)">pax-http</feature>
+        <feature version="[4.3,4.4)">pax-http</feature>
         <bundle dependency="true" start-level="30">mvn:org.eclipse.jdt.core.compiler/ecj/4.4</bundle>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-jsp/${pax.web.version}</bundle>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-extender-whiteboard/${pax.web.version}</bundle>
@@ -117,7 +117,7 @@
         <config name="org.ops4j.pax.url.war">
             org.ops4j.pax.url.war.importPaxLoggingPackages=true
         </config>
-        <feature version="[4.2,4.3)">pax-http-whiteboard</feature>
+        <feature version="[4.3,4.4)">pax-http-whiteboard</feature>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-jsp/${pax.web.version}</bundle>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-extender-war/${pax.web.version}</bundle>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-extender-whiteboard/${pax.web.version}</bundle>
@@ -134,7 +134,7 @@
             javax.servlet.context.tempdir=${karaf.data}/pax-web-jsp
         </config>
         <feature>scr</feature>
-        <feature version="[4.2,4.3)">pax-http</feature>
+        <feature version="[4.3,4.4)">pax-http</feature>
         <bundle dependency="true" start-level="30">mvn:javax.el/javax.el-api/2.2.5</bundle>
         <bundle dependency="true" start-level="30">mvn:org.ops4j.pax.tipi/org.ops4j.pax.tipi.tomcat-embed-core/8.0.14.1</bundle>
         <bundle dependency="true" start-level="30">mvn:org.ops4j.pax.tipi/org.ops4j.pax.tipi.tomcat-embed-websocket/8.0.14.1</bundle>
@@ -180,12 +180,12 @@
     </feature>
 
     <feature name="pax-war-tomcat" version="${pax.web.feature.version}">
-        <feature version="[4.2,4.3)">pax-http-tomcat</feature>
-        <feature version="[4.2,4.3)">pax-war</feature>
+        <feature version="[4.3,4.4)">pax-http-tomcat</feature>
+        <feature version="[4.3,4.4)">pax-war</feature>
     </feature>
 
     <feature name="pax-jsf-support" version="${pax.web.feature.version}">
-        <feature version="[4.2,4.3)">pax-war</feature>
+        <feature version="[4.3,4.4)">pax-war</feature>
         <feature>pax-cdi-web-openwebbeans</feature>
         <bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr250-1.0/${servicemix.specs.version}</bundle>
         <bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr303-api-1.0.0/${servicemix.specs.version}</bundle>
