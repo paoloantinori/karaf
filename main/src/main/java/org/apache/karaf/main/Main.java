@@ -301,7 +301,7 @@ public class Main {
                 File karafHome = Utils.getKarafHome();
                 File karafBase = Utils.getKarafDirectory(Main.PROP_KARAF_BASE, Main.ENV_KARAF_BASE, karafHome, false, true);
                 File karafData = Utils.getKarafDirectory(Main.PROP_KARAF_DATA, Main.ENV_KARAF_DATA, new File(karafBase, "data"), true, true);
-                File karafCache = Utils.getKarafDirectory(Main.PROP_KARAF_DATA, Main.ENV_KARAF_DATA, new File(karafData, "cache"), true, true);
+                File karafCache = Utils.validateDirectoryExists(new File(karafData, "cache").getPath(), "Invalid cache directory", true, true);
                 Utils.deleteDirectory(karafCache);
             }
         }
