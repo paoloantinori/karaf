@@ -223,11 +223,19 @@ public class ConnectorServerFactory {
         if (this.server == null) {
             throw new IllegalArgumentException("server must be set");
         }
-        JMXServiceURL url = new JMXServiceURL(this.serviceUrl);
         setupKarafRMIServerSocketFactory();
         if (isClientAuth()) {
             this.secured = true;
         }
+        if (!AuthenticatorType.PASSWORD.equals(this.authenticatorType)) {
+            this.environment.remove("jmx.remote.authenticator");
+        }
+        doInit();
+
+    }
+
+    synchronized void doInit() throws Exception{
+        JMXServiceURL url = new JMXServiceURL(this.serviceUrl);
 
         if (this.secured) {
             try {
@@ -238,16 +246,20 @@ public class ConnectorServerFactory {
             }
         }
 
-        if (!AuthenticatorType.PASSWORD.equals(this.authenticatorType)) {
-            this.environment.remove("jmx.remote.authenticator");
-        }
-
         MBeanInvocationHandler handler = new MBeanInvocationHandler(server, guard);
         MBeanServer guardedServer = (MBeanServer) Proxy.newProxyInstance(server.getClass().getClassLoader(), new Class[]{ MBeanServer.class }, handler);
+        if(connectorServer != null){
+            destroy();
+        }
+
         this.connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, this.environment, guardedServer);
 
         if (this.objectName != null) {
-            this.server.registerMBean(this.connectorServer, this.objectName);
+            try {
+                this.server.registerMBean(this.connectorServer, this.objectName);
+            } catch(Exception e){
+                LOGGER.info("Can't register JMXConnectorServer: " + e.getMessage());
+            }
         }
 
         try {
@@ -361,8 +373,27 @@ public class ConnectorServerFactory {
     
     public void register(KeystoreInstance keystore, Map<String,?> properties) {
         if (this.secured) {
+            LOGGER.info("Found new keystore: {}. Re-initializing.", keystore.getName());
             try {
-                this.init();
+                class SSLSetupThread extends Thread {
+                    ConnectorServerFactory factory;
+                    SSLSetupThread(ConnectorServerFactory factory){
+                        this.factory = factory;
+                    }
+
+                    @Override
+                    public void run() {
+                        try {
+                            factory.doInit();
+                        } catch (Exception e) {
+                            LOGGER.warn("", e);
+                        }
+                    }
+                }
+                Thread sslSetupThread = new SSLSetupThread(this);
+                sslSetupThread.setName("Keystore Registrer");
+                sslSetupThread.start();
+
             } catch (Exception e) {
                 LOGGER.info("Can't re-init JMXConnectorServer with SSL enabled when register a keystore:" + e.getMessage());
             }
@@ -371,8 +402,9 @@ public class ConnectorServerFactory {
 
     public void unregister(KeystoreInstance keystore, Map<String,?> properties) {
         if (this.secured) {
+            LOGGER.info("Keystore: {} undeployed. Re-initializing.", keystore.getName());
             try {
-                this.init();
+                this.destroy();
             } catch (Exception e) {
                 LOGGER.info("Can't re-init JMXConnectorServer with SSL enabled when unregister a keystore: " + e.getMessage());
             }
