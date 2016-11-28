@@ -69,7 +69,7 @@ public class Main {
             portString = replaceVariable(portString, "8101", customCfg);
         }
         int port = Integer.parseInt(portString);
-        int level = 1;
+        int level = 0;
         int retryAttempts = 0;
         int retryDelay = 2;
         boolean batch = false;
