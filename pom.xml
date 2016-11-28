@@ -159,8 +159,8 @@
         <easymock.version>3.2</easymock.version>
         <equinox.version>3.9.1-v20140110-1610</equinox.version>
         <felix.bundlerepository.version>2.0.4</felix.bundlerepository.version>
-        <felix.configadmin.version>1.8.4</felix.configadmin.version>
-        <felix.fileinstall.version>3.5.0</felix.fileinstall.version>
+        <felix.configadmin.version>1.8.12</felix.configadmin.version>
+        <felix.fileinstall.version>3.5.2</felix.fileinstall.version>
         <felix.framework.version>4.4.1</felix.framework.version>
         <felix.framework.security.version>2.4.0</felix.framework.security.version>
         <felix.gogo.version>0.12.1</felix.gogo.version>
@@ -238,7 +238,7 @@
         <pax.exam.version>4.4.0</pax.exam.version>
         <pax.jdbc.version>0.3.0</pax.jdbc.version>
         <pax.jpa.version>0.3.0</pax.jpa.version>
-        <pax.logging.version>1.8.5</pax.logging.version>
+        <pax.logging.version>1.9.1</pax.logging.version>
         <pax.runner.version>1.8.6</pax.runner.version>
         <pax.url.version>2.5.0</pax.url.version>
         <pax.swissbox.version>1.8.2</pax.swissbox.version>
