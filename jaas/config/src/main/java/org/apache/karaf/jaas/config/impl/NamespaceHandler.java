@@ -38,9 +38,10 @@ public class NamespaceHandler implements org.apache.aries.blueprint.NamespaceHan
     public URL getSchemaLocation(String namespace) {
         if ("http://karaf.apache.org/xmlns/jaas/v1.0.0".equals(namespace)) {
             return getClass().getResource("/org/apache/karaf/jaas/config/karaf-jaas-1.0.0.xsd");
-        } else {
+        } else if ("http://karaf.apache.org/xmlns/jaas/v1.1.0".equals(namespace)) {
             return getClass().getResource("/org/apache/karaf/jaas/config/karaf-jaas-1.1.0.xsd");
         }
+        return null;
     }
 
     public Set<Class> getManagedClasses() {
