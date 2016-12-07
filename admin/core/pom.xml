@@ -156,6 +156,11 @@
                                     </includes>
                                 </resource>
                             </resources>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <escapeString>\</escapeString>
+                            <delimiters>
+                                <delimiter>${*}</delimiter>
+                            </delimiters>
                         </configuration>
                     </execution>
                     <execution>

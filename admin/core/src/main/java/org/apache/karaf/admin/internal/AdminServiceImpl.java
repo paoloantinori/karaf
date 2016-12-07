@@ -360,6 +360,41 @@ public class AdminServiceImpl implements AdminService {
                             "rmiServerHost",
                             "serviceUrl");
                     copyProperties(rootBase, karafBase, "etc/org.ops4j.pax.url.mvn.cfg");
+
+                    // ENTESB-6287 - align ACL configuration with the one from root container
+                    // copying only these PIDs that are initially available in child container resources
+
+                    // this is always ${karaf.base}/etc -> ${karaf.base}/etc
+                    copyProperties(rootBase, karafBase, "etc/jmx.acl.org.apache.karaf.security.jmx.cfg");
+                    String[] files = new String[] {
+                        "jmx.acl.cfg",
+                        "jmx.acl.java.lang.Memory.cfg",
+                        "jmx.acl.org.apache.karaf.bundle.cfg",
+                        "jmx.acl.org.apache.karaf.config.cfg",
+                        "jmx.acl.osgi.compendium.cm.cfg",
+                        "org.apache.karaf.command.acl.config.cfg",
+                        "org.apache.karaf.command.acl.features.cfg",
+                        "org.apache.karaf.command.acl.jaas.cfg",
+                        "org.apache.karaf.command.acl.osgi.cfg",
+                        "org.apache.karaf.command.acl.scope_bundle.cfg",
+                        "org.apache.karaf.command.acl.shell.cfg"
+                    };
+
+                    // this may be ${karaf.base}/etc -> ${karaf.base}/etc or ${karaf.base}/auth/etc -> ${karaf.base}/etc
+                    // Fuse keeps ACL PIDs in ${karaf.home}/etc/auth. Fabric8 in ${karaf.home}/etc
+                    File[] sourceDirs = new File[] { new File(rootBase, "etc"), new File(rootBase, "etc/auth") };
+                    File karafEtc = new File(karafBase, "etc");
+                    for (String file : files) {
+                        File f = new File(sourceDirs[0], file);
+                        if (f.isFile()) {
+                            copyProperties(sourceDirs[0], karafEtc, file);
+                        } else {
+                            f = new File(sourceDirs[1], file);
+                            if (f.isFile()) {
+                                copyProperties(sourceDirs[1], karafEtc, file);
+                            }
+                        }
+                    }
                 }
 
                 for (String resource : textResources.keySet()) {
@@ -387,8 +422,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     /**
-     * Copies all properties from <code>source</code> to <code>destination</code> except those specified in
-     * <code>preserve</code>
+     * <p>Copies all properties from <code>source</code> to <code>destination</code> except those specified in
+     * <code>preserve</code></p>
+     * <p>If <code>sourceFile</code> doesn't exist, this method just returns.</p>
      * @param source
      * @param destination
      * @param fileName
@@ -397,6 +433,9 @@ public class AdminServiceImpl implements AdminService {
     private void copyProperties(File source, File destination, String fileName, String ... preserve) throws IOException {
         org.apache.felix.utils.properties.Properties s = new org.apache.felix.utils.properties.Properties(false);
         File sourceFile = new File(source, fileName);
+        if (!sourceFile.exists()) {
+            return;
+        }
         s.load(sourceFile);
         org.apache.felix.utils.properties.Properties d = new org.apache.felix.utils.properties.Properties(false);
         File destFile = new File(destination, fileName);
