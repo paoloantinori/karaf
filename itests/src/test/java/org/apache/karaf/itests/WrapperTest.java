@@ -47,8 +47,10 @@ public class WrapperTest extends KarafTestSupport {
         assertTrue("wrapper:install should print path to karaf-wrapper",
                 countMatches(".*karaf-wrapper.conf", installOutput) > 0);
 
-        assertTrue("wrapper:install should print what to 'symlink'",
-                countMatches(".*ln -s.*", installOutput) > 0);
+        if (!System.getProperty("os.name").startsWith("Windows")) {
+            assertTrue("wrapper:install should print what to 'symlink'",
+                    countMatches(".*ln -s.*", installOutput) > 0);
+        }
 
         String karafHome = System.getProperty("karaf.home");
         File karafService = new File(karafHome + File.separator + "bin", "karaf-service");
