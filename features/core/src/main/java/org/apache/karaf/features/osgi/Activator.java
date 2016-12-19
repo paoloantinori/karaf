@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.karaf.features.FeaturesListener;
 import org.apache.karaf.features.FeaturesService;
@@ -29,6 +30,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.cm.ConfigurationAdmin;
+import org.osgi.service.url.URLStreamHandlerService;
 import org.osgi.util.tracker.ServiceTracker;
 import org.osgi.util.tracker.ServiceTrackerCustomizer;
 import org.slf4j.Logger;
@@ -42,9 +44,12 @@ public class Activator implements BundleActivator {
 
     private BundleContext bundleContext;
     private ServiceTracker<ConfigurationAdmin, ConfigurationAdmin> configurationAdminServiceTracker;
+    private ServiceTracker<URLStreamHandlerService, URLStreamHandlerService> mvnUrlHandlerTracker;
     private ServiceTracker<FeaturesListener, FeaturesListener> featuresListenerTracker;
     private FeaturesServiceImpl featuresService;
     private ServiceRegistration<FeaturesService> featuresServiceRegistration;
+
+    private AtomicBoolean started = new AtomicBoolean(false);
 
     public Activator() {
     }
@@ -96,7 +101,9 @@ public class Activator implements BundleActivator {
                 new ServiceTrackerCustomizer<ConfigurationAdmin, ConfigurationAdmin>() {
                     public ConfigurationAdmin addingService(ServiceReference<ConfigurationAdmin> reference) {
                         ConfigurationAdmin configurationAdmin = bundleContext.getService(reference);
-                        doStart(configurationAdmin);
+                        if (!mvnUrlHandlerTracker.isEmpty()) {
+                            doStart(configurationAdmin);
+                        }
                         return configurationAdmin;
                     }
 
@@ -109,8 +116,30 @@ public class Activator implements BundleActivator {
                 }
         );
 
+        mvnUrlHandlerTracker = new ServiceTracker<URLStreamHandlerService, URLStreamHandlerService>(
+                bundleContext,
+                bundleContext.createFilter("(&(objectClass=org.osgi.service.url.URLStreamHandlerService)(url.handler.protocol=mvn))"),
+                new ServiceTrackerCustomizer<URLStreamHandlerService, URLStreamHandlerService>() {
+                    public URLStreamHandlerService addingService(ServiceReference<URLStreamHandlerService> reference) {
+                        URLStreamHandlerService mvnUrlHandler = bundleContext.getService(reference);
+                        if (!configurationAdminServiceTracker.isEmpty()) {
+                            doStart(configurationAdminServiceTracker.getService());
+                        }
+                        return mvnUrlHandler;
+                    }
+
+                    public void modifiedService(ServiceReference<URLStreamHandlerService> reference, URLStreamHandlerService service) {
+                    }
+
+                    public void removedService(ServiceReference<URLStreamHandlerService> reference, URLStreamHandlerService service) {
+                        doStop();
+                    }
+                }
+        );
+
         featuresListenerTracker.open();
 
+        mvnUrlHandlerTracker.open();
         configurationAdminServiceTracker.open();
     }
 
@@ -119,33 +148,42 @@ public class Activator implements BundleActivator {
             configurationAdminServiceTracker.close();
             configurationAdminServiceTracker = null;
         }
+        if (mvnUrlHandlerTracker != null) {
+            mvnUrlHandlerTracker.close();
+            mvnUrlHandlerTracker = null;
+        }
     }
 
     protected void doStart(ConfigurationAdmin configurationAdmin) {
-        doStop();
-        try {
-            featuresService.setConfigAdmin(configurationAdmin);
-            featuresListenerTracker.open();
-            featuresService.start();
-            featuresServiceRegistration = bundleContext.registerService(FeaturesService.class, featuresService, null);
-        } catch (Exception e) {
-            LOGGER.error("Error starting FeaturesService", e);
+        if (started.compareAndSet(false, true)) {
+            doStop();
+            try {
+                featuresService.setConfigAdmin(configurationAdmin);
+                featuresListenerTracker.open();
+                featuresService.start();
+                featuresServiceRegistration = bundleContext.registerService(FeaturesService.class, featuresService, null);
+            } catch (Exception e) {
+                LOGGER.error("Error starting FeaturesService", e);
+                started.set(false);
+            }
         }
     }
 
     protected void doStop() {
-        if (featuresServiceRegistration != null) {
-            try {
-                featuresServiceRegistration.unregister();
-            } catch (IllegalStateException e) {
-                // Ignore
+        if (started.compareAndSet(true, false)) {
+            if (featuresServiceRegistration != null) {
+                try {
+                    featuresServiceRegistration.unregister();
+                } catch (IllegalStateException e) {
+                    // Ignore
+                }
             }
-        }
-        featuresListenerTracker.close();
-        try {
-            featuresService.stop();
-        } catch (Exception e) {
-            LOGGER.warn("Error stopping FeaturesService", e);
+            featuresListenerTracker.close();
+            try {
+                featuresService.stop();
+            } catch (Exception e) {
+                LOGGER.warn("Error stopping FeaturesService", e);
+            }
         }
     }
 
