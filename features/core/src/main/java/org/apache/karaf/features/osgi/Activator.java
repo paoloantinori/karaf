@@ -71,7 +71,7 @@ public class Activator implements BundleActivator {
         featuresService.setUrls(getString(configuration, "featuresRepositories", ""));
         featuresService.setBoot(getString(configuration, "featuresBoot", ""));
         featuresService.setBootFeaturesAsynchronous(getBool(configuration, "bootFeaturesAsynchronous", false));
-        featuresService.setRespectStartLvlDuringFeatureStartup(getBool(configuration, "respectStartLvlDuringFeatureStartup", false));
+        featuresService.setRespectStartLvlDuringFeatureStartup(getBool(configuration, "respectStartLvlDuringFeatureStartup", true));
         featuresService.setResolverTimeout(getLong(configuration, "resolverTimeout", 5000));
         featuresService.setBundleContext(bundleContext);
         featuresService.setBlackList(getString(configuration, "featuresBlackList", null));
