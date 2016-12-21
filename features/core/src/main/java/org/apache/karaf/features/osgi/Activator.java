@@ -101,9 +101,8 @@ public class Activator implements BundleActivator {
                 new ServiceTrackerCustomizer<ConfigurationAdmin, ConfigurationAdmin>() {
                     public ConfigurationAdmin addingService(ServiceReference<ConfigurationAdmin> reference) {
                         ConfigurationAdmin configurationAdmin = bundleContext.getService(reference);
-                        if (!mvnUrlHandlerTracker.isEmpty()) {
-                            doStart(configurationAdmin);
-                        }
+                        LOGGER.info("Starting FeaturesService");
+                        doStart(configurationAdmin);
                         return configurationAdmin;
                     }
 
@@ -118,28 +117,17 @@ public class Activator implements BundleActivator {
 
         mvnUrlHandlerTracker = new ServiceTracker<URLStreamHandlerService, URLStreamHandlerService>(
                 bundleContext,
-                bundleContext.createFilter("(&(objectClass=org.osgi.service.url.URLStreamHandlerService)(url.handler.protocol=mvn))"),
-                new ServiceTrackerCustomizer<URLStreamHandlerService, URLStreamHandlerService>() {
-                    public URLStreamHandlerService addingService(ServiceReference<URLStreamHandlerService> reference) {
-                        URLStreamHandlerService mvnUrlHandler = bundleContext.getService(reference);
-                        if (!configurationAdminServiceTracker.isEmpty()) {
-                            doStart(configurationAdminServiceTracker.getService());
-                        }
-                        return mvnUrlHandler;
-                    }
-
-                    public void modifiedService(ServiceReference<URLStreamHandlerService> reference, URLStreamHandlerService service) {
-                    }
-
-                    public void removedService(ServiceReference<URLStreamHandlerService> reference, URLStreamHandlerService service) {
-                        doStop();
-                    }
-                }
+                bundleContext.createFilter("(&(objectClass=org.osgi.service.url.URLStreamHandlerService)(url.handler.protocol=mvn)(!(fabric=true)))"),
+                null
         );
 
         featuresListenerTracker.open();
 
         mvnUrlHandlerTracker.open();
+        LOGGER.info("Waiting for mvn: URL handler...");
+        mvnUrlHandlerTracker.waitForService(10000L);
+        LOGGER.info("mvn: URL handler available");
+
         configurationAdminServiceTracker.open();
     }
 
