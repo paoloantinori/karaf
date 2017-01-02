@@ -542,16 +542,16 @@ public class AdminServiceImpl implements AdminService {
                         + " -Dkaraf.startRemoteShell=true"
                         + " -classpath \"" + classpath.toString() + "\""
                         + " org.apache.karaf.main.Main server";
-                if (System.getenv("KARAF_REDIRECT") != null && !System.getenv("KARAF_REDIRECT").isEmpty()) {
-                	String finalPath;
-                	String karafRedirect = System.getenv("KARAF_REDIRECT");
-                	Path pathRedirect = Paths.get(karafRedirect);
-                	if (!pathRedirect.isAbsolute()) {
-                		String karafBase = System.getProperty("karaf.base");
-                		finalPath = karafBase + File.separator + karafRedirect;
-                	} else {
-                		finalPath = karafRedirect;
-                	}
+                String karafRedirect = System.getenv("KARAF_REDIRECT");
+                if (karafRedirect != null && !karafRedirect.isEmpty()) {
+                    String finalPath;
+                    Path pathRedirect = Paths.get(karafRedirect);
+                    if (!pathRedirect.isAbsolute()) {
+                        String karafBase = System.getProperty("karaf.base");
+                        finalPath = karafBase + File.separator + karafRedirect;
+                    } else {
+                        finalPath = karafRedirect;
+                    }
                     command = command + " >> " + finalPath;
                 }
                 LOGGER.info("Starting instance " + name + " with command: " + command);
