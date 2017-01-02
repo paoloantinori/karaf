@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -541,9 +543,18 @@ public class AdminServiceImpl implements AdminService {
                         + " -classpath \"" + classpath.toString() + "\""
                         + " org.apache.karaf.main.Main server";
                 if (System.getenv("KARAF_REDIRECT") != null && !System.getenv("KARAF_REDIRECT").isEmpty()) {
-                    command = command + " >> " + System.getenv("KARAF_REDIRECT");
+                	String finalPath;
+                	String karafRedirect = System.getenv("KARAF_REDIRECT");
+                	Path pathRedirect = Paths.get(karafRedirect);
+                	if (!pathRedirect.isAbsolute()) {
+                		String karafBase = System.getProperty("karaf.base");
+                		finalPath = karafBase + File.separator + karafRedirect;
+                	} else {
+                		finalPath = karafRedirect;
+                	}
+                    command = command + " >> " + finalPath;
                 }
-                LOGGER.debug("Starting instance " + name + " with command: " + command);
+                LOGGER.info("Starting instance " + name + " with command: " + command);
                 org.apache.karaf.jpm.Process process = ProcessBuilderFactory.newInstance().newBuilder()
                         .directory(new File(location))
                         .command(command)
