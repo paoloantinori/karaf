@@ -1713,8 +1713,10 @@ public class Main {
                         framework.stop();
                         break;
                     } else {
-                        LOG.log(Level.WARNING, "Karaf shutdown socket:  Invalid command '" +
-                                           command.toString() + "' received");
+                        if (!command.toString().isEmpty()) {
+                            LOG.log(Level.WARNING, "Karaf shutdown socket:  Invalid command '" +
+                                               command.toString() + "' received");
+                        }
                     }
                 }
             } catch (Exception e) {
