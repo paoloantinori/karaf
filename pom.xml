@@ -264,9 +264,9 @@
         <spring32.version>3.2.16.RELEASE_1</spring32.version>
         <spring32.jms.version>3.2.16.RELEASE_2</spring32.jms.version>
         <spring42.version>4.2.5.RELEASE_1</spring42.version>
-        <spring.security32.version>3.2.8.RELEASE</spring.security32.version>
-        <spring.security.bundle.version>3.2.8.RELEASE_1</spring.security.bundle.version>
-        <spring.security.config.bundle.version>3.2.8.RELEASE_2</spring.security.config.bundle.version>
+        <spring.security32.version>3.2.10.RELEASE</spring.security32.version>
+        <spring.security.bundle.version>3.2.10.RELEASE_1</spring.security.bundle.version>
+        <spring.security.config.bundle.version>3.2.10.RELEASE_1</spring.security.config.bundle.version>
         <spring.security40.version>4.0.4.RELEASE</spring.security40.version>
         <spring.security40.bundle.version>4.0.4.RELEASE_1</spring.security40.bundle.version>
         <directory-version>2.0.0-M16</directory-version>
