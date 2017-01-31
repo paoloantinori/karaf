@@ -261,9 +261,9 @@
         <hawtio-version>1.4.redhat-630067</hawtio-version>
 
         <spring.osgi.version>1.2.1</spring.osgi.version>
-        <spring32.version>3.2.16.RELEASE_1</spring32.version>
-        <spring32.jms.version>3.2.16.RELEASE_2</spring32.jms.version>
-        <spring42.version>4.2.5.RELEASE_1</spring42.version>
+        <spring32.version>3.2.18.RELEASE_1</spring32.version>
+        <spring32.jms.version>3.2.18.RELEASE_1</spring32.jms.version>
+        <spring42.version>4.2.9.RELEASE_1</spring42.version>
         <spring.security32.version>3.2.10.RELEASE</spring.security32.version>
         <spring.security.bundle.version>3.2.10.RELEASE_1</spring.security.bundle.version>
         <spring.security.config.bundle.version>3.2.10.RELEASE_1</spring.security.config.bundle.version>
