@@ -14,6 +14,8 @@
  */
 package org.apache.karaf.jaas.modules.audit;
 
+import org.apache.karaf.jaas.boot.principal.UserPrincipal;
+
 import java.util.Map;
 
 import javax.security.auth.Subject;
@@ -66,6 +68,7 @@ public abstract class AbstractAuditLoginModule implements LoginModule {
     }
 
     public boolean commit() throws LoginException {
+        String username = getUsername();
         if (enabled && username != null) {
             audit(Action.SUCCESS, username);
         }
@@ -73,6 +76,7 @@ public abstract class AbstractAuditLoginModule implements LoginModule {
     }
 
     public boolean abort() throws LoginException {
+        String username = getUsername();
         if (enabled && username != null) { //work around initial "fake" login
             audit(Action.FAILURE, username);
             username = null;
@@ -81,6 +85,7 @@ public abstract class AbstractAuditLoginModule implements LoginModule {
     }
 
     public boolean logout() throws LoginException {
+        String username = getUsername();
         if (enabled && username != null) {
             audit(Action.LOGOUT, username);
             username = null;
@@ -88,4 +93,14 @@ public abstract class AbstractAuditLoginModule implements LoginModule {
         return false;
     }
 
+    public String getUsername(){
+        if(username != null){
+            return username;
+        } else if(subject.getPrincipals(UserPrincipal.class).iterator().hasNext()){
+                UserPrincipal principal = subject.getPrincipals(UserPrincipal.class).iterator().next();
+                return principal.getName();
+        } else {
+            return null;
+        }
+    }
 }
