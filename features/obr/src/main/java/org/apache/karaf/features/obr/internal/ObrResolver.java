@@ -90,9 +90,12 @@ public class ObrResolver implements Resolver {
                 infos.put(req, bundleInfo);
             }
             if (url != null) {
-            	Resource res = repositoryAdmin.getHelper().createResource(url);
-            	ress.add(res);
-            	infos.put(res, bundleInfo);
+                Resource res = repositoryAdmin.getHelper().createResource(url);
+                if (res == null) {
+                    throw new Exception("Can not resolve feature " + feature.getName() + "/" + feature.getVersion() + ", resource " + url + " is not proper OSGi bundle");
+                }
+                ress.add(res);
+                infos.put(res, bundleInfo);
             }
         }
 
