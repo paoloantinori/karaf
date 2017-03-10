@@ -110,6 +110,11 @@ public class SshAction extends OsgiCommandSupport implements BlueprintContainerA
         client.start();
 
         String agentSocket = null;
+        boolean sessionRegistered = false;
+        if (this.session.get(SshAgent.SSH_AUTHSOCKET_ENV_NAME) == null && client.getAgentFactory() instanceof KarafAgentFactory) {
+            ((KarafAgentFactory) client.getAgentFactory()).registerCommandSession(this.session);
+            sessionRegistered = true;
+        }
         if (this.session.get(SshAgent.SSH_AUTHSOCKET_ENV_NAME) != null) {
             agentSocket = this.session.get(SshAgent.SSH_AUTHSOCKET_ENV_NAME).toString();
             client.getProperties().put(SshAgent.SSH_AUTHSOCKET_ENV_NAME,agentSocket);
@@ -179,6 +184,9 @@ public class SshAction extends OsgiCommandSupport implements BlueprintContainerA
                 sshSession.close(false);
             }
         } finally {
+            if (sessionRegistered) {
+                ((KarafAgentFactory)client.getAgentFactory()).unregisterCommandSession(this.session);
+            }
             client.stop();
         }
 
