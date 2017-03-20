@@ -134,7 +134,7 @@ public class OsgiKeystoreManager implements KeystoreManager {
             } else if (trustStore != null && trustInstance.isKeystoreLocked()) {
                 logger.info( "Truststore {} locked", keyStore );
             } else {
-                logger.info( "Keystore {} found!", keyStore );
+                logger.debug( "Keystore {} found!", keyStore );
                 return true;
             }
             if (System.currentTimeMillis() - start < timeout) {
