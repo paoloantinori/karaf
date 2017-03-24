@@ -67,10 +67,10 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void classesCommand() throws Exception {
-        String classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy.api", ADMIN_ROLE);
+        String classesOutput = executeCommand("osgi:classes --force org.apache.aries.proxy", ADMIN_ROLE);
         System.out.println(classesOutput);
         assertFalse(classesOutput.isEmpty());
-        assertTrue("osgi:classes for org.apache.aries.proxy.api should contain package org/apache/aries",
+        assertTrue("osgi:classes for org.apache.aries.proxy should contain package org/apache/aries",
                 countMatches("org/apache/aries/.*", classesOutput) > 1);
     }
 
@@ -85,16 +85,16 @@ public class OsgiTest extends KarafTestSupport {
 
     @Test
     public void headersCommand() throws Exception {
-        String headersOutput = executeCommand("osgi:headers --force org.apache.aries.proxy.api", ADMIN_ROLE);
+        String headersOutput = executeCommand("osgi:headers --force org.apache.aries.proxy", ADMIN_ROLE);
         System.out.println(headersOutput);
-        assertTrue(headersOutput.contains("Bundle-SymbolicName = org.apache.aries.proxy.api"));
+        assertTrue(headersOutput.contains("Bundle-SymbolicName = org.apache.aries.proxy"));
     }
 
     @Test
     public void infoCommand() throws Exception {
-        String infoOutput = executeCommand("osgi:info --force org.apache.aries.proxy.api", ADMIN_ROLE);
+        String infoOutput = executeCommand("osgi:info --force org.apache.aries.proxy", ADMIN_ROLE);
         System.out.println(infoOutput);
-        assertTrue(infoOutput.contains("Apache Aries Proxy API"));
+        assertTrue(infoOutput.contains("Apache Aries Proxy Service"));
     }
 
     @Test
