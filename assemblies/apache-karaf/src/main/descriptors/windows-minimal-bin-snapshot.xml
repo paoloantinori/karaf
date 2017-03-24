@@ -310,8 +310,7 @@
                 org/apache/aries/proxy/${artifact.artifactId}/${artifact.baseVersion}/${artifact.artifactId}-${artifact.baseVersion}${dashClassifier?}.${artifact.extension}
             </outputFileNameMapping>
             <includes>
-                <include>org.apache.aries.proxy:org.apache.aries.proxy.api</include>
-                <include>org.apache.aries.proxy:org.apache.aries.proxy.impl</include>
+                <include>org.apache.aries.proxy:org.apache.aries.proxy</include>
             </includes>
         </dependencySet>
         <dependencySet>
