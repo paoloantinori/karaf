@@ -45,7 +45,7 @@
         <feature version="${pax.cdi.feature.version}">pax-cdi</feature>
         <bundle>mvn:org.jboss.weld/weld-osgi-bundle/2.3.2.Final</bundle>
         <bundle dependency="true">mvn:org.jboss.classfilewriter/jboss-classfilewriter/1.1.2.Final</bundle>
-        <bundle>mvn:org.jboss.logging/jboss-logging/3.3.0.Final-redhat-1</bundle>
+        <bundle dependency="true">mvn:org.jboss.logging/jboss-logging/3.3.0.Final-redhat-1</bundle>
         <bundle>mvn:com.google.guava/guava/18.0.0.redhat-1</bundle>
         <bundle>mvn:org.ops4j.pax.cdi/pax-cdi-weld/${pax.cdi.version}</bundle>
     </feature>
