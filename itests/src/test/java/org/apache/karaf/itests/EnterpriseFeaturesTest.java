@@ -27,8 +27,8 @@ public class EnterpriseFeaturesTest extends KarafTestSupport {
     @Test
     public void testTransactionFeatures() throws Exception {
         System.out.println("");
-        System.out.println("===== TESTING TRANSACTION 1.3.0 FEATURE =====");
-        installAndAssertFeature("transaction", "1.3.0");
+        System.out.println("===== TESTING TRANSACTION 1.3.2 FEATURE =====");
+        installAndAssertFeature("transaction", "1.3.2");
     }
 
     @Test
