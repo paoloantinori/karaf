@@ -88,10 +88,10 @@ public class PublickeyBackingEngine implements BackingEngine {
     }
 
     @Override
-    public void deleteUser(String username) {
+    public void deleteUser(String username, boolean withoutGroupDeletionOnLastUser) {
         // delete all its groups first, for garbage collection of the groups
         for (GroupPrincipal gp : listGroups(username)) {
-            deleteGroup(username, gp.getName());
+            deleteGroup(username, gp.getName(), withoutGroupDeletionOnLastUser);
         }
 
         users.remove(username);
@@ -230,7 +230,7 @@ public class PublickeyBackingEngine implements BackingEngine {
     }
 
     @Override
-    public void deleteGroup(String username, String group) {
+    public void deleteGroup(String username, String group, boolean withoutGroupDeletionOnLastUser) {
         deleteRole(username, GROUP_PREFIX + group);
 
         // garbage collection, clean up the groups if needed
@@ -243,8 +243,10 @@ public class PublickeyBackingEngine implements BackingEngine {
             }
         }
 
-        // nobody is using this group any more, remote it
-        deleteUser(GROUP_PREFIX + group);
+        if (!withoutGroupDeletionOnLastUser) {
+            // nobody is using this group any more, remote it
+            deleteUser(GROUP_PREFIX + group, withoutGroupDeletionOnLastUser);
+        }
     }
 
     @Override

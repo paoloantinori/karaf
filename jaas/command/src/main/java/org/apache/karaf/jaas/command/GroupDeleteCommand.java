@@ -29,7 +29,7 @@ public class GroupDeleteCommand extends JaasCommandSupport {
 
     @Override
     protected Object doExecute(BackingEngine engine) throws Exception {
-        engine.deleteGroup(username, group);
+        engine.deleteGroup(username, group, false);
         return null;
     }
 

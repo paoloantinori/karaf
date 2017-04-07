@@ -39,7 +39,7 @@ public interface BackingEngine {
      *
      * @param username
      */
-    void deleteUser(String username);
+    void deleteUser(String username, boolean withoutGroupDeletionOnLastUser);
 
     /**
      * List Users
@@ -77,7 +77,7 @@ public interface BackingEngine {
      * @param username
      * @param group
      */
-    void deleteGroup(String username, String group);
+    void deleteGroup(String username, String group, boolean forceGroupDeletionOnLastUser);
 
     /**
      * List Roles for {@param principal}. This could either be a
