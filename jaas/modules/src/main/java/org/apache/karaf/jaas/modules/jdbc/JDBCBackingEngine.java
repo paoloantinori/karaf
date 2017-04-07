@@ -126,7 +126,7 @@ public class JDBCBackingEngine implements BackingEngine {
      *
      * @param username
      */
-    public void deleteUser(String username) {
+    public void deleteUser(String username, boolean withoutGroupDeletionOnLastUser) {
         Connection connection = null;
         PreparedStatement userStatement = null;
         PreparedStatement roleStatement = null;
@@ -422,7 +422,7 @@ public class JDBCBackingEngine implements BackingEngine {
     }
 
     @Override
-    public void deleteGroup(String userName, String group) {
+    public void deleteGroup(String userName, String group, boolean forceGroupDeletionOnLastUser) {
         throw new UnsupportedOperationException();
     }
 

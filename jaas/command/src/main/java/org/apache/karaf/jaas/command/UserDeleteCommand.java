@@ -17,6 +17,7 @@ package org.apache.karaf.jaas.command;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 import org.apache.karaf.jaas.modules.BackingEngine;
 
 @Command(scope = "jaas", name = "userdel", description = "Delete a user")
@@ -24,6 +25,9 @@ public class UserDeleteCommand extends JaasCommandSupport {
 
     @Argument(index = 0, name = "username", description = "User Name", required = true, multiValued = false)
     private String username;
+    
+    @Option(name = "-w", aliases = { "--without-group-deletion" }, description = "If the user is the last one of this group, the group will not be deleted", required = false, multiValued = false)
+    boolean withoutGroupDeletionOnLastUser;
 
     /**
      * Execute the RoleAddCommand in the given Excecution Context.
@@ -34,7 +38,7 @@ public class UserDeleteCommand extends JaasCommandSupport {
      */
     @Override
     protected Object doExecute(BackingEngine engine) throws Exception {
-        engine.deleteUser(username);
+        engine.deleteUser(username, withoutGroupDeletionOnLastUser);
         return null;
     }
 
@@ -47,10 +51,10 @@ public class UserDeleteCommand extends JaasCommandSupport {
         this.username = username;
     }
 
-    @Override
-    public String toString() {
-        return "UserDeleteCommand{" +
-                "username='" + username + '\'' +
-                '}';
-    }
+
+	@Override
+	public String toString() {
+		return "UserDeleteCommand {username=" + username + ", withoutGroupDeletionOnLastUser="
+				+ withoutGroupDeletionOnLastUser + "}";
+	}
 }

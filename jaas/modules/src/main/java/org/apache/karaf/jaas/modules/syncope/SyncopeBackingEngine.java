@@ -78,7 +78,7 @@ public class SyncopeBackingEngine implements BackingEngine {
         }
     }
 
-    public void deleteUser(String username) {
+    public void deleteUser(String username, boolean withoutGroupDeletionOnLastUser) {
         if (username.startsWith(GROUP_PREFIX)) {
             throw new IllegalArgumentException("Group prefix " + GROUP_PREFIX + " not permitted with Syncope backend");
         }
@@ -161,7 +161,7 @@ public class SyncopeBackingEngine implements BackingEngine {
         throw new RuntimeException("Group management is not supported by Syncope backend");
     }
 
-    public void deleteGroup(String username, String group) {
+    public void deleteGroup(String username, String group, boolean forceGroupDeletionOnLastUser) {
         throw new RuntimeException("Group management is not supported by Syncope backend");
     }
 

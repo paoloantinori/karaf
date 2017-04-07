@@ -172,12 +172,12 @@ public class PropertiesBackingEngineTest extends TestCase {
             assertTrue(foundR3_6);
             assertTrue(foundR4_6);
 
-            engine.deleteGroup("b", "g");
-            engine.deleteGroup("b", "g2");
+            engine.deleteGroup("b", "g", false);
+            engine.deleteGroup("b", "g2", false);
             assertEquals(0, engine.listRoles(upb).size());
-            engine.deleteUser("b");
+            engine.deleteUser("b", false);
 
-            engine.deleteUser("a");
+            engine.deleteUser("a", false);
             assertEquals("Properties should be empty now", 0, p.size());
         } finally {
             if (!f.delete()) {
