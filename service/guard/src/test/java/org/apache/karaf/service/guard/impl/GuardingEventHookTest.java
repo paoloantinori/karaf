@@ -54,7 +54,7 @@ public class GuardingEventHookTest {
 
         Dictionary<String, Object> config = new Hashtable<String, Object>();
         config.put("service.guard", "(service.id=*)");
-        BundleContext hookBC = mockConfigAdminBundleContext(config);
+        BundleContext hookBC = mockConfigAdminBundleContext(frameworkBC, config);
         GuardProxyCatalog gpc = new GuardProxyCatalog(hookBC);
 
         Filter serviceFilter = FrameworkUtil.createFilter("(foo=bar)");
@@ -130,9 +130,11 @@ public class GuardingEventHookTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testEventHookProxyEvents() throws Exception {
+        BundleContext frameworkBC = mockBundleContext(0L);
+
         Dictionary<String, Object> config = new Hashtable<String, Object>();
         config.put("service.guard", "(service.id=*)");
-        BundleContext hookBC = mockConfigAdminBundleContext(config);
+        BundleContext hookBC = mockConfigAdminBundleContext(frameworkBC, config);
         GuardProxyCatalog gpc = new GuardProxyCatalog(hookBC);
 
         Filter serviceFilter = FrameworkUtil.createFilter("(service.id=*)"); // any service will match
@@ -191,7 +193,7 @@ public class GuardingEventHookTest {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    private BundleContext mockConfigAdminBundleContext(Dictionary<String, Object> ... configs) throws IOException,
+    private BundleContext mockConfigAdminBundleContext(BundleContext frameworkContext, Dictionary<String, Object> ... configs) throws IOException,
             InvalidSyntaxException {
         Configuration [] configurations = new Configuration[configs.length];
 
@@ -210,12 +212,18 @@ public class GuardingEventHookTest {
         final ServiceReference caSR = EasyMock.createMock(ServiceReference.class);
         EasyMock.replay(caSR);
 
+        Bundle sb = EasyMock.createMock(Bundle.class);
+        EasyMock.expect(sb.getBundleId()).andReturn(0L).anyTimes();
+        EasyMock.expect(sb.getBundleContext()).andReturn(frameworkContext).anyTimes();
+        EasyMock.replay(sb);
+
         Bundle b = EasyMock.createMock(Bundle.class);
         EasyMock.expect(b.getBundleId()).andReturn(877342449L).anyTimes();
         EasyMock.replay(b);
 
         BundleContext bc = EasyMock.createNiceMock(BundleContext.class);
         EasyMock.expect(bc.getBundle()).andReturn(b).anyTimes();
+        EasyMock.expect(bc.getBundle(0L)).andReturn(sb).anyTimes();
         EasyMock.expect(bc.createFilter(EasyMock.isA(String.class))).andAnswer(new IAnswer<Filter>() {
             public Filter answer() throws Throwable {
                 return FrameworkUtil.createFilter((String) EasyMock.getCurrentArguments()[0]);
