@@ -108,7 +108,7 @@
 
     <feature name="pax-http-whiteboard" description="Provide HTTP Whiteboard pattern support" version="${pax.web.feature.version}">
         <feature version="[4.3,4.4)">pax-http</feature>
-        <bundle dependency="true" start-level="30">mvn:org.eclipse.jdt.core.compiler/ecj/4.4</bundle>
+        <bundle dependency="true" start-level="30">mvn:org.eclipse.jdt.core.compiler/ecj/${eclipse.jdt.version}</bundle>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-jsp/${pax.web.version}</bundle>
         <bundle start-level="30">mvn:org.ops4j.pax.web/pax-web-extender-whiteboard/${pax.web.version}</bundle>
     </feature>
