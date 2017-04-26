@@ -39,6 +39,7 @@
             <cm:property name="sshPort" value="8101"/>
             <cm:property name="sshHost" value="0.0.0.0"/>
             <cm:property name="sshIdleTimeout" value="1800000"/>
+            <cm:property name="nio-workers" value="2"/>
             <cm:property name="sshRealm" value="karaf"/>
             <cm:property name="hostKey" value="$[karaf.etc]/host.key"/>
             <cm:property name="authorizedKeys" value="$[karaf.etc]/authorized_keys"/>
@@ -157,6 +158,7 @@
         <argument ref="sshServer"/>
         <property name="start" value="$[karaf.startRemoteShell]"/>
         <property name="idleTimeout" value="${sshIdleTimeout}"/>
+        <property name="nioWorkers" value="${nio-workers}"/>
         <property name="welcomeBanner" value="${welcomeBanner}"/>
     </bean>
 
