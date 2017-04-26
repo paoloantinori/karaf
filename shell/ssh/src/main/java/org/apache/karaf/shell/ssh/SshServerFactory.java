@@ -27,6 +27,7 @@ public class SshServerFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(SshServerFactory.class);
 
     private long idleTimeout;
+    private int nioWorkers;
     private boolean start;
 
     private SshServer server;
@@ -53,7 +54,15 @@ public class SshServerFactory {
         this.idleTimeout = idleTimeout;
     }
 
-    public String getWelcomeBanner() {
+    public int getNioWorkers() {
+		return nioWorkers;
+	}
+
+	public void setNioWorkers(int nioWorkers) {
+		this.nioWorkers = nioWorkers;
+	}
+
+	public String getWelcomeBanner() {
         return welcomeBanner;
     }
 
@@ -65,6 +74,7 @@ public class SshServerFactory {
         if (start) {
             try {
                 server.getProperties().put(SshServer.IDLE_TIMEOUT, new Long(idleTimeout).toString());
+                server.getProperties().put(SshServer.NIO_WORKERS, new Integer(nioWorkers).toString());
                 if (getWelcomeBanner() != null && !getWelcomeBanner().isEmpty()) {
                     server.getProperties().put(SshServer.WELCOME_BANNER, getWelcomeBanner());
                 }
