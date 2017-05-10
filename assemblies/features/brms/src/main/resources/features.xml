@@ -45,29 +45,6 @@
         <bundle>mvn:org.mvel/mvel2/${mvel.version}</bundle>
     </feature>
 
-    <feature name="drools7-dependencies">
-        <bundle>mvn:com.google.protobuf/protobuf-java/${protobuf.version}</bundle>
-        <bundle>mvn:commons-codec/commons-codec/${commons-codec.version}</bundle>
-        <bundle>mvn:javax.el/javax.el-api/${javax.el.version}</bundle>
-        <bundle>mvn:javax.enterprise/cdi-api/${javax.enterprise.cdi.version}</bundle>
-        <bundle>mvn:javax.interceptor/javax.interceptor-api/${javax.interceptor.version}</bundle>
-        <bundle>mvn:org.antlr/antlr4-runtime/${antlr4.version}</bundle>
-        <bundle>mvn:org.apache.commons/commons-collections4/${commons-collections4.version}</bundle>
-        <bundle>mvn:org.apache.commons/commons-lang3/${commons-lang3.version}</bundle>
-        <bundle>mvn:org.apache.santuario/xmlsec/${xmlsec.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.antlr/${antlr3.bundle.version}</bundle>
-        <bundle start-level='10'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxb-impl/${jaxb.bundle.version}</bundle>
-        <bundle start-level='10'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxb-xjc/${jaxb.bundle.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${javax.inject.bundle.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.poi/${poi.bundle.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlresolver/${xmlresolver.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xstream/${xstream.bundle.version}</bundle>
-        <bundle start-level='10'>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jaxb-api-2.2/${servicemix.specs.version}</bundle>
-        <bundle>wrap:mvn:org.codehaus.janino/janino/${janino.version}$Bundle-SymbolicName=Codehaus-Janino&amp;Bundle-Version=${janino.version}</bundle>
-        <bundle>mvn:org.eclipse.jdt.core.compiler/ecj/${eclipse.jdt.core.compiler.version}</bundle>
-        <bundle>mvn:org.mvel/mvel2/${mvel.version}</bundle>
-    </feature>
-
     <feature name="jbpm-dependencies">
         <bundle>mvn:com.sun.mail/javax.mail/${javax.mail.version}</bundle>
         <bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo.jms-spec.version}</bundle>
@@ -79,19 +56,6 @@
         <bundle>mvn:javax.interceptor/javax.interceptor-api/${javax.interceptor.version}</bundle>
         <bundle>mvn:joda-time/joda-time/${joda-time2-version}</bundle>
         <bundle>mvn:org.codehaus.jackson/jackson-core-asl/${jackson1-version}</bundle>
-    </feature>
-
-    <feature name="jbpm7-dependencies">
-        <bundle>mvn:com.sun.mail/javax.mail/${javax.mail.version}</bundle>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo.jms-spec.version}</bundle>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/${geronimo.jpa-spec.version}</bundle>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo.jta-spec.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.scripting-api-1.0/${servicemix.specs.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.quartz/${quartz.bundle.version}</bundle>
-        <bundle>mvn:org.jboss.spec.javax.security.jacc/jboss-jacc-api_1.4_spec/${jboss.jacc-spec.version}</bundle>
-        <bundle>mvn:javax.interceptor/javax.interceptor-api/${javax.interceptor.version}</bundle>
-        <bundle>mvn:joda-time/joda-time/${joda-time2-version}</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
     </feature>
 
     <feature name="optaplanner-dependencies">
@@ -112,24 +76,6 @@
         <bundle>mvn:org.codehaus.jackson/jackson-core-asl/${jackson1-version}</bundle>
         <bundle>mvn:org.codehaus.jackson/jackson-mapper-asl/${jackson1-version}</bundle>
         <bundle>mvn:org.codehaus.jackson/jackson-xc/${jackson1-version}</bundle>
-        <bundle>wrap:mvn:org.hornetq/hornetq-commons/${hornetq.version}</bundle>
-        <bundle>wrap:mvn:org.hornetq/hornetq-core-client/${hornetq.version}</bundle>
-        <bundle>wrap:mvn:org.hornetq/hornetq-jms-client/${hornetq.version}</bundle>
-        <bundle>wrap:mvn:org.hornetq/hornetq-journal/${hornetq.version}</bundle>
-        <bundle>wrap:mvn:org.jboss.resteasy/jaxrs-api/${resteasy.version}</bundle>
-    </feature>
-
-    <feature name="kie7-remote-dependencies">
-        <feature>drools-dependencies</feature>
-        <feature>optaplanner-dependencies</feature>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo.jms-spec.version}</bundle>
-        <bundle>mvn:org.apache.geronimo.specs/geronimo-jta_1.1_spec/${geronimo.jta-spec.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jsoup/${jsoup.bundle.version}</bundle>
-        <bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xpp3/${xmlpull.bundle.version}</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/${jackson2-version}</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-core/${jackson2-version}</bundle>
-        <bundle>mvn:com.fasterxml.jackson.core/jackson-databind/${jackson2-version}</bundle>
-        <bundle>mvn:com.fasterxml.jackson.module/jackson-module-jaxb-annotations/${jackson2-version}</bundle>
         <bundle>wrap:mvn:org.hornetq/hornetq-commons/${hornetq.version}</bundle>
         <bundle>wrap:mvn:org.hornetq/hornetq-core-client/${hornetq.version}</bundle>
         <bundle>wrap:mvn:org.hornetq/hornetq-jms-client/${hornetq.version}</bundle>
