@@ -377,7 +377,9 @@ init() {
 run() {
     OPTS="-Dkaraf.startLocalConsole=true -Dkaraf.startRemoteShell=true"
     MAIN=org.apache.karaf.main.Main
-    CHECK_ROOT_INSTANCE_RUNNING=true
+    if [ "x$CHECK_ROOT_INSTANCE_RUNNING" = "x" ]; then
+        CHECK_ROOT_INSTANCE_RUNNING=true
+    fi
     while [ "$1" != "" ]; do
         case $1 in
             'clean')
@@ -471,7 +473,7 @@ run() {
                -classpath "$CLASSPATH" \
                $MAIN "$@"
         else
-            die "There is a Root instance already running with name $ROOT_INSTANCE_NAME and pid $ROOT_INSTANCE_PID"
+            die "There is a Root instance already running with name $ROOT_INSTANCE_NAME and pid $ROOT_INSTANCE_PID. If you know what you are doing and want to force the run anyway, export CHECK_ROOT_INSTANCE_RUNNING=false and re run the command."
         fi
 
         KARAF_RC=$?
