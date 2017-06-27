@@ -34,6 +34,8 @@
         <bundle dependency="true">mvn:org.ops4j.pax.swissbox/pax-swissbox-core/${pax.swissbox.version}</bundle>
         <bundle dependency="true">mvn:org.ops4j.base/ops4j-base/${pax.base.version}</bundle>
         <bundle dependency="true">mvn:org.apache.xbean/xbean-bundleutils/${xbean.version}</bundle>
+        <!-- ENTESB-7007: artificial bundle providing required capability -->
+        <bundle>mvn:org.apache.karaf.assemblies.features/pax-cdi-features/${project.version}</bundle>
         <bundle>mvn:org.ops4j.pax.cdi/pax-cdi-api/${pax.cdi.version}</bundle>
         <bundle>mvn:org.ops4j.pax.cdi/pax-cdi-spi/${pax.cdi.version}</bundle>
         <bundle>mvn:org.ops4j.pax.cdi/pax-cdi-extension/${pax.cdi.version}</bundle>
