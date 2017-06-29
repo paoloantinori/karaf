@@ -292,7 +292,9 @@ goto :EOF
 
 :CLASSPATH_END
 
-SET CHECK_ROOT_INSTANCE_RUNNING=true
+if "%CHECK_ROOT_INSTANCE_RUNNING%" == "" (
+    SET CHECK_ROOT_INSTANCE_RUNNING=true
+)
 
 rem Execute the JVM or the load the profiler
 if "%KARAF_PROFILER%" == "" goto :RUN
@@ -380,7 +382,7 @@ if "%KARAF_PROFILER%" == "" goto :RUN
     if "%IS_RUNNABLE%" == "true" (
     "%JAVA%" %JAVA_OPTS% %OPTS% -classpath "%CLASSPATH%" -Djava.endorsed.dirs="%JAVA_HOME%\jre\lib\endorsed;%JAVA_HOME%\lib\endorsed;%KARAF_HOME%\lib\endorsed" -Djava.ext.dirs="%JAVA_HOME%\jre\lib\ext;%JAVA_HOME%\lib\ext;%KARAF_HOME%\lib\ext" -Dkaraf.instances="%KARAF_HOME%\instances" -Dkaraf.home="%KARAF_HOME%" -Dkaraf.base="%KARAF_BASE%" -Djava.io.tmpdir="%KARAF_DATA%\tmp" -Dkaraf.data="%KARAF_DATA%" -Dkaraf.etc="%KARAF_ETC%" -Dkaraf.restart.jvm.supported=true -Djava.util.logging.config.file="%KARAF_ETC%\java.util.logging.properties" -Djavax.management.builder.initial=org.apache.karaf.management.boot.KarafMBeanServerBuilder %KARAF_OPTS% %MAIN% %ARGS%
     ) else (
-        echo There is a Root instance already running with name %ROOT_INSTANCE_NAME% and pid %ROOT_INSTANCE_PID%
+        echo There is a Root instance already running with name %ROOT_INSTANCE_NAME% and pid %ROOT_INSTANCE_PID%. If you know what you are doing and want to force the run anyway, SET CHECK_ROOT_INSTANCE_RUNNING=false and re run the command.
         goto :END
     )
     rem If KARAF_DAEMON is defined, auto-restart is bypassed and control given
