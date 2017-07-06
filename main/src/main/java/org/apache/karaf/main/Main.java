@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.RandomAccessFile;
+import java.io.StringReader;
 import java.io.Writer;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -63,6 +64,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.karaf.util.properties.FileLockUtils;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
@@ -75,6 +78,8 @@ import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
 import org.osgi.framework.startlevel.BundleStartLevel;
 import org.osgi.framework.startlevel.FrameworkStartLevel;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 /**
  * <p>
@@ -311,6 +316,14 @@ public class Main {
 
         if (delayConsoleStart) {
         	System.out.println(configProps.getProperty(KARAF_STARTUP_MESSAGE, "Apache Karaf starting up. Press Enter to open shell now ..."));
+        }
+
+        // ENTESB-6087 fix leaking [com.sun.]org.apache.xerces.internal.dom.DOMNormalizer.abort
+        try {
+            InputSource source = new InputSource(new StringReader("<root/>"));
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(source);
+            doc.normalizeDocument();
+        } catch (Exception ignored) {
         }
 
         ClassLoader classLoader = createClassLoader(configProps);
