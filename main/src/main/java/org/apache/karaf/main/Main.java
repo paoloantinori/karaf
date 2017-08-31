@@ -248,6 +248,7 @@ public class Main {
     private int lockDelay = Integer.parseInt( DEFAULT_LOCK_DELAY );
     private int shutdownTimeout = 5 * 60 * 1000;
     private boolean exiting = false;
+    private AutoCloseable shutdownThread;
     private ShutdownCallback shutdownCallback;
     private List<BundleActivator> karafActivators = new ArrayList<BundleActivator>();
 
@@ -1525,7 +1526,7 @@ public class Main {
         while (!exiting) {
             // only perform the shutdown setup once
             if (!setupShutdownCompleted) {
-                setupShutdown(props);
+                shutdownThread = setupShutdown(props);
                 setupShutdownCompleted = true;
             }
             if (lock.lock()) {
@@ -1551,6 +1552,14 @@ public class Main {
                     // if the lock is regained before the start level is fully changed
                     // things may not come up as expected
                     setStartLevel(lockStartLevel, shutdownTimeout);
+                }
+                if (shutdownThread != null) {
+                    try {
+                        shutdownThread.close();
+                        shutdownSocket.close();
+                        shutdownThread = null;
+                    } catch (Exception ignored) {
+                    }
                 }
             } else {
                 setStartLevel(lockStartLevel, 0);
@@ -1600,7 +1609,7 @@ public class Main {
     private Random random = null;
     private ServerSocket shutdownSocket;
 
-    protected void setupShutdown(Properties props) {
+    protected AutoCloseable setupShutdown(Properties props) {
         writePid(props);
         try {
             int port = Integer.parseInt(props.getProperty(KARAF_SHUTDOWN_PORT, "0"));
@@ -1628,13 +1637,14 @@ public class Main {
                     w.write(Integer.toString(port));
                     w.close();
                 }
-                Thread thread = new ShutdownSocketThread(shutdown);
-                thread.setDaemon(true);
+                ShutdownSocketThread thread = new ShutdownSocketThread(shutdown);
                 thread.start();
+                return thread;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private void writePid(Properties props) {
@@ -1661,12 +1671,20 @@ public class Main {
         return lock;
     }
 
-    private class ShutdownSocketThread extends Thread {
+    private class ShutdownSocketThread extends Thread implements AutoCloseable {
 
         private final String shutdown;
+        private boolean closing;
 
         public ShutdownSocketThread(String shutdown) {
+            super("Karaf Shutdown Socket Thread");
+            setDaemon(true);
             this.shutdown = shutdown;
+        }
+
+        @Override
+        public void close() throws Exception {
+            closing = true;
         }
 
         public void run() {
@@ -1684,6 +1702,10 @@ public class Main {
                                            + ace.getMessage(), ace);
                         continue;
                     } catch (IOException e) {
+                        if (closing) {
+                            LOG.log(Level.SEVERE, "Karaf shutdown socket - stopped thread");
+                            return;
+                        }
                         LOG.log(Level.SEVERE, "Karaf shutdown socket: accept: ", e);
                         System.exit(1);
                     }
